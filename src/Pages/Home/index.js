@@ -9,6 +9,7 @@ import Footer from '../../components/Footer';
 const Home = () => {
   return (
     <div>
+      {/* ==== Home Slider ==== */}
       <HomeSlider />
 
       {/* ==== Featured Section ==== */}
@@ -21,7 +22,7 @@ const Home = () => {
             </p>
           </div>
 
-          {/* Grid of 12 products */}
+          {/* Grid of products */}
           <div className="featured-products-box">
             <ProductList />
           </div>
