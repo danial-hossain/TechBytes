@@ -1,21 +1,12 @@
 import Button from '@mui/material/Button';
 import React from 'react';
-import { RiMenu2Fill } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import "./style.css"; // Import your CSS
 
 const Navigation = () => {
   return (
     <nav className="navigation-bar">
-      {/* Left: Shop by Categories button */}
-      <div className="nav-left">
-        <Button className="nav-btn">
-          <RiMenu2Fill className="nav-icon" />
-          SHOP BY CATEGORIES
-        </Button>
-      </div>
-
-      {/* Right: Navigation links */}
+      {/* Navigation links only */}
       <div className="nav-links">
         <ul>
           <li>
