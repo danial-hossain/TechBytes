@@ -3,18 +3,10 @@ import HomeSlider from '../../components/HomeSlider';
 import { LiaShippingFastSolid } from "react-icons/lia";
 import './style.css';
 import AdsBannerSlider from '../../components/AdsBannerSlider';
-
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import Box from '@mui/material/Box';
-import ProductsSlider from '../../components/ProductsSlider';
+import ProductList from '../../components/ProductItem/ProductList'; // grid version
 import Footer from '../../components/Footer';
 
 
-import { Swiper, SwiperSlide} from "swiper/react";
-import "swiper/css";
-import "swiper/css/navigation";
-import {Navigation} from "swiper/modules";
 const Home = () => {
   return (
     <div>
@@ -29,18 +21,10 @@ const Home = () => {
                 Do not miss the current offers until the end of August.
               </p>
             </div>
-
-            <div className="rightSec">
-
-
-            </div>
-
-
-
           </div>
 
-          <ProductsSlider items={7}/>
-
+          {/* Grid of 12 products */}
+          <ProductList />
         </div>
       </section>
 
@@ -60,7 +44,8 @@ const Home = () => {
           <AdsBannerSlider items={4} />
         </div>
       </section>
-      <Footer/>
+
+      <Footer />
     </div>
   );
 };
