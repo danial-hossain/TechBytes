@@ -1,19 +1,31 @@
 .footer-section {
     padding: 40px 0;
     background-color: #fafafa;
+    font-family: "Segoe UI", sans-serif;
 }
 
+/* ===== TOP ICONS ROW ===== */
 .footer-icons-row {
     display: flex;
     justify-content: center;
     gap: 20px;
     padding: 30px 0;
+    flex-wrap: wrap;
 }
 
 .footer-icon-col {
-    width: 20%;
+    width: 18%;
     text-align: center;
+    padding: 20px 15px;
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
     transition: all 0.3s ease;
+}
+
+.footer-icon-col:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.08);
 }
 
 .footer-icon {
@@ -24,7 +36,6 @@
 
 .footer-icon-col:hover .footer-icon {
     color: #ff5252;
-    transform: translateY(-5px);
 }
 
 .footer-icon-col h3 {
@@ -37,39 +48,46 @@
     font-size: 12px;
     font-weight: 500;
     margin: 0;
+    opacity: 0.85;
 }
 
-/* Main footer layout */
+/* ===== MAIN FOOTER LAYOUT ===== */
 .footer-main {
     display: flex;
     gap: 20px;
     padding: 30px 0;
+    flex-wrap: wrap;
 }
 
+/* Contact section */
 .footer-part1 {
-    width: 25%;
-    border-right: 1px solid rgba(0,0,0,0.2);
+    flex: 1;
+    min-width: 220px;
+    border-right: 1px solid rgba(0,0,0,0.1);
     padding-right: 15px;
 }
 
 .footer-part1 h2,
 .footer-links-col h2,
 .footer-part3 h2 {
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 600;
     margin-bottom: 15px;
+    color: #222;
 }
 
 .footer-part1 p {
     font-size: 14px;
     font-weight: 400;
     padding-bottom: 10px;
+    color: #555;
 }
 
 .footer-link {
     font-size: 13px;
     color: #333;
     text-decoration: none;
+    transition: color 0.3s ease;
 }
 
 .footer-link:hover {
@@ -77,7 +95,7 @@
 }
 
 .footer-phone {
-    font-size: 25px;
+    font-size: 20px;
     font-weight: 600;
     display: block;
     margin: 10px 0;
@@ -87,21 +105,28 @@
     display: flex;
     align-items: center;
     gap: 10px;
+    padding: 8px 10px;
+    background: #fff;
+    border-radius: 6px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
 
 .footer-chat-icon {
-    font-size: 40px;
+    font-size: 35px;
     color: #ff5252;
 }
 
+/* Links */
 .footer-part2 {
-    width: 40%;
+    flex: 2;
+    min-width: 300px;
     display: flex;
+    gap: 20px;
     padding-left: 20px;
 }
 
 .footer-links-col {
-    width: 50%;
+    flex: 1;
 }
 
 .footer-links-col ul {
@@ -111,15 +136,16 @@
 }
 
 .footer-links-col li {
-    margin-bottom: 5px;
+    margin-bottom: 8px;
 }
 
+/* Subscribe */
 .footer-part3 {
-    width: 35%;
+    flex: 1.2;
+    min-width: 240px;
     display: flex;
     flex-direction: column;
     padding-left: 20px;
-    padding-right: 20px;
 }
 
 .footer-input {
@@ -130,6 +156,7 @@
     border-radius: 4px;
     margin-bottom: 12px;
     outline: none;
+    transition: border-color 0.3s ease;
 }
 
 .footer-input:focus {
@@ -144,9 +171,10 @@
     font-size: 16px !important;
     padding: 7px 20px !important;
     text-transform: none !important;
+    border-radius: 4px !important;
 }
 
-/* Bottom strip */
+/* ===== BOTTOM STRIP ===== */
 .bottom-strip {
     border-top: 1px solid rgba(0,0,0,0.1);
     padding: 15px 0;
@@ -157,6 +185,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .footer-socials {
@@ -182,10 +211,12 @@
 .footer-social-link:hover {
     background: #ff5252;
     color: #fff;
+    border-color: #ff5252;
 }
 
 .footer-copy {
     font-size: 13px;
     text-align: center;
     margin: 0;
+    opacity: 0.8;
 }

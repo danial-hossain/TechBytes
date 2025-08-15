@@ -6,28 +6,29 @@ import AdsBannerSlider from '../../components/AdsBannerSlider';
 import ProductList from '../../components/ProductItem/ProductList'; // grid version
 import Footer from '../../components/Footer';
 
-
 const Home = () => {
   return (
     <div>
       <HomeSlider />
 
+      {/* ==== Featured Section ==== */}
       <section className="featured-section">
         <div className="container">
           <div className="featured-header">
-            <div className="left-sec">
-              <h2 className="featured-title">Featured Products</h2>
-              <p className="featured-subtitle">
-                Do not miss the current offers until the end of August.
-              </p>
-            </div>
+            <h2 className="featured-title">Featured Products</h2>
+            <p className="featured-subtitle">
+              Check & Get Your Desired Product!
+            </p>
           </div>
 
           {/* Grid of 12 products */}
-          <ProductList />
+          <div className="featured-products-box">
+            <ProductList />
+          </div>
         </div>
       </section>
 
+      {/* ==== Shipping Section ==== */}
       <section className="shipping-section">
         <div className="container">
           <div className="free-shipping">
@@ -36,9 +37,9 @@ const Home = () => {
               <span className="shipping-title">Free Shipping</span>
             </div>
             <div className="shipping-col2">
-              <p className="shipping-text">Free Delivery Now On Your First Order</p>
+              <p className="shipping-text">Free Shipping on Special Items</p>
             </div>
-            <p className="shipping-price">-Only $200*</p>
+            <p className="shipping-price">Order Now</p>
           </div>
 
           <AdsBannerSlider items={4} />

@@ -52,14 +52,14 @@ const Footer = () => {
                         <div className="footer-part1">
                             <h2>Contact us</h2>
                             <p>
-                                Classyshop - Mega Super Store
+                                East Monipur,Mirpur
                                 <br />
-                                507-Union Trade Centre France
+                                Dhaka-1216
                             </p>
                             <Link className="footer-link" to="mailto:someone@example.com">
-                                sales@yourcompany.com
+                                techbytes666@gmail.com
                             </Link>
-                            <span className="footer-phone">9876-543-210</span>
+                            <span className="footer-phone">+8801791416682</span>
                             <div className="footer-chat">
                                 <IoChatboxOutline className="footer-chat-icon" />
                                 <span>
@@ -96,15 +96,15 @@ const Footer = () => {
 
                         {/* Subscribe */}
                         <div className="footer-part3">
-                            <h2>Subscribe to TechBytes</h2>
-                            <p>Subscribe to our latest newsletter to get news about special discounts.</p>
+                            <h2>Report to TechBytes</h2>
+                            <p>Give Your Opinion </p>
                             <form>
                                 <input
                                     type="email"
                                     className="footer-input"
-                                    placeholder="Your Email Address"
+                                    placeholder="write"
                                 />
-                                <Button className="btn-org">Subscribe</Button>
+                                <Button className="btn-org">Submit</Button>
                             </form>
                         </div>
                     </div>
