@@ -1,0 +1,25 @@
+.ads-banner-slider {
+    padding: 20px 0; /* replaces py-5 */
+    width: 100%; /* replaces w-full */
+  }
+  
+  .ads-swiper {
+    width: 100%;
+  }
+  
+  .box.banner-box {
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  
+  .banner-img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  
+  .swiper-button-next,
+  .swiper-button-prev {
+    color: #000; /* you can change navigation arrow color here */
+  }
+  

@@ -1,0 +1,24 @@
+.classy-search {
+  display: flex;
+  height: 40px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.classy-search .search-input {
+  flex: 1;
+  padding: 0 10px;
+  border: none;
+  font-size: 14px;
+}
+
+.classy-search .search-button {
+  background-color: var(--primary-color);
+  border: none;
+  color: white;
+  padding: 0 20px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+}
