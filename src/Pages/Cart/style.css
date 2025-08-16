@@ -1,0 +1,127 @@
+/* 🌿 Cart Section */
+.cart-section {
+  padding: 60px 20px;
+  min-height: 90vh;
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 📦 Cart Container */
+.cart-container {
+  max-width: 800px;
+  width: 100%;
+  margin: 0 auto;
+  background-color: #fff;
+  padding: 40px 30px;
+  border-radius: 16px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.2s ease-in-out;
+}
+
+.cart-container:hover {
+  transform: translateY(-3px);
+}
+
+/* 🖼️ Image Styling */
+.cart-image {
+  width: 200px;
+  height: auto;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  object-fit: cover;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* 🛒 Title */
+.cart-title {
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 25px;
+  text-align: center;
+  color: #2d3436;
+}
+
+/* 🛍️ Empty Cart */
+.empty-cart {
+  text-align: center;
+  font-size: 20px;
+  color: #777;
+  margin-top: 20px;
+}
+
+/* 📃 Cart Items List */
+.cart-items {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 15px;
+}
+
+/* 🛍️ Individual Item */
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 20px;
+  background: #f8f9fa;
+  border-radius: 10px;
+  font-weight: 500;
+  transition: background 0.2s ease-in-out;
+}
+
+.cart-item:hover {
+  background: #e9ecef;
+}
+
+/* 🏷️ Item Details */
+.item-name {
+  flex: 1;
+  text-align: left;
+  font-size: 16px;
+  color: #2d3436;
+}
+
+.item-quantity {
+  margin: 0 15px;
+  font-size: 15px;
+  color: #636e72;
+}
+
+.item-price {
+  font-size: 16px;
+  font-weight: bold;
+  color: #0984e3;
+}
+
+/* 💰 Total */
+.cart-total {
+  text-align: right;
+  font-size: 22px;
+  margin-top: 25px;
+  font-weight: bold;
+  color: #2d3436;
+}
+
+/* 🛒 Checkout Button */
+.checkout-btn {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  margin-top: 25px;
+  background: linear-gradient(135deg, #d63031, #e17055);
+  color: #fff;
+  font-weight: bold;
+  font-size: 16px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.checkout-btn:hover {
+  background: linear-gradient(135deg, #ff7675, #e17055);
+  transform: scale(1.03);
+}
