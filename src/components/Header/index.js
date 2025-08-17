@@ -38,9 +38,19 @@ const Header = () => {
         {/* Icons + Login */}
         <div className="header-icons">
           <Link to="/login" className="signin-text">Login / Register</Link>
-          <IconWithBadge icon={<IoReturnUpBackSharp size={20} />} count={0} />
-          <IconWithBadge icon={<IoHeartOutline size={20} />} count={0} />
-          <IconWithBadge icon={<IoCartOutline size={20} />} count={1} />
+          
+          <Link to="/returns">
+            <IconWithBadge icon={<IoReturnUpBackSharp size={20} />} count={0} />
+          </Link>
+
+          <Link to="/wishlist">
+            <IconWithBadge icon={<IoHeartOutline size={20} />} count={0} />
+          </Link>
+
+          {/* 🛒 FIX: wrap Cart with Link */}
+          <Link to="/cart">
+            <IconWithBadge icon={<IoCartOutline size={20} />} count={1} />
+          </Link>
         </div>
       </div>
 
@@ -51,7 +61,7 @@ const Header = () => {
             to="/"
             className={`nav-link ${location.pathname === "/" ? "active" : ""}`}
           >
-         
+            Home
           </Link>
           <Navigation /> {/* Now placed beside Home */}
         </div>
