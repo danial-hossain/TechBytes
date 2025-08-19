@@ -12,15 +12,15 @@
 /* Back Button */
 .back-btn {
   display: inline-block;
-  align-self: flex-start;   /* container এর left side এ */
+  align-self: flex-start;
   margin-bottom: 20px;
-  padding: 5px 10px;        /* আগের ছোট সাইজ */
+  padding: 5px 10px;
   background: #1976d2;
   color: white;
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  font-size: 13px;          /* আগের ছোট font */
+  font-size: 13px;
   transition: all 0.3s ease;
 }
 .back-btn:hover {
@@ -29,7 +29,6 @@
 
 /* Laptop Card */
 .laptop-detail-card {
-  flex: 2.5;
   display: flex;
   flex-direction: row;
   background: #f5f5f5;
@@ -48,7 +47,7 @@
 }
 .laptop-detail-card .laptop-image img {
   max-width: 100%;
-  height: 400px; /* ছবি বড় করা হলো */
+  height: 400px; /* picture size */
   border-radius: 10px;
   object-fit: contain;
 }
@@ -112,6 +111,56 @@
   background: #0d47a1;
 }
 
+/* Tabs Container */
+.tabs-header {
+  display: flex;
+  justify-content: center;   /* center tabs inside box */
+  gap: 15px;                 /* space between tabs */
+  margin-top: 20px;
+  background: #f0f0f0;       /* neutral box */
+  padding: 10px;             /* box padding */
+  border-radius: 8px;
+}
+
+/* Tab Buttons */
+.tabs-header button {
+  padding: 8px 20px;
+  cursor: pointer;
+  border: none;
+  border-radius: 6px;
+  background: white;          /* default button color */
+  color: #1976d2;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.tabs-header button.active {
+  background: #1976d2;       /* active tab color */
+  color: white;
+}
+
+/* Tabs Content */
+.tabs-content {
+  margin-top: 15px;
+  background: #f9f9f9;
+  padding: 15px;
+  border-radius: 8px;
+}
+.spec-section {
+  margin-bottom: 20px;
+}
+.spec-section h4 {
+  margin-bottom: 10px;
+}
+.spec-section table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.spec-section td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
 /* Responsive */
 @media (max-width: 900px) {
   .laptop-detail-card {
@@ -124,5 +173,9 @@
   .price-row {
     flex-direction: column;
     align-items: flex-start;
+  }
+  .tabs-header {
+    flex-direction: column;
+    gap: 5px;
   }
 }
