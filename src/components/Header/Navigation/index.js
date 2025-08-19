@@ -15,7 +15,7 @@ const Navigation = () => {
             <Link to="/">Desktop</Link>
           </li>
           <li>
-            <Link to="/">Laptop</Link>
+            <Link to="/laptops">Laptop</Link> {/* <-- updated route */}
           </li>
           <li>
             <Link to="/">Electronics</Link>
