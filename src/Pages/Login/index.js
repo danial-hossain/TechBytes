@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import './style.css'; // separate CSS file
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import './style.css'; // Login page CSS
 
 const Login = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
@@ -10,29 +12,39 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     setError('');
-    
-    // Simple validation
+
+    // Validation
     if (!email || !password) {
       setError('Please enter email and password');
       return;
     }
-
     if (!/\S+@\S+\.\S+/.test(email)) {
       setError('Invalid email format');
       return;
     }
 
     setLoading(true);
+    try {
+      const { data } = await axios.post('http://localhost:5000/api/auth/login', {
+        email,
+        password
+      });
 
-    // Simulate API/login
-    setTimeout(() => {
+      // Store JWT & user info
+      localStorage.setItem('userInfo', JSON.stringify(data));
+
       setLoading(false);
-      alert(`Logged in with email: ${email}`);
-      // TODO: redirect to home page or store login session
-    }, 1500);
+      alert('Login Successful');
+
+      // Redirect to home page
+      navigate('/');
+    } catch (err) {
+      setLoading(false);
+      setError(err.response?.data?.message || 'Login Failed');
+    }
   };
 
   return (
