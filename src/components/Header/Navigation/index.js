@@ -1,4 +1,3 @@
-import Button from '@mui/material/Button';
 import React from 'react';
 import { Link } from "react-router-dom";
 import "./style.css"; // Import your CSS
@@ -16,7 +15,7 @@ const Navigation = () => {
             <Link to="/">Desktop</Link>
           </li>
           <li>
-            <Link to="/">Laptop</Link>
+            <Link to="/laptops">Laptop</Link> {/* <-- updated route */}
           </li>
           <li>
             <Link to="/electronics">Electronics</Link> 
