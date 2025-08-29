@@ -10,7 +10,6 @@ const electronics = [
     price: 999,
     oldPrice: 1200,
     status: "In Stock",
-    code: 129909,
     description: "Latest Samsung flagship phone with AMOLED display.",
     features: [
       "6.1-inch Dynamic AMOLED 2X display",
@@ -37,6 +36,8 @@ const electronics = [
     id: 2,
     name: "Sony WH-1000XM5 Headphones",
     price: 349,
+    oldPrice: 800,
+    Status: "In Stock",
     description: "Noise cancelling wireless headphones.",
     img: require("../../assets/electronics/sony_headphones.jpg"),
     features: [
@@ -59,6 +60,8 @@ const electronics = [
     id: 3,
     name: "iPad Pro 12.9",
     price: 1099,
+    oldPrice: 2300,
+    Status: "Out Of Stock",
     description: "Powerful tablet with M2 chip and Liquid Retina display.",
     img: require("../../assets/electronics/ipad_pro.jpg"),
     features: [
@@ -81,6 +84,8 @@ const electronics = [
     id: 4,
     name: "Canon EOS R7 Camera",
     price: 1399,
+    oldPrice: 1400,
+    Status: "In Stock",
     description: "High-performance APS-C mirrorless camera.",
     img: require("../../assets/electronics/canon_r7.jpg"),
     features: [
