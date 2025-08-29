@@ -1,0 +1,156 @@
+/* Container */
+.electronics-detail-container {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+/* Back Button */
+.back-btn {
+  background: #eee;
+  border: none;
+  padding: 8px 14px;
+  cursor: pointer;
+  border-radius: 6px;
+  margin-bottom: 15px;
+  font-size: 14px;
+  transition: 0.3s;
+}
+.back-btn:hover {
+  background: #ddd;
+}
+
+/* Main Card */
+.electronics-detail-card {
+  display: flex;
+  gap: 20px;
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* Image Section */
+.electronics-image {
+  flex: 1;
+  text-align: center;
+}
+.electronics-image img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+/* Info Section */
+.electronics-info {
+  flex: 1.2;
+}
+.electronics-info h2 {
+  font-size: 26px;
+  margin-bottom: 10px;
+}
+.price-row {
+  margin: 10px 0;
+}
+.price {
+  font-size: 22px;
+  color: #e63946;
+  font-weight: bold;
+  margin-right: 10px;
+}
+.old-price {
+  font-size: 16px;
+  color: #777;
+  text-decoration: line-through;
+}
+
+/* Features */
+.electronics-info h3 {
+  margin-top: 20px;
+  font-size: 18px;
+}
+.electronics-info ul {
+  margin-top: 8px;
+  padding-left: 18px;
+}
+.electronics-info ul li {
+  margin-bottom: 6px;
+}
+
+/* Buy Button */
+.buy-btn {
+  margin-top: 20px;
+  background: #2a9d8f;
+  color: white;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: 0.3s;
+}
+.buy-btn:hover {
+  background: #21867a;
+}
+.buy-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+/* Tabs */
+.tabs-header {
+  display: flex;
+  gap: 10px;
+  margin-top: 25px;
+}
+.tabs-header button {
+  padding: 10px 16px;
+  border: none;
+  background: #f1f1f1;
+  cursor: pointer;
+  border-radius: 6px 6px 0 0;
+  font-size: 14px;
+  transition: 0.3s;
+}
+.tabs-header button.active {
+  background: #2a9d8f;
+  color: white;
+  font-weight: bold;
+}
+.tabs-header button:hover {
+  background: #ddd;
+}
+
+/* Tab Content */
+.tabs-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+  margin-bottom: 30px;
+}
+
+/* Specification Table */
+.spec-section {
+  margin-bottom: 20px;
+}
+.spec-section h4 {
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: #444;
+}
+.spec-section table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.spec-section td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  font-size: 14px;
+}
+.spec-section td:first-child {
+  width: 40%;
+  font-weight: bold;
+  background: #fafafa;
+}
