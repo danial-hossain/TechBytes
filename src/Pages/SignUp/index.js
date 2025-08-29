@@ -7,6 +7,7 @@ const SignUp = () => {
   const navigate = useNavigate();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [mobile, setMobile] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -15,8 +16,9 @@ const SignUp = () => {
     e.preventDefault();
     setError('');
 
-    if (!name || !email || !password) {
-      setError('Name, Email and Password are required');
+    // Validation
+    if (!name || !email || !mobile || !password) {
+      setError('Name, Email, Mobile and Password are required');
       return;
     }
 
@@ -24,7 +26,7 @@ const SignUp = () => {
     try {
       const response = await axios.post(
         'http://localhost:8000/api/user/register',
-        { name, email, password },
+        { name, email, mobile, password }, // 👈 include mobile
         { withCredentials: true, timeout: 5000 }
       );
 
@@ -63,6 +65,13 @@ const SignUp = () => {
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <input
+            type="tel"
+            placeholder="Mobile Number"
+            value={mobile}
+            onChange={(e) => setMobile(e.target.value)}
             required
           />
           <input

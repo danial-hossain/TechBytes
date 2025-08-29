@@ -37,7 +37,7 @@ const Header = () => {
 
         {/* Icons + Login */}
         <div className="header-icons">
-          <Link to="/login" className="signin-text">Login / Register</Link>
+          <Link to="/login" className="signin-text">Account</Link>
           
           <Link to="/returns">
             <IconWithBadge icon={<IoReturnUpBackSharp size={20} />} count={0} />

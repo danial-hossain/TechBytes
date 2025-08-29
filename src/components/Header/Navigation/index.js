@@ -18,7 +18,7 @@ const Navigation = () => {
             <Link to="/laptops">Laptop</Link> {/* <-- updated route */}
           </li>
           <li>
-            <Link to="/electronics">Electronics</Link> 
+            <Link to="/">Electronics</Link>
           </li> 
           <li>
             <Link to="/">Prosthetic Arms</Link>
