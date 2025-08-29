@@ -83,6 +83,21 @@ const electronics = [
     price: 1399,
     description: "High-performance APS-C mirrorless camera.",
     img: require("../../assets/electronics/canon_r7.jpg"),
+    features: [
+      "32.5MP APS-C CMOS Sensor",
+      "Dual Pixel CMOS AF II",
+      "4K60p video recording",
+      "In-body Image Stabilization",
+      "High-speed continuous shooting"
+    ],
+    specifications: {
+      Sensor: "32.5MP APS-C CMOS",
+      Processor: "DIGIC X",
+      Autofocus: "Dual Pixel CMOS AF II",
+      ISO: "100-32000 (expandable)",
+      Video: "4K up to 60fps",
+      Connectivity: "Wi-Fi, Bluetooth"
+    }
   },
 ];
 
