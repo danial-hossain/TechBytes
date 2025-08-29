@@ -21,7 +21,7 @@ const Navigation = () => {
             <Link to="/">Electronics</Link>
           </li> 
           <li>
-            <Link to="/">Prosthetic Arms</Link>
+            <Link to="/arms">Prosthetic Arms</Link> {/* ✅ goes to ArmList */}
           </li>
           <li>
             <Link to="/">Prosthetic Legs</Link>
