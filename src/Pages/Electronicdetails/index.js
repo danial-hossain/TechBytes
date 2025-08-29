@@ -39,6 +39,21 @@ const electronics = [
     price: 349,
     description: "Noise cancelling wireless headphones.",
     img: require("../../assets/electronics/sony_headphones.jpg"),
+    features: [
+      "Active Noise Cancellation",
+      "Up to 30 hours battery life",
+      "Quick charging (3 mins = 3 hours)",
+      "Touch controls",
+      "Lightweight & comfortable fit"
+    ],
+    specifications: {
+      Type: "Over-ear, Wireless",
+      NoiseCancelling: "Yes (ANC)",
+      Battery: "30 hours",
+      Charging: "USB-C, Fast charging",
+      Weight: "250g",
+      Connectivity: "Bluetooth 5.2"
+    }
   },
   {
     id: 3,
