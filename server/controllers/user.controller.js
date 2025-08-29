@@ -9,11 +9,11 @@ import generatedRefreshToken from '../utils/generatedRefreshToken.js';
 // ===== SIGNUP =====
 export async function registerUserController(req, res) {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, mobile, password } = req.body;
 
-    if (!name || !email || !password) {
+    if (!name || !email || !mobile || !password) {
       return res.status(400).json({
-        message: "Provide name, email, and password",
+        message: "Provide name, email, mobile, and password",
         error: true,
         success: false,
       });
@@ -35,6 +35,7 @@ export async function registerUserController(req, res) {
     const user = new UserModel({
       name,
       email,
+      mobile, // 👈 store phone number here
       password: hashPassword,
       otp: verifyCode,
       otpExpires: Date.now() + 600000, // 10 min
@@ -141,5 +142,32 @@ export async function logoutController(req, res) {
     return res.json({ message: "Logout successful", error: false, success: true });
   } catch (error) {
     return res.status(500).json({ message: error.message || "Something went wrong", error: true, success: false });
+  }
+}
+
+// ===== GET USER PROFILE =====
+export async function getProfileController(req, res) {
+  try {
+    const user = await UserModel.findById(req.userId).select('-password');
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+        error: true,
+        success: false,
+      });
+    }
+
+    return res.status(200).json({
+      name: user.name,
+      email: user.email,
+      mobile: user.mobile, // 👈 include mobile in response if needed
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message || "Something went wrong",
+      error: true,
+      success: false,
+    });
   }
 }

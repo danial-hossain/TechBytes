@@ -1,5 +1,4 @@
 import React from 'react';
-//<Route path="/cart" element={<Cart />} />
 import './style.css';
 import treeImage from './tree.jpg'; // ✅ correct path
 

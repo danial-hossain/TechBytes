@@ -9,6 +9,8 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import './index.css';
 import Verification from './Pages/verification/index.js';
+import Profile from './Pages/Profile/index.js'; // import profile
+
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
@@ -23,6 +25,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/verify" element={<Verification />} />  {/* Added verification */}
+        <Route path="/profile" element={<Profile />} /> {/* Profile page */}
+
         <Route path="/laptops" element={<LaptopList />} />            {/* Laptop list */}
         <Route path="/laptop/:id" element={<LaptopDetail />} />      {/* Laptop details */}
       </Routes>
