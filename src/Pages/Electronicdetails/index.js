@@ -61,6 +61,21 @@ const electronics = [
     price: 1099,
     description: "Powerful tablet with M2 chip and Liquid Retina display.",
     img: require("../../assets/electronics/ipad_pro.jpg"),
+    features: [
+      "12.9-inch Liquid Retina XDR display",
+      "Apple M2 chip",
+      "Face ID security",
+      "Apple Pencil 2 support",
+      "5G and Wi-Fi 6E support"
+    ],
+    specifications: {
+      Display: "12.9-inch Liquid Retina XDR",
+      Processor: "Apple M2 chip",
+      RAM: "8GB / 16GB",
+      Storage: "128GB up to 2TB",
+      Battery: "10 hours",
+      OS: "iPadOS 16"
+    }
   },
   {
     id: 4,
