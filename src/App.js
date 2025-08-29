@@ -3,6 +3,8 @@ import Home from './Pages/Home/index.js';
 
 
 import Cart from './Pages/Cart/index.js';
+import ElectronicsList from './Pages/ElectronicsList/index.js';
+import Electronicdetails from './Pages/Electronicdetails/index.js';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import './index.css';
@@ -15,6 +17,10 @@ function App() {
 
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/electronics" element={<ElectronicsList />} />
+  <Route path="/electronics/:id" element={<Electronicdetails />} />
+
+       
    
  
         <Route path="/cart" element={<Cart />} />
