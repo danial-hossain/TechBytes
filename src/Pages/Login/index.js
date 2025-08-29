@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import './style.css'; // Login page CSS
+import './style.css';
 
 const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [rememberMe, setRememberMe] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -16,30 +15,22 @@ const Login = () => {
     e.preventDefault();
     setError('');
 
-    // Validation
     if (!email || !password) {
       setError('Please enter email and password');
-      return;
-    }
-    if (!/\S+@\S+\.\S+/.test(email)) {
-      setError('Invalid email format');
       return;
     }
 
     setLoading(true);
     try {
-      const { data } = await axios.post('http://localhost:5000/api/auth/login', {
-        email,
-        password
-      });
+      const { data } = await axios.post(
+        'http://localhost:8000/api/user/login',
+        { email, password },
+        { withCredentials: true } // important for cookies
+      );
 
-      // Store JWT & user info
       localStorage.setItem('userInfo', JSON.stringify(data));
-
       setLoading(false);
       alert('Login Successful');
-
-      // Redirect to home page
       navigate('/');
     } catch (err) {
       setLoading(false);
@@ -80,28 +71,9 @@ const Login = () => {
             </span>
           </div>
 
-          <div className="options-row">
-            <label>
-              <input
-                type="checkbox"
-                checked={rememberMe}
-                onChange={() => setRememberMe(!rememberMe)}
-              /> Remember Me
-            </label>
-            <Link to="/forgot-password" className="forgot-link">
-              Forgot Password?
-            </Link>
-          </div>
-
           <button type="submit" className="login-btn" disabled={loading}>
             {loading ? 'Logging in...' : 'Login'}
           </button>
-
-          <div className="social-login">
-            <p>Or login with:</p>
-            <button type="button" className="social-btn google">Google</button>
-            <button type="button" className="social-btn facebook">Facebook</button>
-          </div>
         </form>
 
         <p className="login-signup-text">

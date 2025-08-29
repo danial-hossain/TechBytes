@@ -1,17 +1,13 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import './style.css'; // SignUp CSS
+import './style.css';
 
 const SignUp = () => {
   const navigate = useNavigate();
-  const [fullName, setFullName] = useState('');
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [phone, setPhone] = useState('');
-  const [address, setAddress] = useState('');
-  const [dob, setDob] = useState('');
-  const [gender, setGender] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -19,53 +15,31 @@ const SignUp = () => {
     e.preventDefault();
     setError('');
 
-    // Simple validation
-    if (!fullName || !email || !password) {
-      setError('Full Name, Email and Password are required');
-      return;
-    }
-    if (!/\S+@\S+\.\S+/.test(email)) {
-      setError('Invalid email format');
-      return;
-    }
-    if (password.length < 6) {
-      setError('Password must be at least 6 characters');
+    if (!name || !email || !password) {
+      setError('Name, Email and Password are required');
       return;
     }
 
     setLoading(true);
     try {
-      // Axios request with proper base URL and timeout
       const response = await axios.post(
-        'http://localhost:5000/api/auth/signup',
-        {
-          fullName,
-          email,
-          password,
-          phone,
-          address,
-          dob,
-          gender
-        },
-        { timeout: 5000 } // 5 sec timeout
+        'http://localhost:8000/api/user/register',
+        { name, email, password },
+        { withCredentials: true, timeout: 5000 }
       );
 
       setLoading(false);
-      alert(response.data.message || 'SignUp Successful! Please login.');
+      alert(response.data.message || 'SignUp Successful! Check your email for verification.');
 
-      navigate('/login');
+      // Navigate to verification page and pass email
+      navigate('/verify', { state: { email } });
     } catch (err) {
       setLoading(false);
-
-      // Detailed error handling
       if (err.response) {
-        // Server responded with a status other than 2xx
         setError(err.response.data.message || `Server Error: ${err.response.status}`);
       } else if (err.request) {
-        // Request was made but no response
         setError('No response from server. Please try again later.');
       } else {
-        // Other errors
         setError(`Error: ${err.message}`);
       }
     }
@@ -80,8 +54,8 @@ const SignUp = () => {
           <input
             type="text"
             placeholder="Full Name"
-            value={fullName}
-            onChange={(e) => setFullName(e.target.value)}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
             required
           />
           <input
@@ -98,44 +72,11 @@ const SignUp = () => {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <input
-            type="tel"
-            placeholder="Contact Number"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-          />
-          <input
-            type="text"
-            placeholder="Address"
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
-          />
-          <input
-            type="date"
-            placeholder="Date of Birth"
-            value={dob}
-            onChange={(e) => setDob(e.target.value)}
-          />
-          <select
-            value={gender}
-            onChange={(e) => setGender(e.target.value)}
-            required
-          >
-            <option value="">Select Gender</option>
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-            <option value="other">Other</option>
-          </select>
 
           <button type="submit" className="signup-btn" disabled={loading}>
             {loading ? 'Signing Up...' : 'Sign Up'}
           </button>
         </form>
-
-        <p className="signup-login-text">
-          Already have an account?{' '}
-          <Link to="/login" className="signup-login-link">Login</Link>
-        </p>
       </div>
     </section>
   );
