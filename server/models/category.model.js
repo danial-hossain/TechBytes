@@ -1,11 +1,11 @@
 import mongoose from "mongoose";
 
 const productSchema = new mongoose.Schema({
-  id: String,
-  name: String,
-  price: Number,
-  photo: String,
-  details: String,
+  id: { type: String, required: true },   // Product unique id
+  name: { type: String, required: true },
+  price: { type: Number, required: true },
+  photo: { type: String },
+  details: { type: String },
 });
 
 const categorySchema = new mongoose.Schema({
@@ -13,7 +13,7 @@ const categorySchema = new mongoose.Schema({
   products: [productSchema],
 });
 
-// 👇 force it to use "category" collection, not "categories"
+// Force collection name
 const Category = mongoose.model("Category", categorySchema, "category");
 
 export default Category;
