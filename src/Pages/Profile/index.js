@@ -39,9 +39,22 @@ const Profile = () => {
     fetchUserProfile();
   }, [navigate]);
 
-  const handleLogout = () => {
-    localStorage.removeItem('userInfo');
-    navigate('/login');
+  const handleLogout = async () => {
+    try {
+      const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+      if (userInfo) {
+        await axios.get('http://localhost:8000/api/user/logout', {
+          headers: {
+            Authorization: `Bearer ${userInfo.data.accessToken}`,
+          },
+        });
+      }
+    } catch (error) {
+      console.error('Logout failed', error);
+    } finally {
+      localStorage.removeItem('userInfo');
+      navigate('/login');
+    }
   };
 
   if (loading) {

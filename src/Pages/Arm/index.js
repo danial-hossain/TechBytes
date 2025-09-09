@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./style.css";  // ✅ your custom styles
 
 const ArmList = () => {
   const [arms, setArms] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [userId, setUserId] = useState(null);
+  const navigate = useNavigate();
 
-  // 👤 Temporary: hardcode a userId (replace later with logged-in user)
-  const userId = "68bbfc3eabfa1a175edb147e";
+
 
   // ✅ Function to add a product to the cart
   const addToCart = async (productId) => {

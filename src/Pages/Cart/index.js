@@ -1,22 +1,33 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./style.css";
 
 const Cart = () => {
   const [cart, setCart] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [userId, setUserId] = useState(null);
+  const navigate = useNavigate();
 
-  const userId = "68bbfc3eabfa1a175edb147e";
+  useEffect(() => {
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    if (userInfo && userInfo.data) {
+      setUserId(userInfo.data.id);
+    } else {
+      // Redirect to login if no user info is found
+      navigate("/login");
+    }
+  }, [navigate]);
 
   useEffect(() => {
     const fetchCart = async () => {
+      if (!userId) return;
       try {
         const res = await fetch(`http://localhost:8000/api/cart/${userId}`);
         if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
         const data = await res.json();
         console.log("Data from server:", data);
-        const validCartItems = data.filter(item => item.product);
+        const validCartItems = data.filter((item) => item.product);
         setCart(validCartItems);
       } catch (err) {
         console.error(err);
@@ -28,13 +39,19 @@ const Cart = () => {
     fetchCart();
   }, [userId]);
 
-  const totalPrice = cart.reduce((total, item) => total + item.product.price * item.quantity, 0);
+  const totalPrice = cart.reduce(
+    (total, item) => total + item.product.price * item.quantity,
+    0
+  );
 
   const handleDelete = async (itemId) => {
     try {
-      const res = await fetch(`http://localhost:8000/api/cart/delete/${itemId}`, {
-        method: "DELETE",
-      });
+      const res = await fetch(
+        `http://localhost:8000/api/cart/delete/${itemId}`,
+        {
+          method: "DELETE",
+        }
+      );
       if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
       setCart(cart.filter((item) => item._id !== itemId));
     } catch (err) {
@@ -43,7 +60,8 @@ const Cart = () => {
     }
   };
 
-  if (loading) return <div className="cart-container">Loading your cart...</div>;
+  if (loading)
+    return <div className="cart-container">Loading your cart...</div>;
   if (error) return <div className="cart-container">Error: {error}</div>;
 
   return (
@@ -53,7 +71,9 @@ const Cart = () => {
         {cart.length === 0 ? (
           <div>
             <p>Your cart is empty.</p>
-            <Link to="/" className="btn-shop">Continue Shopping</Link>
+            <Link to="/" className="btn-shop">
+              Continue Shopping
+            </Link>
           </div>
         ) : (
           <>
@@ -63,10 +83,14 @@ const Cart = () => {
               <span>Subtotal</span>
             </div>
             <div className="cart-items-list">
-              {cart.map(item => (
+              {cart.map((item) => (
                 <div key={item._id} className="cart-item">
                   <div className="item-product">
-                    <img src={item.product.photo} alt={item.product.name} className="item-image" />
+                    <img
+                      src={item.product.photo}
+                      alt={item.product.name}
+                      className="item-image"
+                    />
                     <div>
                       <span>{item.product.name}</span>
                       <span>${item.product.price.toFixed(2)}</span>
