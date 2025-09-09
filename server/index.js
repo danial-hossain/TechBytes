@@ -7,7 +7,7 @@ import helmet from 'helmet';
 import connectDB from './config/connectDB.js';
 import userRouter from './route/user.route.js';
 import armRouter from "./category/arm.js";
-
+import cartRouter from "./routes/cart.js";
 // Load environment variables
 dotenv.config();
 
@@ -43,6 +43,7 @@ app.get('/', (req, res) => {
 // ===== API ROUTES =====
 app.use("/api/user", userRouter);
 app.use("/api/arm", armRouter);   // ✅ Arm route works here
+app.use("/api/cart", cartRouter);
 
 // ===== DB CONNECTION + SERVER START =====
 connectDB()
