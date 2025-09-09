@@ -1,127 +1,146 @@
-/* 🌿 Cart Section */
 .cart-section {
-  padding: 60px 20px;
-  min-height: 90vh;
-  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  padding: 40px 20px;
+  background-color: #f9f9f9;
+  min-height: 80vh;
 }
 
-/* 📦 Cart Container */
 .cart-container {
-  max-width: 800px;
-  width: 100%;
+  max-width: 1100px;
   margin: 0 auto;
   background-color: #fff;
-  padding: 40px 30px;
-  border-radius: 16px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  transition: transform 0.2s ease-in-out;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.cart-container:hover {
-  transform: translateY(-3px);
-}
-
-/* 🖼️ Image Styling */
-.cart-image {
-  width: 200px;
-  height: auto;
-  border-radius: 12px;
-  margin-bottom: 20px;
-  object-fit: cover;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-}
-
-/* 🛒 Title */
 .cart-title {
-  font-size: 32px;
-  font-weight: bold;
-  margin-bottom: 25px;
+  font-size: 2rem;
+  margin-bottom: 30px;
   text-align: center;
-  color: #2d3436;
+  color: #333;
 }
 
-/* 🛍️ Empty Cart */
+/* Loading, Error, and Empty States */
+.loading-message, .error-message {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #555;
+  padding: 50px 0;
+}
+
 .empty-cart {
   text-align: center;
-  font-size: 20px;
-  color: #777;
-  margin-top: 20px;
+  padding: 50px 0;
 }
 
-/* 📃 Cart Items List */
-.cart-items {
+.empty-cart p {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+}
+
+.btn-shop {
+  background-color: #007bff;
+  color: white;
+  padding: 12px 25px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.btn-shop:hover {
+  background-color: #0056b3;
+}
+
+/* Cart Items Header */
+.cart-items-header {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  font-weight: bold;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #eee;
+  margin-bottom: 20px;
+  color: #555;
+}
+
+.cart-items-header span:nth-child(2),
+.cart-items-header span:nth-child(3) {
+  text-align: center;
+}
+
+
+/* Cart Items List */
+.cart-items-list {
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  margin-top: 15px;
+  gap: 20px;
 }
 
-/* 🛍️ Individual Item */
 .cart-item {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
   align-items: center;
-  padding: 14px 20px;
-  background: #f8f9fa;
-  border-radius: 10px;
-  font-weight: 500;
-  transition: background 0.2s ease-in-out;
+  padding: 15px 0;
+  border-bottom: 1px solid #eee;
 }
 
-.cart-item:hover {
-  background: #e9ecef;
+.item-product {
+  display: flex;
+  align-items: center;
 }
 
-/* 🏷️ Item Details */
+.item-image {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 5px;
+  margin-right: 20px;
+}
+
+.item-details {
+  display: flex;
+  flex-direction: column;
+}
+
 .item-name {
-  flex: 1;
-  text-align: left;
-  font-size: 16px;
-  color: #2d3436;
-}
-
-.item-quantity {
-  margin: 0 15px;
-  font-size: 15px;
-  color: #636e72;
+  font-weight: bold;
+  margin-bottom: 5px;
 }
 
 .item-price {
-  font-size: 16px;
-  font-weight: bold;
-  color: #0984e3;
+  color: #777;
 }
 
-/* 💰 Total */
+.item-quantity, .item-subtotal {
+  text-align: center;
+  font-size: 1.1rem;
+}
+
+/* Cart Summary */
+.cart-summary {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
 .cart-total {
-  text-align: right;
-  font-size: 22px;
-  margin-top: 25px;
+  font-size: 1.5rem;
   font-weight: bold;
-  color: #2d3436;
+  margin-bottom: 20px;
 }
 
-/* 🛒 Checkout Button */
 .checkout-btn {
-  display: block;
-  width: 100%;
-  padding: 14px;
-  margin-top: 25px;
-  background: linear-gradient(135deg, #d63031, #e17055);
-  color: #fff;
-  font-weight: bold;
-  font-size: 16px;
+  background-color: #28a745;
+  color: white;
   border: none;
-  border-radius: 10px;
+  padding: 15px 30px;
+  font-size: 1.1rem;
+  border-radius: 5px;
   cursor: pointer;
-  transition: all 0.3s ease-in-out;
+  transition: background-color 0.3s ease;
 }
 
 .checkout-btn:hover {
-  background: linear-gradient(135deg, #ff7675, #e17055);
-  transform: scale(1.03);
+  background-color: #218838;
 }

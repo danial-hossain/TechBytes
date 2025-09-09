@@ -3,10 +3,12 @@ import Category from "../models/category.model.js";
 
 const armRouter = Router();
 
+// Replace with the actual ObjectId of the Arm category from MongoDB
+const ARM_CATEGORY_ID = "68bdb82f195b330f4a1187cd";
+
 armRouter.get("/", async (req, res) => {
   try {
-    // Case-insensitive match for safety
-    const category = await Category.findOne({ name: { $regex: /^Arm$/i } });
+    const category = await Category.findById(ARM_CATEGORY_ID);
 
     if (!category) {
       return res.status(404).json({ message: "Arm category not found" });
