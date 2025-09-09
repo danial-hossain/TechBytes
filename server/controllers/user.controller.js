@@ -11,7 +11,7 @@ export async function registerUserController(req, res) {
   try {
     const { name, email, mobile, password } = req.body;
 
-    if (!name || !email || !mobile || !password) {
+    if (!name || !email || !password || !mobile) {
       return res.status(400).json({
         message: "Provide name, email, mobile, and password",
         error: true,
@@ -35,7 +35,7 @@ export async function registerUserController(req, res) {
     const user = new UserModel({
       name,
       email,
-      mobile, // 👈 store phone number here
+      mobile,
       password: hashPassword,
       otp: verifyCode,
       otpExpires: Date.now() + 600000, // 10 min
@@ -54,13 +54,7 @@ export async function registerUserController(req, res) {
     const accessToken = await generatedAccessToken(user._id);
     const refreshToken = await generatedRefreshToken(user._id);
 
-    // set cookies (local dev: secure false)
-    const cookieOptions = {
-      httpOnly: true,
-      secure: false, // ❌ false for local dev
-      sameSite: "Lax",
-    };
-
+    const cookieOptions = { httpOnly: true, secure: false, sameSite: "Lax" };
     res.cookie("accessToken", accessToken, cookieOptions);
     res.cookie("refreshToken", refreshToken, cookieOptions);
 
@@ -118,7 +112,7 @@ export async function loginUserController(req, res) {
 
     await UserModel.findByIdAndUpdate(user._id, { last_login_date: new Date(), status: "Active" });
 
-    const cookieOptions = { httpOnly: true, secure: false, sameSite: "Lax" }; // ❌ false for local dev
+    const cookieOptions = { httpOnly: true, secure: false, sameSite: "Lax" };
     res.cookie("accessToken", accessToken, cookieOptions);
     res.cookie("refreshToken", refreshToken, cookieOptions);
 
@@ -131,7 +125,7 @@ export async function loginUserController(req, res) {
 // ===== LOGOUT =====
 export async function logoutController(req, res) {
   try {
-    const userId = req.userId; // set by auth middleware
+    const userId = req.userId;
     const cookieOptions = { httpOnly: true, secure: false, sameSite: "Lax" };
 
     res.clearCookie("accessToken", cookieOptions);
@@ -161,7 +155,7 @@ export async function getProfileController(req, res) {
     return res.status(200).json({
       name: user.name,
       email: user.email,
-      mobile: user.mobile, // 👈 include mobile in response if needed
+      mobile: user.mobile,
     });
   } catch (error) {
     return res.status(500).json({
