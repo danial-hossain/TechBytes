@@ -31,7 +31,7 @@ const Login = () => {
       localStorage.setItem('userInfo', JSON.stringify(data));
       setLoading(false);
       alert('Login Successful');
-      navigate('/');
+      navigate('/profile');
     } catch (err) {
       setLoading(false);
       setError(err.response?.data?.message || 'Login Failed');

@@ -38,7 +38,6 @@ const Profile = () => {
 
     fetchUserProfile();
   }, [navigate]);
-
   const handleLogout = async () => {
     try {
       const userInfo = JSON.parse(localStorage.getItem('userInfo'));
@@ -55,6 +54,11 @@ const Profile = () => {
       localStorage.removeItem('userInfo');
       navigate('/login');
     }
+
+  const handleLogout = () => {
+    localStorage.removeItem('userInfo');
+    navigate('/login');
+
   };
 
   if (loading) {
