@@ -1,10 +1,7 @@
-
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./style.css";
-import React from 'react';
 import treeImage from './tree.jpg'; // ✅ correct path
-
 
 const Cart = () => {
   const [cart, setCart] = useState([]);
@@ -13,16 +10,17 @@ const Cart = () => {
   const [userId, setUserId] = useState(null);
   const navigate = useNavigate();
 
+  // Get user info from localStorage
   useEffect(() => {
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
     if (userInfo && userInfo.data) {
       setUserId(userInfo.data.id);
     } else {
-      // Redirect to login if no user info is found
-      navigate("/login");
+      navigate("/login"); // redirect if no user info
     }
   }, [navigate]);
 
+  // Fetch cart items
   useEffect(() => {
     const fetchCart = async () => {
       if (!userId) return;
@@ -30,11 +28,9 @@ const Cart = () => {
         const res = await fetch(`http://localhost:8000/api/cart/${userId}`);
         if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
         const data = await res.json();
-        console.log("Data from server:", data);
         const validCartItems = data.filter((item) => item.product);
         setCart(validCartItems);
       } catch (err) {
-        console.error(err);
         setError(err.message);
       } finally {
         setLoading(false);
@@ -50,22 +46,17 @@ const Cart = () => {
 
   const handleDelete = async (itemId) => {
     try {
-      const res = await fetch(
-        `http://localhost:8000/api/cart/delete/${itemId}`,
-        {
-          method: "DELETE",
-        }
-      );
+      const res = await fetch(`http://localhost:8000/api/cart/delete/${itemId}`, {
+        method: "DELETE",
+      });
       if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
       setCart(cart.filter((item) => item._id !== itemId));
     } catch (err) {
-      console.error(err);
       setError(err.message);
     }
   };
 
-  if (loading)
-    return <div className="cart-container">Loading your cart...</div>;
+  if (loading) return <div className="cart-container">Loading your cart...</div>;
   if (error) return <div className="cart-container">Error: {error}</div>;
 
   return (
@@ -91,7 +82,7 @@ const Cart = () => {
                 <div key={item._id} className="cart-item">
                   <div className="item-product">
                     <img
-                      src={item.product.photo}
+                      src={item.product.photo || treeImage}
                       alt={item.product.name}
                       className="item-image"
                     />

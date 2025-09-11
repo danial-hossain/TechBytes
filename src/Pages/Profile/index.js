@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './style.css';
@@ -23,13 +23,13 @@ const Profile = () => {
             Authorization: `Bearer ${userInfo.data.accessToken}`,
           },
         });
+
         setUser(data);
         setLoading(false);
       } catch (err) {
         setError(err.response?.data?.message || 'Failed to fetch profile');
         setLoading(false);
 
-        // If token is invalid or expired, redirect to login
         if (err.response?.status === 401) {
           localStorage.removeItem('userInfo');
           navigate('/login');
@@ -59,13 +59,8 @@ const Profile = () => {
     }
   };
 
-  if (loading) {
-    return <div className="profile-loading">Loading...</div>;
-  }
-
-  if (error) {
-    return <div className="profile-error">{error}</div>;
-  }
+  if (loading) return <div className="profile-loading">Loading...</div>;
+  if (error) return <div className="profile-error">{error}</div>;
 
   return (
     <section className="profile-section">
