@@ -1,6 +1,10 @@
+
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./style.css";
+import React from 'react';
+import treeImage from './tree.jpg'; // ✅ correct path
+
 
 const Cart = () => {
   const [cart, setCart] = useState([]);

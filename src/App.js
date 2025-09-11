@@ -10,7 +10,9 @@ import Footer from './components/Footer';
 import './index.css';
 import Verification from './Pages/verification/index.js';
 import Profile from './Pages/Profile/index.js'; // import profile
+
 import ArmList from './Pages/Arm/index.js';   // ✅ import Arm page
+
 
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
