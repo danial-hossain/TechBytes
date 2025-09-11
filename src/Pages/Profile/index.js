@@ -28,6 +28,7 @@ const Profile = () => {
       } catch (err) {
         setError(err.response?.data?.message || 'Failed to fetch profile');
         setLoading(false);
+
         // If token is invalid or expired, redirect to login
         if (err.response?.status === 401) {
           localStorage.removeItem('userInfo');
@@ -38,6 +39,8 @@ const Profile = () => {
 
     fetchUserProfile();
   }, [navigate]);
+
+  // Single handleLogout function
   const handleLogout = async () => {
     try {
       const userInfo = JSON.parse(localStorage.getItem('userInfo'));
@@ -54,11 +57,6 @@ const Profile = () => {
       localStorage.removeItem('userInfo');
       navigate('/login');
     }
-
-  const handleLogout = () => {
-    localStorage.removeItem('userInfo');
-    navigate('/login');
-
   };
 
   if (loading) {
