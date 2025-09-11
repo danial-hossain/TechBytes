@@ -1,74 +1,94 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import './style.css';
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import "./style.css";
 
-const Profile = () => {
-  const navigate = useNavigate();
-  const [user, setUser] = useState(null);
+const Cart = () => {
+  const [cart, setCart] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [error, setError] = useState(null);
+  const [userId, setUserId] = useState(null);
+  const navigate = useNavigate();
 
+  // Get userId from localStorage
   useEffect(() => {
-    const fetchUserProfile = async () => {
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    if (userInfo && userInfo.id) setUserId(userInfo.id);
+    else navigate("/login");
+  }, [navigate]);
+
+  // Fetch cart
+  useEffect(() => {
+    const fetchCart = async () => {
+      if (!userId) return;
       try {
-        const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-        if (!userInfo) {
-          navigate('/login');
-          return;
-        }
-
-        const { data } = await axios.get(
-          'http://localhost:8000/api/user/profile',
-          {
-            headers: {
-              Authorization: `Bearer ${userInfo.data.accessToken}`,
-            },
-          }
-        );
-
-        setUser(data);
+        const res = await fetch(`http://localhost:8000/api/cart/${userId}`);
+        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+        const data = await res.json();
+        console.log("Cart response:", data);
+        setCart(Array.isArray(data) ? data.filter(item => item.product) : []);
       } catch (err) {
-        setError(err.response?.data?.message || 'Failed to fetch profile');
-
-        // If token is invalid or expired, redirect to login
-        if (err.response?.status === 401) {
-          localStorage.removeItem('userInfo');
-          navigate('/login');
-        }
+        console.error(err);
+        setError("Failed to fetch cart");
       } finally {
         setLoading(false);
       }
     };
+    fetchCart();
+  }, [userId]);
 
-    fetchUserProfile();
-  }, [navigate]);
+  const totalPrice = cart.reduce((total, item) => total + item.product.price * item.quantity, 0);
 
-  const handleLogout = () => {
-    localStorage.removeItem('userInfo');
-    navigate('/login');
+  const handleDelete = async (itemId) => {
+    try {
+      const res = await fetch(`http://localhost:8000/api/cart/delete/${itemId}`, { method: "DELETE" });
+      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+      setCart(cart.filter(item => item._id !== itemId));
+    } catch (err) {
+      console.error(err);
+      setError("Failed to delete item");
+    }
   };
 
-  if (loading) return <div className="profile-loading">Loading...</div>;
-  if (error) return <div className="profile-error">{error}</div>;
+  if (loading) return <div>Loading cart...</div>;
+  if (error) return <div>{error}</div>;
 
   return (
-    <section className="profile-section">
-      <div className="profile-container">
-        <h2 className="profile-title">User Profile</h2>
-        {user && (
-          <div className="profile-details">
-            <p><strong>Name:</strong> {user.name}</p>
-            <p><strong>Email:</strong> {user.email}</p>
-            {/* Add more user details as needed */}
+    <section className="cart-section">
+      <h2>Your Shopping Cart</h2>
+      {cart.length === 0 ? (
+        <div>
+          <p>Your cart is empty.</p>
+          <Link to="/" className="btn-shop">Continue Shopping</Link>
+        </div>
+      ) : (
+        <>
+          <div className="cart-items-header">
+            <span>Product</span><span>Quantity</span><span>Subtotal</span>
           </div>
-        )}
-        <button onClick={handleLogout} className="profile-logout-btn">
-          Logout
-        </button>
-      </div>
+          <div className="cart-items-list">
+            {cart.map(item => (
+              <div key={item._id} className="cart-item">
+                <div className="item-product">
+                  <img src={item.product.photo} alt={item.product.name} className="item-image" />
+                  <div>
+                    <span>{item.product.name}</span>
+                    <span>${item.product.price.toFixed(2)}</span>
+                  </div>
+                </div>
+                <div>{item.quantity}</div>
+                <div>${(item.product.price * item.quantity).toFixed(2)}</div>
+                <button onClick={() => handleDelete(item._id)}>Delete</button>
+              </div>
+            ))}
+          </div>
+          <div className="cart-summary">
+            <strong>Total: ${totalPrice.toFixed(2)}</strong>
+            <button className="checkout-btn">Proceed to Checkout</button>
+          </div>
+        </>
+      )}
     </section>
   );
 };
 
-export default Profile;
+export default Cart;

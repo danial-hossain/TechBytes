@@ -12,22 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import UserModel from "../models/user.model.js";
-import jwt from 'jsonwebtoken';
-
-const generatedRefreshToken = async (userId) => {
-    const token = await jwt.sign(
-        { id: userId },
-        process.env.SECRET_KEY_REFRESH_TOKEN,
-        { expiresIn: '7d' }
-    );
-
-    const updateRefreshTokenUser = await UserModel.updateOne(
-        { _id: userId },
-        { refresh_token: token }
-    );
-
-    return token;
+module.exports = {
+  root: true,
+  env: {
+    node: true,
+    es2021: true,
+  },
+  extends: 'eslint:recommended',
+  parserOptions: {
+    ecmaVersion: 12,
+    sourceType: 'module',
+  },
+  rules: {
+    'no-console': 'off',
+  },
 };
-
-export default generatedRefreshToken;

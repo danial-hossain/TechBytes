@@ -12,22 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import UserModel from "../models/user.model.js";
-import jwt from 'jsonwebtoken';
+import React from 'react';
+import { Navigate, Outlet } from 'react-router-dom';
+import useAuth from '../../hooks/useAuth';
 
-const generatedRefreshToken = async (userId) => {
-    const token = await jwt.sign(
-        { id: userId },
-        process.env.SECRET_KEY_REFRESH_TOKEN,
-        { expiresIn: '7d' }
-    );
+const ProtectedRoute = () => {
+  const { userInfo, loading } = useAuth();
 
-    const updateRefreshTokenUser = await UserModel.updateOne(
-        { _id: userId },
-        { refresh_token: token }
-    );
+  if (loading) {
+    return <div>Loading...</div>; // Or a spinner component
+  }
 
-    return token;
+  return userInfo ? <Outlet /> : <Navigate to="/login" replace />;
 };
 
-export default generatedRefreshToken;
+export default ProtectedRoute;

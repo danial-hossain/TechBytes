@@ -1,3 +1,17 @@
+// Copyright 2024 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 import UserModel from '../models/user.model.js';
 import bcryptjs from 'bcryptjs';
 import jwt from 'jsonwebtoken';
@@ -11,9 +25,7 @@ export async function registerUserController(req, res) {
   try {
     const { name, email, mobile, password } = req.body;
 
-
-    if (!name || !email || !password || !mobile) {
-
+    if (!name || !email || !mobile || !password) {
       return res.status(400).json({
         message: "Provide name, email, mobile, and password",
         error: true,
@@ -37,10 +49,7 @@ export async function registerUserController(req, res) {
     const user = new UserModel({
       name,
       email,
-
-      mobile,
-
-
+      mobile, // 👈 store phone number here
       password: hashPassword,
       otp: verifyCode,
       otpExpires: Date.now() + 600000, // 10 min
@@ -59,7 +68,13 @@ export async function registerUserController(req, res) {
     const accessToken = await generatedAccessToken(user._id);
     const refreshToken = await generatedRefreshToken(user._id);
 
-    const cookieOptions = { httpOnly: true, secure: false, sameSite: "Lax" };
+    // set cookies (local dev: secure false)
+    const cookieOptions = {
+      httpOnly: true,
+      secure: false, // ❌ false for local dev
+      sameSite: "Lax",
+    };
+
     res.cookie("accessToken", accessToken, cookieOptions);
     res.cookie("refreshToken", refreshToken, cookieOptions);
 
@@ -117,7 +132,7 @@ export async function loginUserController(req, res) {
 
     await UserModel.findByIdAndUpdate(user._id, { last_login_date: new Date(), status: "Active" });
 
-    const cookieOptions = { httpOnly: true, secure: false, sameSite: "Lax" };
+    const cookieOptions = { httpOnly: true, secure: false, sameSite: "Lax" }; // ❌ false for local dev
     res.cookie("accessToken", accessToken, cookieOptions);
     res.cookie("refreshToken", refreshToken, cookieOptions);
 
@@ -130,7 +145,7 @@ export async function loginUserController(req, res) {
 // ===== LOGOUT =====
 export async function logoutController(req, res) {
   try {
-    const userId = req.userId;
+    const userId = req.userId; // set by auth middleware
     const cookieOptions = { httpOnly: true, secure: false, sameSite: "Lax" };
 
     res.clearCookie("accessToken", cookieOptions);
@@ -160,9 +175,7 @@ export async function getProfileController(req, res) {
     return res.status(200).json({
       name: user.name,
       email: user.email,
-
-      mobile: user.mobile,
-
+      mobile: user.mobile, // 👈 include mobile in response if needed
     });
   } catch (error) {
     return res.status(500).json({

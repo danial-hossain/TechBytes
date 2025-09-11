@@ -6,53 +6,43 @@ import morgan from 'morgan';
 import helmet from 'helmet';
 import connectDB from './config/connectDB.js';
 import userRouter from './route/user.route.js';
-import armRouter from "./category/arm.js";
-import cartRouter from "./routes/cart.js";
-// Load environment variables
+import armRouter from './category/arm.js';
+import cartRouter from './routes/cart.js';
+
 dotenv.config();
 
-const app = express();   // ✅ initialize app BEFORE using app.use
+const app = express();
 
-// ===== MIDDLEWARE =====
+// Middleware
 app.use(express.json());
 app.use(cookieParser());
 app.use(morgan('dev'));
-app.use(
-  helmet({
-    crossOriginResourcePolicy: false,
-  })
-);
+app.use(helmet({ crossOriginResourcePolicy: false }));
 
-// ===== CORS =====
+// CORS
 app.use(cors({
-  origin: 'http://localhost:3000', // React frontend
-  credentials: true,               // allow cookies
-}));
-app.options('*', cors({
   origin: 'http://localhost:3000',
-  credentials: true,
+  credentials: true
 }));
 
-// ===== TEST ROUTE =====
+// Test route
 app.get('/', (req, res) => {
-  res.json({
-    message: `Server is running on port ${process.env.PORT}`,
-  });
+  res.json({ message: `Server is running on port ${process.env.PORT}` });
 });
 
-// ===== API ROUTES =====
+// Routes
 app.use("/api/user", userRouter);
-app.use("/api/arm", armRouter);   // ✅ Arm route works here
+app.use("/api/arm", armRouter);
 app.use("/api/cart", cartRouter);
 
-// ===== DB CONNECTION + SERVER START =====
+// DB + Server start
 connectDB()
   .then(() => {
     app.listen(process.env.PORT, () => {
       console.log(`✅ Server is running on port ${process.env.PORT}`);
     });
   })
-  .catch((err) => {
+  .catch(err => {
     console.error('❌ Failed to connect to DB', err);
     process.exit(1);
   });
