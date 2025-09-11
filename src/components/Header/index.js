@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import logo from "../../assets/logo.jpg";
 import Search from "../Search";
@@ -8,6 +8,16 @@ import Navigation from "./Navigation";
 
 const Header = () => {
   const location = useLocation();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    if (userInfo && userInfo.data) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, [location]); // Re-run on route change
 
   return (
     <header className="header-container">
@@ -37,7 +47,13 @@ const Header = () => {
 
         {/* Icons + Login */}
         <div className="header-icons">
-          <Link to="/login" className="signin-text">Account</Link>
+
+          {isLoggedIn ? (
+            <Link to="/profile" className="signin-text">Account</Link>
+          ) : (
+            <Link to="/login" className="signin-text">Account</Link>
+          )}
+
           
           <Link to="/returns">
             <IconWithBadge icon={<IoReturnUpBackSharp size={20} />} count={0} />
