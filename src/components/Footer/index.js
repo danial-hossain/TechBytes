@@ -4,7 +4,7 @@ import { LiaShippingFastSolid, LiaGiftSolid } from "react-icons/lia";
 import { PiKeyReturnLight } from "react-icons/pi";
 import { BsWallet2 } from "react-icons/bs";
 import { BiSupport } from "react-icons/bi";
-import { IoChatboxOutline } from "react-icons/io5";
+
 import { Link } from "react-router-dom";
 import Button from "@mui/material/Button";
 import { FaFacebookF, FaPinterestP, FaInstagram } from "react-icons/fa";

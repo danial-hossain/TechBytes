@@ -8,9 +8,10 @@ import LaptopList from './Pages/LaptopList/index.js';
 import LaptopDetail from './Pages/LaptopDetail/index.js';
 import Verification from './Pages/verification/index.js';
 import Profile from './Pages/Profile/index.js';
+import ProfileInformation from './Pages/Profile/Information/index.js'; // ✅ edit profile
 import ArmList from './Pages/Arm/index.js';
-import ElectronicsList from './Pages/Electronics/index.js'; // ✅ Electronics page
-import ProductDetail from './Pages/Product/index.js'; // ✅ Product Detail page
+import ElectronicsList from './Pages/Electronics/index.js';
+import ProductDetail from './Pages/Product/index.js';
 import HelpCenter from './Pages/Help/index.js';
 
 import Header from './components/Header';
@@ -33,12 +34,13 @@ function App() {
         <Route path="/laptops" element={<LaptopList />} />
         <Route path="/laptop/:id" element={<LaptopDetail />} />
         <Route path="/arms" element={<ArmList />} />
-        <Route path="/electronics" element={<ElectronicsList />} /> {/* ✅ Electronics */}
-        <Route path="/product/:id" element={<ProductDetail />} /> {/* ✅ Product Detail */}
+        <Route path="/electronics" element={<ElectronicsList />} />
+        <Route path="/product/:id" element={<ProductDetail />} />
         <Route path="/help-center" element={<HelpCenter />} />
 
         <Route element={<ProtectedRoute />}>
           <Route path="/profile" element={<Profile />} />
+          <Route path="/profile/edit" element={<ProfileInformation />} />
           <Route path="/cart" element={<Cart />} />
         </Route>
       </Routes>
