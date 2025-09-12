@@ -1,4 +1,3 @@
-// Copyright 2024 Google LLC
 import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
 import Home from './Pages/Home/index.js';
@@ -10,7 +9,8 @@ import LaptopDetail from './Pages/LaptopDetail/index.js';
 import Verification from './Pages/verification/index.js';
 import Profile from './Pages/Profile/index.js';
 import ArmList from './Pages/Arm/index.js';
-import HelpCenter from './Pages/Help/index.js'; // ✅ Import Help Center
+import ElectronicsList from './Pages/Electronics/index.js'; // ✅ Electronics page
+import HelpCenter from './Pages/Help/index.js';
 
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -32,8 +32,7 @@ function App() {
         <Route path="/laptops" element={<LaptopList />} />
         <Route path="/laptop/:id" element={<LaptopDetail />} />
         <Route path="/arms" element={<ArmList />} />
-
-        {/* ✅ Help Center Route */}
+        <Route path="/electronics" element={<ElectronicsList />} /> {/* ✅ Electronics */}
         <Route path="/help-center" element={<HelpCenter />} />
 
         <Route element={<ProtectedRoute />}>

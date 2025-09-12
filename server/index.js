@@ -10,6 +10,7 @@ import connectDB from './config/connectDB.js';
 // Routers
 import userRouter from './route/user.route.js';
 import armRouter from './category/arm.js';
+import electronicsRouter from './category/electronics.js'; // ✅ Import Electronics router
 import cartRouter from './routes/cart.js';
 import reportRouter from './routes/report.route.js';
 import helpRouter from './routes/help.route.js'; // ✅ Import Help router
@@ -40,6 +41,7 @@ app.get('/', (req, res) => {
 // ===== ROUTES =====
 app.use('/api/user', userRouter);
 app.use('/api/arm', armRouter);
+app.use('/api/electronics', electronicsRouter); // ✅ Add Electronics route
 app.use('/api/cart', cartRouter);
 app.use('/api/report', reportRouter);
 app.use('/api/help', helpRouter); // ✅ Add Help route
