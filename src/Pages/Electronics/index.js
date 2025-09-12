@@ -51,7 +51,13 @@ const ElectronicsList = () => {
         {products.map((product) => (
           <div key={product.id} className="electronics-card">
             <img src={product.photo} alt={product.name} />
-            <h3>{product.name}</h3>
+            <h3
+              className="product-link"
+              style={{ cursor: "pointer", color: "#007bff" }}
+              onClick={() => navigate(`/product/${product.id}`)}
+            >
+              {product.name}
+            </h3>
             <p>${product.price}</p>
             <p>{product.details}</p>
             <button onClick={() => addToCart(product.id)}>Add to Cart</button>

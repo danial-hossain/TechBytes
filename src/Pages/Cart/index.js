@@ -24,7 +24,6 @@ const Cart = () => {
         const res = await fetch(`http://localhost:8000/api/cart/${userId}`);
         if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
         const data = await res.json();
-        console.log("Cart response:", data);
         setCart(Array.isArray(data) ? data.filter(item => item.product) : []);
       } catch (err) {
         console.error(err);
@@ -36,8 +35,10 @@ const Cart = () => {
     fetchCart();
   }, [userId]);
 
+  // Total Price
   const totalPrice = cart.reduce((total, item) => total + item.product.price * item.quantity, 0);
 
+  // Delete Item
   const handleDelete = async (itemId) => {
     try {
       const res = await fetch(`http://localhost:8000/api/cart/delete/${itemId}`, { method: "DELETE" });
@@ -49,21 +50,44 @@ const Cart = () => {
     }
   };
 
-  if (loading) return <div>Loading cart...</div>;
-  if (error) return <div>{error}</div>;
+  // Update Quantity
+  const handleUpdateQuantity = async (itemId, newQuantity) => {
+    if (newQuantity < 1) return;
+    try {
+      const res = await fetch(`http://localhost:8000/api/cart/update/${itemId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ quantity: newQuantity }),
+      });
+      if (!res.ok) throw new Error("Failed to update quantity");
+
+      setCart(cart.map(item =>
+        item._id === itemId ? { ...item, quantity: newQuantity } : item
+      ));
+    } catch (err) {
+      console.error(err);
+      setError("Failed to update quantity");
+    }
+  };
+
+  if (loading) return <div className="loading">Loading cart...</div>;
+  if (error) return <div className="error">{error}</div>;
 
   return (
     <section className="cart-section">
       <h2>Your Shopping Cart</h2>
       {cart.length === 0 ? (
-        <div>
+        <div className="empty-cart">
           <p>Your cart is empty.</p>
           <Link to="/" className="btn-shop">Continue Shopping</Link>
         </div>
       ) : (
         <>
           <div className="cart-items-header">
-            <span>Product</span><span>Quantity</span><span>Subtotal</span>
+            <span>Product</span>
+            <span>Quantity</span>
+            <span>Subtotal</span>
+            <span>Action</span>
           </div>
           <div className="cart-items-list">
             {cart.map(item => (
@@ -71,13 +95,29 @@ const Cart = () => {
                 <div className="item-product">
                   <img src={item.product.photo} alt={item.product.name} className="item-image" />
                   <div>
-                    <span>{item.product.name}</span>
-                    <span>${item.product.price.toFixed(2)}</span>
+                    <span className="item-name">{item.product.name}</span>
+                    <span className="item-price">${item.product.price.toFixed(2)}</span>
                   </div>
                 </div>
-                <div>{item.quantity}</div>
-                <div>${(item.product.price * item.quantity).toFixed(2)}</div>
-                <button onClick={() => handleDelete(item._id)}>Delete</button>
+
+                <div className="quantity-section">
+                  <button onClick={() => handleUpdateQuantity(item._id, item.quantity - 1)}>-</button>
+                  <input
+                    type="number"
+                    min="1"
+                    value={item.quantity}
+                    onChange={(e) => handleUpdateQuantity(item._id, Number(e.target.value))}
+                  />
+                  <button onClick={() => handleUpdateQuantity(item._id, item.quantity + 1)}>+</button>
+                </div>
+
+                <div className="item-subtotal">
+                  ${(item.product.price * item.quantity).toFixed(2)}
+                </div>
+
+                <div>
+                  <button className="delete-btn" onClick={() => handleDelete(item._id)}>Delete</button>
+                </div>
               </div>
             ))}
           </div>
