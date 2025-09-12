@@ -30,7 +30,7 @@
   transform: translateY(-5px);
 }
 
-.electronics-image {
+.electronics-card img {
   width: 100%;
   height: 200px;
   object-fit: cover;
@@ -38,24 +38,16 @@
   margin-bottom: 15px;
 }
 
-.electronics-name {
+.electronics-card h3 {
   font-size: 1.2rem;
   margin: 10px 0;
 }
 
-.electronics-price {
-  color: #007bff;
-  font-weight: bold;
+.electronics-card p {
   margin: 5px 0;
 }
 
-.electronics-details {
-  font-size: 0.9rem;
-  color: #555;
-  margin-bottom: 15px;
-}
-
-.electronics-btn {
+.electronics-card button {
   background: #007bff;
   color: white;
   border: none;
@@ -65,7 +57,7 @@
   transition: background 0.2s ease;
 }
 
-.electronics-btn:hover {
+.electronics-card button:hover {
   background: #0056b3;
 }
 

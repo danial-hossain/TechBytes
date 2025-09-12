@@ -14,18 +14,16 @@ const ElectronicsList = () => {
       navigate("/login");
       return;
     }
-
     try {
       const res = await fetch("http://localhost:8000/api/cart/add", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId: userInfo.id, productId }),
       });
-
       const data = await res.json();
-      alert(data.success ? "✅ Added to cart!" : "❌ Failed to add to cart");
-    } catch (error) {
-      console.error("Error adding to cart:", error);
+      data.success ? alert("✅ Added to cart!") : alert("❌ Failed to add to cart");
+    } catch (err) {
+      console.error(err);
     }
   };
 
@@ -35,13 +33,12 @@ const ElectronicsList = () => {
         const res = await fetch("http://localhost:8000/api/electronics");
         const data = await res.json();
         setProducts(data);
-      } catch (error) {
-        console.error("Error fetching electronics:", error);
+      } catch (err) {
+        console.error("Error fetching electronics:", err);
       } finally {
         setLoading(false);
       }
     };
-
     fetchProducts();
   }, []);
 
@@ -53,13 +50,11 @@ const ElectronicsList = () => {
       <div className="electronics-grid">
         {products.map((product) => (
           <div key={product.id} className="electronics-card">
-            <img src={product.photo} alt={product.name} className="electronics-image" />
-            <h3 className="electronics-name">{product.name}</h3>
-            <p className="electronics-price">${product.price}</p>
-            <p className="electronics-details">{product.details}</p>
-            <button className="electronics-btn" onClick={() => addToCart(product.id)}>
-              Add to Cart
-            </button>
+            <img src={product.photo} alt={product.name} />
+            <h3>{product.name}</h3>
+            <p>${product.price}</p>
+            <p>{product.details}</p>
+            <button onClick={() => addToCart(product.id)}>Add to Cart</button>
           </div>
         ))}
       </div>
