@@ -109,7 +109,7 @@ const Footer = () => {
               </Link>
               <span className="footer-phone">+8801791416682</span>
               <div className="footer-chat">
-                <IoChatboxOutline className="footer-chat-icon" />
+             
                 <span>
                   Contact Us
                   <br />
