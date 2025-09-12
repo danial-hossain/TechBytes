@@ -1,4 +1,3 @@
-// routes/user.route.js
 import { Router } from "express";
 import {
   getProfileController,
@@ -20,6 +19,6 @@ userRouter.get("/logout", auth, logoutController);
 
 // Profile routes
 userRouter.get("/profile", auth, getProfileController);
-userRouter.put("/update", auth, updateProfileController); // ✅ matches frontend
+userRouter.put("/profile/update", auth, updateProfileController); // ✅ matches frontend
 
 export default userRouter;

@@ -9,7 +9,7 @@ import generatedRefreshToken from "../utils/generatedRefreshToken.js";
 // ===== REGISTER USER =====
 export async function registerUserController(req, res) {
   try {
-    const { name, email, mobile, password, address } = req.body;
+    const { name, email, mobile, password, address_details } = req.body;
 
     if (!name || !email || !mobile || !password) {
       return res.status(400).json({
@@ -36,7 +36,7 @@ export async function registerUserController(req, res) {
       name,
       email,
       mobile,
-      address: address || "",
+      address_details: Array.isArray(address_details) ? address_details : [],
       password: hashPassword,
       otp: verifyCode,
       otpExpires: Date.now() + 600000, // 10 min
@@ -51,7 +51,6 @@ export async function registerUserController(req, res) {
       html: VerificationEmail(name, verifyCode),
     });
 
-    // tokens
     const accessToken = await generatedAccessToken(user._id);
     const refreshToken = await generatedRefreshToken(user._id);
 
@@ -204,7 +203,7 @@ export async function getProfileController(req, res) {
       name: user.name,
       email: user.email,
       mobile: user.mobile,
-      address: user.address || "",
+      address_details: user.address_details || [],
     });
   } catch (error) {
     return res
@@ -216,21 +215,31 @@ export async function getProfileController(req, res) {
 // ===== UPDATE PROFILE =====
 export async function updateProfileController(req, res) {
   try {
-    const { name, mobile, address } = req.body;
     const userId = req.userId;
+    const { name, mobile, address_details, password } = req.body;
+
+    const updateFields = {};
+
+    if (name) updateFields.name = name;
+    if (mobile) updateFields.mobile = mobile;
+    if (address_details && Array.isArray(address_details)) {
+      updateFields.address_details = address_details;
+    }
+
+    if (password) {
+      const salt = await bcryptjs.genSalt(10);
+      const hashedPassword = await bcryptjs.hash(password, salt);
+      updateFields.password = hashedPassword;
+    }
 
     const updatedUser = await UserModel.findByIdAndUpdate(
       userId,
-      { name, mobile, address },
+      updateFields,
       { new: true }
     ).select("-password");
 
     if (!updatedUser) {
-      return res.status(404).json({
-        message: "User not found",
-        error: true,
-        success: false,
-      });
+      return res.status(404).json({ message: "User not found", error: true, success: false });
     }
 
     return res.status(200).json({
@@ -240,8 +249,6 @@ export async function updateProfileController(req, res) {
       data: updatedUser,
     });
   } catch (error) {
-    return res
-      .status(500)
-      .json({ message: error.message, error: true, success: false });
+    return res.status(500).json({ message: error.message, error: true, success: false });
   }
 }

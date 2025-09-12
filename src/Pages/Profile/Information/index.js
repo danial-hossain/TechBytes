@@ -60,27 +60,29 @@ const ProfileInformation = () => {
     e.preventDefault();
     setError('');
     setSuccess('');
-
+  
     if (form.password && form.password !== form.confirmPassword) {
       setError('Passwords do not match');
       return;
     }
-
+  
     try {
       const updateData = { ...form };
       if (!updateData.password) delete updateData.password;
       delete updateData.confirmPassword;
-
+  
+      // ✅ Correct URL to match backend route
       await axios.put('http://localhost:8000/api/user/profile/update', updateData, {
         withCredentials: true,
       });
-
+  
       setSuccess('Profile updated successfully');
       setTimeout(() => navigate('/profile'), 1500);
     } catch (err) {
       setError(err.response?.data?.message || 'Update failed');
     }
   };
+  
 
   if (loading) return <div className="profile-loading">Loading...</div>;
 
