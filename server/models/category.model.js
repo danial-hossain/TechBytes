@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 // Copyright 2024 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
->>>>>>> upstream/main
 import mongoose from "mongoose";
 
 const productSchema = new mongoose.Schema({
@@ -33,8 +30,4 @@ const categorySchema = new mongoose.Schema({
 // Force collection name
 const Category = mongoose.model("Category", categorySchema, "category");
 
-<<<<<<< HEAD
 export default Category;
-=======
-export default Category;
->>>>>>> upstream/main

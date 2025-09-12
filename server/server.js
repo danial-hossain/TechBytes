@@ -23,6 +23,7 @@ import connectDB from "./config/connectDB.js";
 import userRouter from "./routes/user.route.js";
 import armRouter from "./routes/arm.js";
 import cartRouter from "./routes/cart.js";
+import reportRouter from "./routes/report.route.js";
 
 dotenv.config();
 
@@ -42,12 +43,13 @@ app.get("/", (req, res) => res.json({ message: "API running" }));
 app.use("/api/user", userRouter);
 app.use("/api/arm", armRouter);
 app.use("/api/cart", cartRouter);
+app.use("/api/report", reportRouter); // ✅ Report route added
 
 // ===== DATABASE + SERVER =====
 connectDB()
   .then(() => {
     app.listen(process.env.PORT || 8000, () =>
-      console.log(`✅ Server running on port ${process.env.PORT || 8000}`)
+      console.log(` Server running on port ${process.env.PORT || 8000}`)
     );
   })
   .catch((err) => {

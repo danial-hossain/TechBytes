@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-import React, { useEffect, useState } from "react";
-=======
 // Copyright 2024 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,20 +15,11 @@ import React, { useEffect, useState } from "react";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
->>>>>>> upstream/main
 import "./style.css";  // ✅ your custom styles
 
 const ArmList = () => {
   const [arms, setArms] = useState([]);
   const [loading, setLoading] = useState(true);
-<<<<<<< HEAD
-
-  // 👤 Temporary: hardcode a userId (replace later with logged-in user)
-  const userId = "68bbfc3eabfa1a175edb147e";
-
-  // ✅ Function to add a product to the cart
-  const addToCart = async (productId) => {
-=======
   const { userInfo } = useAuth();
   const navigate = useNavigate();
 
@@ -42,16 +30,11 @@ const ArmList = () => {
       return;
     }
 
->>>>>>> upstream/main
     try {
       const res = await fetch("http://localhost:8000/api/cart/add", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-<<<<<<< HEAD
-        body: JSON.stringify({ userId, productId }),
-=======
         body: JSON.stringify({ userId: userInfo.id, productId }),
->>>>>>> upstream/main
       });
 
       const data = await res.json();
@@ -96,14 +79,10 @@ const ArmList = () => {
             <p className="arm-details">{product.details}</p>
             <button
               className="arm-btn"
-<<<<<<< HEAD
-              onClick={() => addToCart(product.id)}  // ✅ connect button
-=======
               onClick={() => {
                 console.log('product:', product);
                 addToCart(product.id);
               }}  // ✅ connect button
->>>>>>> upstream/main
             >
               Add to Cart
             </button>
@@ -114,8 +93,4 @@ const ArmList = () => {
   );
 };
 
-<<<<<<< HEAD
 export default ArmList;
-=======
-export default ArmList;
->>>>>>> upstream/main
