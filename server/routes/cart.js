@@ -8,15 +8,16 @@ const cartRouter = Router();
 // ➕ Add item to cart
 cartRouter.post("/add", async (req, res) => {
   try {
-    const { userId, productId } = req.body;
-    if (!userId || !productId) return res.status(400).json({ message: "userId and productId required" });
+    const { userId, productId, quantity } = req.body;
+    if (!userId || !productId || !quantity)
+      return res.status(400).json({ message: "userId, productId, and quantity required" });
 
     let cartItem = await CartProduct.findOne({ userId, productId });
     if (cartItem) {
-      cartItem.quantity += 1;
+      cartItem.quantity += quantity; // use frontend quantity
       await cartItem.save();
     } else {
-      cartItem = await CartProduct.create({ userId, productId });
+      cartItem = await CartProduct.create({ userId, productId, quantity });
       await User.findByIdAndUpdate(userId, { $push: { shopping_cart: cartItem._id } });
     }
 
@@ -34,10 +35,10 @@ cartRouter.get("/:userId", async (req, res) => {
     const cartItems = await CartProduct.find({ userId });
 
     const categories = await Category.find({});
-    const allProducts = categories.flatMap(c => c.products);
-    const productMap = new Map(allProducts.map(p => [p.id, p]));
+    const allProducts = categories.flatMap((c) => c.products);
+    const productMap = new Map(allProducts.map((p) => [p.id, p]));
 
-    const cartWithProducts = cartItems.map(item => ({
+    const cartWithProducts = cartItems.map((item) => ({
       _id: item._id,
       quantity: item.quantity,
       product: productMap.get(item.productId) || null,
@@ -46,6 +47,25 @@ cartRouter.get("/:userId", async (req, res) => {
     res.json(cartWithProducts);
   } catch (error) {
     console.error("Fetch cart error:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// 🔄 Update quantity of cart item
+cartRouter.put("/update/:itemId", async (req, res) => {
+  try {
+    const { itemId } = req.params;
+    const { quantity } = req.body;
+
+    if (!quantity || quantity < 1)
+      return res.status(400).json({ message: "Quantity must be >= 1" });
+
+    const cartItem = await CartProduct.findByIdAndUpdate(itemId, { quantity }, { new: true });
+    if (!cartItem) return res.status(404).json({ message: "Cart item not found" });
+
+    res.json({ success: true, cartItem });
+  } catch (error) {
+    console.error("Update cart quantity error:", error);
     res.status(500).json({ success: false, error: error.message });
   }
 });

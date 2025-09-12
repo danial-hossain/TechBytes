@@ -10,6 +10,7 @@ import Verification from './Pages/verification/index.js';
 import Profile from './Pages/Profile/index.js';
 import ArmList from './Pages/Arm/index.js';
 import ElectronicsList from './Pages/Electronics/index.js'; // ✅ Electronics page
+import ProductDetail from './Pages/Product/index.js'; // ✅ Product Detail page
 import HelpCenter from './Pages/Help/index.js';
 
 import Header from './components/Header';
@@ -33,6 +34,7 @@ function App() {
         <Route path="/laptop/:id" element={<LaptopDetail />} />
         <Route path="/arms" element={<ArmList />} />
         <Route path="/electronics" element={<ElectronicsList />} /> {/* ✅ Electronics */}
+        <Route path="/product/:id" element={<ProductDetail />} /> {/* ✅ Product Detail */}
         <Route path="/help-center" element={<HelpCenter />} />
 
         <Route element={<ProtectedRoute />}>
