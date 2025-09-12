@@ -1,9 +1,12 @@
 import mongoose from "mongoose";
 
-const HelpSchema = new mongoose.Schema({
-  email: { type: String, required: true },
-  message: { type: String, required: true },
-  createdAt: { type: Date, default: Date.now }
-});
+const helpSchema = new mongoose.Schema(
+  {
+    email: { type: String, required: true },
+    message: { type: String, required: true },
+  },
+  { timestamps: true }
+);
 
-export default mongoose.model("Help", HelpSchema);
+const Help = mongoose.model("Help", helpSchema);
+export default Help;
