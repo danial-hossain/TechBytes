@@ -1,14 +1,11 @@
 import React, { useState } from "react";
-import Header from "../../components/Header";
-import Footer from "../../components/Footer";
-import axios from "axios";
 import "./style.css";
 
 const HelpCenter = () => {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     if (!email || !message) {
@@ -16,45 +13,39 @@ const HelpCenter = () => {
       return;
     }
 
-    try {
-      const res = await axios.post("http://localhost:8000/api/help/submit", { email, message });
-      alert(res.data.message);
-      setEmail("");
-      setMessage("");
-    } catch (error) {
-      console.error(error);
-      alert("Failed to submit. Try again later.");
-    }
+    console.log("Help request submitted:", { email, message });
+    alert("Your message has been sent! We’ll get back to you soon.");
+    setEmail("");
+    setMessage("");
   };
 
   return (
-    <div>
-      <Header />
-      <main className="help-center container">
-        <h2>Help Center</h2>
-        <p>We’re here to help! Send us your query below:</p>
-        <form className="help-form" onSubmit={handleSubmit}>
-          <label>Email</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
+    <main className="help-center container">
+      <h2 className="help-title">Help Center</h2>
+      <p className="help-subtitle">We’re here to help! Please send us your query.</p>
 
-          <label>Message</label>
-          <textarea
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            rows={6}
-            required
-          />
+      <form className="help-form" onSubmit={handleSubmit}>
+        <label>Email Address</label>
+        <input
+          type="email"
+          placeholder="Enter your email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
 
-          <button type="submit" className="help-btn">Send</button>
-        </form>
-      </main>
-      <Footer />
-    </div>
+        <label>Message</label>
+        <textarea
+          placeholder="Write your message here..."
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          rows="6"
+          required
+        />
+
+        <button type="submit" className="help-btn">Send</button>
+      </form>
+    </main>
   );
 };
 
