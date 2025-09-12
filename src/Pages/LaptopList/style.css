@@ -1,48 +1,76 @@
-.laptop-list-container {
-  width: 90%;
+.laptop-container {
+  padding: 40px;
   max-width: 1200px;
-  margin: 30px auto;
-  text-align: center;
+  margin: auto;
 }
 
-.laptop-list-container h2 {
-  font-size: 28px;
+.laptop-title {
+  font-size: 2rem;
+  font-weight: bold;
   margin-bottom: 20px;
+  text-align: center;
 }
 
 .laptop-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 20px;
 }
 
 .laptop-card {
   background: #fff;
-  border-radius: 8px;
-  padding: 10px;
-  cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-  transition: transform 0.2s, box-shadow 0.2s;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0px 4px 12px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease-in-out;
 }
 
 .laptop-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
 }
 
-.laptop-card img {
+.laptop-image {
   width: 100%;
-  height: 150px;
+  height: 200px;
   object-fit: cover;
-  border-radius: 6px;
+  border-radius: 8px;
+  margin-bottom: 15px;
 }
 
-.laptop-card h3 {
-  margin: 10px 0 5px 0;
-  font-size: 16px;
+.laptop-name {
+  font-size: 1.2rem;
+  margin: 10px 0;
 }
 
-.laptop-card p {
-  color: #e63946;
+.laptop-price {
+  color: #007bff;
   font-weight: bold;
+  margin: 5px 0;
+}
+
+.laptop-details {
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 15px;
+}
+
+.laptop-btn {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.laptop-btn:hover {
+  background: #0056b3;
+}
+
+.loading {
+  text-align: center;
+  font-size: 1.2rem;
+  padding: 50px;
 }
