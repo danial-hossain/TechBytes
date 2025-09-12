@@ -10,6 +10,9 @@ import Footer from './components/Footer';
 import './index.css';
 import Verification from './Pages/verification/index.js';
 import Profile from './Pages/Profile/index.js'; // import profile
+import ArmList from './Pages/Arm/index.js';   // ✅ import Arm page
+import Report from "./Pages/Report/index.js"; // adjust path if needed
+
 
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
@@ -29,6 +32,9 @@ function App() {
 
         <Route path="/laptops" element={<LaptopList />} />            {/* Laptop list */}
         <Route path="/laptop/:id" element={<LaptopDetail />} />      {/* Laptop details */}
+        <Route path="/arms" element={<ArmList />} />   {/* Arm list */}
+        <Route path="/report" element={<Report />} />
+
       </Routes>
 
       <Footer />

@@ -6,11 +6,13 @@ import morgan from 'morgan';
 import helmet from 'helmet';
 import connectDB from './config/connectDB.js';
 import userRouter from './route/user.route.js';
+import armRouter from "./category/arm.js";
+import reportRouter from "./route/report.route.js";
 
 // Load environment variables
 dotenv.config();
 
-const app = express();
+const app = express();   // ✅ initialize app BEFORE using app.use
 
 // ===== MIDDLEWARE =====
 app.use(express.json());
@@ -40,7 +42,9 @@ app.get('/', (req, res) => {
 });
 
 // ===== API ROUTES =====
-app.use('/api/user', userRouter);
+app.use("/api/user", userRouter);
+app.use("/api/arm", armRouter);  
+app.use("/api/report", reportRouter); // ✅ Arm route works here
 
 // ===== DB CONNECTION + SERVER START =====
 connectDB()
