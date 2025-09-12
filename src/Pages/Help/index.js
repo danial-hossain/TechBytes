@@ -18,22 +18,24 @@ const HelpCenter = () => {
       return;
     }
 
-    // Here you could call your backend API
+    // 👉 You can later call backend API here
     console.log("Help request submitted:", { email, message });
 
-    alert("Your message has been sent! We’ll get back to you soon.");
+    alert("✅ Your message has been sent! We’ll get back to you soon.");
     setEmail("");
     setMessage("");
   };
 
   return (
     <div>
-      {/* ✅ Inherits Header */}
+      {/* ✅ Inherit site Header */}
       <Header />
 
       <main className="help-center container">
         <h2 className="help-title">Help Center</h2>
-        <p className="help-subtitle">We’re here to help! Please send us your query.</p>
+        <p className="help-subtitle">
+          We’re here to help! Please send us your query.
+        </p>
 
         <form className="help-form" onSubmit={handleSubmit}>
           <label>Email Address</label>
@@ -54,11 +56,13 @@ const HelpCenter = () => {
             required
           />
 
-          <button type="submit" className="help-btn">Send</button>
+          <button type="submit" className="help-btn">
+            Send
+          </button>
         </form>
       </main>
 
-      {/* ✅ Inherits Footer */}
+      {/* ✅ Inherit site Footer */}
       <Footer />
     </div>
   );
