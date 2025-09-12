@@ -12,6 +12,7 @@ import userRouter from './route/user.route.js';
 import armRouter from './category/arm.js';
 import cartRouter from './routes/cart.js';
 import reportRouter from './routes/report.route.js';
+import helpRouter from './routes/help.route.js'; // ✅ Import Help router
 
 dotenv.config();
 
@@ -40,7 +41,8 @@ app.get('/', (req, res) => {
 app.use('/api/user', userRouter);
 app.use('/api/arm', armRouter);
 app.use('/api/cart', cartRouter);
-app.use('/api/report', reportRouter); // add report route
+app.use('/api/report', reportRouter);
+app.use('/api/help', helpRouter); // ✅ Add Help route
 
 // ===== DATABASE + SERVER =====
 connectDB()
