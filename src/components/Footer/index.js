@@ -1,18 +1,5 @@
-// Copyright 2024 Google LLC
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-import React from "react";
+// Footer.jsx
+import React, { useState, useEffect } from "react";
 import { LiaShippingFastSolid, LiaGiftSolid } from "react-icons/lia";
 import { PiKeyReturnLight } from "react-icons/pi";
 import { BsWallet2 } from "react-icons/bs";
@@ -25,136 +12,188 @@ import { AiOutlineYoutube } from "react-icons/ai";
 import "./style.css";
 
 const Footer = () => {
-    return (
-        <>
-            <footer className="footer-section">
-                <div className="container">
-                    {/* Top icons row */}
-                    <div className="footer-icons-row">
-                        <div className="footer-icon-col">
-                            <LiaShippingFastSolid className="footer-icon" />
-                            <h3>Free Shipping</h3>
-                            <p>For all Orders Over $100</p>
-                        </div>
-                        <div className="footer-icon-col">
-                            <PiKeyReturnLight className="footer-icon" />
-                            <h3>30 Days Returns</h3>
-                            <p>For an Exchange Product</p>
-                        </div>
-                        <div className="footer-icon-col">
-                            <BsWallet2 className="footer-icon" />
-                            <h3>Secured Payment</h3>
-                            <p>Payment Cards Accepted</p>
-                        </div>
-                        <div className="footer-icon-col">
-                            <LiaGiftSolid className="footer-icon" />
-                            <h3>Special Gifts</h3>
-                            <p>Our First Product Order</p>
-                        </div>
-                        <div className="footer-icon-col">
-                            <BiSupport className="footer-icon" />
-                            <h3>Support 24/7</h3>
-                            <p>Contact us Anytime</p>
-                        </div>
-                    </div>
+  const [opinion, setOpinion] = useState("");
+  const [token, setToken] = useState(null);
 
-                    <hr />
+  // Get token from localStorage after login
+  useEffect(() => {
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    if (userInfo && userInfo.accessToken) setToken(userInfo.accessToken);
+  }, []);
 
-                    {/* Main footer content */}
-                    <div className="footer-main">
-                        {/* Contact */}
-                        <div className="footer-part1">
-                            <h2>Contact us</h2>
-                            <p>
-                                East Monipur,Mirpur
-                                <br />
-                                Dhaka-1216
-                            </p>
-                            <Link className="footer-link" to="mailto:someone@example.com">
-                                techbytes666@gmail.com
-                            </Link>
-                            <span className="footer-phone">+8801791416682</span>
-                            <div className="footer-chat">
-                                <IoChatboxOutline className="footer-chat-icon" />
-                                <span>
-                                    Online Chat
-                                    <br />
-                                    Get Expert Help
-                                </span>
-                            </div>
-                        </div>
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-                        {/* Links */}
-                        <div className="footer-part2">
-                            <div className="footer-links-col">
-                                <h2>Products</h2>
-                                <ul>
-                                    <li><Link to="/" className="footer-link">Prices drop</Link></li>
-                                    <li><Link to="/" className="footer-link">New products</Link></li>
-                                    <li><Link to="/" className="footer-link">Best sales</Link></li>
-                                    <li><Link to="/" className="footer-link">Contact Us</Link></li>
-                                    <li><Link to="/" className="footer-link">Stores</Link></li>
-                                </ul>
-                            </div>
-                            <div className="footer-links-col">
-                                <h2>Our Company</h2>
-                                <ul>
-                                    <li><Link to="/" className="footer-link">Delivery</Link></li>
-                                    <li><Link to="/" className="footer-link">Legal Notice</Link></li>
-                                    <li><Link to="/" className="footer-link">Terms and conditions of use</Link></li>
-                                    <li><Link to="/" className="footer-link">About Us</Link></li>
-                                    <li><Link to="/" className="footer-link">Login</Link></li>
-                                </ul>
-                            </div>
-                        </div>
+    if (!opinion.trim()) {
+      alert("⚠️ Please write your opinion before submitting.");
+      return;
+    }
 
-                        {/* Subscribe */}
-                        <div className="footer-part3">
-                            <h2>Report to TechBytes</h2>
-                            <p>Give Your Opinion </p>
-                            <form>
-                                <input
-                                    type="email"
-                                    className="footer-input"
-                                    placeholder="write"
-                                />
-                                <Button className="btn-org">Submit</Button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </footer>
+    if (!token) {
+      alert("❌ You must be logged in to submit your opinion.");
+      return;
+    }
 
-            {/* Bottom Strip */}
-            <div className="bottom-strip">
-                <div className="container bottom-strip-content">
-                    <ul className="footer-socials">
-                        <li>
-                            <Link to="/" target="_blank" className="footer-social-link">
-                                <FaFacebookF />
-                            </Link>
-                        </li>
-                        <li>
-                            <Link to="/" target="_blank" className="footer-social-link">
-                                <AiOutlineYoutube />
-                            </Link>
-                        </li>
-                        <li>
-                            <Link to="/" target="_blank" className="footer-social-link">
-                                <FaPinterestP />
-                            </Link>
-                        </li>
-                        <li>
-                            <Link to="/" target="_blank" className="footer-social-link">
-                                <FaInstagram />
-                            </Link>
-                        </li>
-                    </ul>
-                    <p className="footer-copy">@ 2025 - TechBytes</p>
-                </div>
+    try {
+      const res = await fetch("http://localhost:8000/api/report", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // send token for auth
+        },
+        body: JSON.stringify({ opinion }), // backend gets userId from token
+        credentials: "include", // if backend uses cookies
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        alert("✅ Opinion submitted successfully!");
+        setOpinion(""); // clear textarea
+      } else {
+        alert("❌ Error: " + (data.message || data.error));
+      }
+    } catch (err) {
+      console.error("Network error:", err);
+      alert("❌ Failed to connect to server");
+    }
+  };
+
+  return (
+    <>
+      <footer className="footer-section">
+        <div className="container">
+          {/* Top icons row */}
+          <div className="footer-icons-row">
+            <div className="footer-icon-col">
+              <LiaShippingFastSolid className="footer-icon" />
+              <h3>Free Shipping</h3>
+              <p>For all Orders Over $100</p>
             </div>
-        </>
-    );
+            <div className="footer-icon-col">
+              <PiKeyReturnLight className="footer-icon" />
+              <h3>30 Days Returns</h3>
+              <p>For an Exchange Product</p>
+            </div>
+            <div className="footer-icon-col">
+              <BsWallet2 className="footer-icon" />
+              <h3>Secured Payment</h3>
+              <p>Payment Cards Accepted</p>
+            </div>
+            <div className="footer-icon-col">
+              <LiaGiftSolid className="footer-icon" />
+              <h3>Special Gifts</h3>
+              <p>Our First Product Order</p>
+            </div>
+            <div className="footer-icon-col">
+              <BiSupport className="footer-icon" />
+              <h3>Support 24/7</h3>
+              <p>Contact us Anytime</p>
+            </div>
+          </div>
+
+          <hr />
+
+          {/* Main footer content */}
+          <div className="footer-main">
+            {/* Contact */}
+            <div className="footer-part1">
+              <h2>Contact us</h2>
+              <p>
+                East Monipur, Mirpur
+                <br />
+                Dhaka-1216
+              </p>
+              <Link className="footer-link" to="mailto:techbytes666@gmail.com">
+                techbytes666@gmail.com
+              </Link>
+              <span className="footer-phone">+8801791416682</span>
+              <div className="footer-chat">
+                <IoChatboxOutline className="footer-chat-icon" />
+                <span>
+                  Contact Us
+                  <br />
+                  Get Expert Help
+                </span>
+              </div>
+            </div>
+
+            {/* Links */}
+            <div className="footer-part2">
+              <div className="footer-links-col">
+                <h2>Products</h2>
+                <ul>
+                  <li><Link to="/" className="footer-link">Prices drop</Link></li>
+                  <li><Link to="/" className="footer-link">New products</Link></li>
+                  <li><Link to="/" className="footer-link">Best sales</Link></li>
+                  <li><Link to="/" className="footer-link">Contact Us</Link></li>
+                  <li><Link to="/" className="footer-link">Stores</Link></li>
+                </ul>
+              </div>
+              <div className="footer-links-col">
+                <h2>Our Company</h2>
+                <ul>
+                  <li><Link to="/" className="footer-link">Delivery</Link></li>
+                  <li><Link to="/" className="footer-link">Legal Notice</Link></li>
+                  <li><Link to="/" className="footer-link">Terms and conditions of use</Link></li>
+                  <li><Link to="/" className="footer-link">About Us</Link></li>
+                  <li><Link to="/" className="footer-link">Login</Link></li>
+                </ul>
+              </div>
+            </div>
+
+            {/* Report Section */}
+            <div className="footer-part3">
+              <h2>Report to TechBytes</h2>
+              <p>Give Your Opinion</p>
+              <form onSubmit={handleSubmit}>
+                <textarea
+                  className="footer-input"
+                  placeholder="Write your opinion here..."
+                  value={opinion}
+                  onChange={(e) => setOpinion(e.target.value)}
+                  rows="4"
+                  required
+                />
+                <Button className="btn-org" type="submit">
+                  Submit Your Opinion
+                </Button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </footer>
+
+      {/* Bottom Strip */}
+      <div className="bottom-strip">
+        <div className="container bottom-strip-content">
+          <ul className="footer-socials">
+            <li>
+              <Link to="/" target="_blank" className="footer-social-link">
+                <FaFacebookF />
+              </Link>
+            </li>
+            <li>
+              <Link to="/" target="_blank" className="footer-social-link">
+                <AiOutlineYoutube />
+              </Link>
+            </li>
+            <li>
+              <Link to="/" target="_blank" className="footer-social-link">
+                <FaPinterestP />
+              </Link>
+            </li>
+            <li>
+              <Link to="/" target="_blank" className="footer-social-link">
+                <FaInstagram />
+              </Link>
+            </li>
+          </ul>
+          <p className="footer-copy">@ 2025 - TechBytes</p>
+        </div>
+      </div>
+    </>
+  );
 };
 
 export default Footer;
