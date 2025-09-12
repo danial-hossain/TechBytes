@@ -21,7 +21,7 @@ const Footer = () => {
   }
 
   try {
-    const res = await fetch("http://localhost:5001/api/report", {
+    const res = await fetch("http://localhost:5002/api/report", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ opinion }),

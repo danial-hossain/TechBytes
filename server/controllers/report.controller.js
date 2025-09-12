@@ -2,11 +2,13 @@ import Report from "../models/report.model.js";
 
 export async function createReportController(req, res) {
   try {
+    console.log("🔥 Received request body:", req.body);
     const { opinion } = req.body;
 
     if (!opinion) {
       return res.status(400).json({ message: "Opinion is required" });
     }
+
 
     const report = new Report({ opinion });
     await report.save();
