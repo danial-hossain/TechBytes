@@ -1,0 +1,63 @@
+.help-center {
+  max-width: 700px;
+  margin: 50px auto;
+  background: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.help-title {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.help-subtitle {
+  font-size: 16px;
+  text-align: center;
+  margin-bottom: 25px;
+  color: #555;
+}
+
+.help-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.help-form label {
+  font-weight: 600;
+}
+
+.help-form input,
+.help-form textarea {
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  outline: none;
+  transition: border 0.2s;
+}
+
+.help-form input:focus,
+.help-form textarea:focus {
+  border: 1px solid #007bff;
+}
+
+.help-btn {
+  padding: 14px;
+  background: #003366; /* matches your dark blue header */
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.help-btn:hover {
+  background: #0055aa;
+}
