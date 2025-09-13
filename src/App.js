@@ -1,63 +1,97 @@
-import ProtectedRoute from './components/ProtectedRoute';
-import './App.css';
-import './index.css';
+import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import Header from './components/Header';
-import Footer from './components/Footer';
+import { AuthProvider } from "./hooks/useAuth";
+import ProtectedRoute from "./components/ProtectedRoute";
 
-// Pages
-import Home from './Pages/Home/index.js';
-import Cart from './Pages/Cart/index.js';
-import Login from './Pages/Login/index.js';
-import SignUp from './Pages/SignUp/index.js';
-import Verification from './Pages/verification/index.js';
-import Profile from './Pages/Profile/index.js';
-import ProfileInformation from './Pages/Profile/Information/index.js'; // edit profile
+import Header from "./components/Header";
+import Footer from "./components/Footer";
 
-import LaptopList from './Pages/LaptopList/index.js';
-import LaptopDetail from './Pages/LaptopDetail/index.js';
-import ArmList from './Pages/Arm/index.js';
-import ElectronicsList from './Pages/Electronics/index.js';
-import ProductDetail from './Pages/Product/index.js';
-import DesktopList from './Pages/Desktop/index.js';
-import LegList from './Pages/Leg/index.js';
-import HelpCenter from './Pages/Help/index.js';
+import Home from "./Pages/Home";
+import Cart from "./Pages/Cart";
+import Login from "./Pages/Login";
+import SignUp from "./Pages/SignUp";
+import Profile from "./Pages/Profile";
+import ProfileInformation from "./Pages/Profile/Information";
+import Dashboard from "./Pages/DASHBOARD";
 
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+const LayoutWithHeaderFooter = ({ children }) => (
+  <>
+    <Header />
+    {children}
+    <Footer />
+  </>
+);
 
 function App() {
   return (
-    <BrowserRouter>
-      <Header />
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          {/* Public routes */}
+          <Route
+            path="/"
+            element={
+              <LayoutWithHeaderFooter>
+                <Home />
+              </LayoutWithHeaderFooter>
+            }
+          />
+          <Route
+            path="/login"
+            element={
+              <LayoutWithHeaderFooter>
+                <Login />
+              </LayoutWithHeaderFooter>
+            }
+          />
+          <Route
+            path="/signup"
+            element={
+              <LayoutWithHeaderFooter>
+                <SignUp />
+              </LayoutWithHeaderFooter>
+            }
+          />
 
-      <Routes>
-        {/* Public Routes */}
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/verify" element={<Verification />} />
-        <Route path="/laptops" element={<LaptopList />} />
-        <Route path="/laptop/:id" element={<LaptopDetail />} />
-        <Route path="/arms" element={<ArmList />} />
-        <Route path="/electronics" element={<ElectronicsList />} />
-        <Route path="/desktops" element={<DesktopList />} />
-        <Route path="/legs" element={<LegList />} />
-        <Route path="/product/:id" element={<ProductDetail />} />
-        <Route path="/help-center" element={<HelpCenter />} />
+          {/* Protected user routes */}
+          <Route element={<ProtectedRoute allowedRoles={["USER"]} />}>
+            <Route
+              path="/profile"
+              element={
+                <LayoutWithHeaderFooter>
+                  <Profile />
+                </LayoutWithHeaderFooter>
+              }
+            />
+            <Route
+              path="/profile/edit"
+              element={
+                <LayoutWithHeaderFooter>
+                  <ProfileInformation />
+                </LayoutWithHeaderFooter>
+              }
+            />
+            <Route
+              path="/cart"
+              element={
+                <LayoutWithHeaderFooter>
+                  <Cart />
+                </LayoutWithHeaderFooter>
+              }
+            />
+          </Route>
 
-        {/* Protected Routes */}
-        <Route element={<ProtectedRoute />}>
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/profile/edit" element={<ProfileInformation />} />
-          <Route path="/cart" element={<Cart />} />
-        </Route>
-
-        {/* You can add a fallback 404 page here if needed */}
-        {/* <Route path="*" element={<NotFound />} /> */}
-      </Routes>
-
-      <Footer />
-    </BrowserRouter>
+          {/* Admin routes (no header/footer) */}
+          <Route element={<ProtectedRoute allowedRoles={["ADMIN"]} />}>
+            <Route path="/dashboard" element={<Dashboard />} />
+            {/* You can add more admin routes here */}
+            {/* <Route path="/dashboard/users" element={<ManageUsers />} /> */}
+            {/* <Route path="/dashboard/products" element={<ManageProducts />} /> */}
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
 

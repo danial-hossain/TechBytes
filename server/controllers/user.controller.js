@@ -222,11 +222,8 @@ export async function logoutController(req, res) {
 
 // ===== GET PROFILE =====
 export async function getProfileController(req, res) {
-  //Profile pageer kaj
   try {
     const user = await UserModel.findById(req.userId).select("-password");
-    //Finds the user in the database by req.userId (the logged-in user)
-    // /.select("-password") excludes the password field so it is not sent to the client. -->for security,pass keo na pay
 
     if (!user) {
       return res.status(404).json({
@@ -235,21 +232,21 @@ export async function getProfileController(req, res) {
         success: false,
       });
     }
-    //If no user is found → responds with 404 Not Found.
 
     return res.status(200).json({
       name: user.name,
       email: user.email,
       mobile: user.mobile,
       address_details: user.address_details || [],
+      role: user.role, // ✅ add this
     });
-    //profile pager name email mobile address show krbe
   } catch (error) {
     return res
       .status(500)
       .json({ message: error.message, error: true, success: false });
   }
 }
+
 
 // ===== UPDATE PROFILE =====
 export async function updateProfileController(req, res) {

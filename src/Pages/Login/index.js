@@ -1,21 +1,7 @@
-// Copyright 2024 Google LLC
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES, OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import useAuth from '../../hooks/useAuth';
+import { useAuth } from '../../hooks/useAuth';
 import './style.css';
 
 const Login = () => {
@@ -38,15 +24,27 @@ const Login = () => {
 
     setLoading(true);
     try {
-      const { data } = await axios.post(
+      // Step 1: login and get tokens
+      await axios.post(
         'http://localhost:8000/api/user/login',
         { email, password },
-        { withCredentials: true } // important for cookies
+        { withCredentials: true }
       );
 
-      login(data.data);
+      // Step 2: fetch full profile with role
+      const profileRes = await axios.get(
+        'http://localhost:8000/api/user/profile',
+        { withCredentials: true }
+      );
+
+      const userData = profileRes.data;
+      login(userData); // store full user info including role
       setLoading(false);
-      navigate('/profile');
+
+      // Step 3: redirect based on role
+      if (userData.role === 'ADMIN') navigate('/dashboard');
+      else navigate('/profile');
+
     } catch (err) {
       setLoading(false);
       setError(err.response?.data?.message || 'Login Failed');
@@ -92,8 +90,7 @@ const Login = () => {
         </form>
 
         <p className="login-signup-text">
-          Don’t have an account?{' '}
-          <Link to="/signup" className="login-signup-link">Sign Up</Link>
+          Don’t have an account? <Link to="/signup" className="login-signup-link">Sign Up</Link>
         </p>
       </div>
     </section>
