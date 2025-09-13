@@ -1,21 +1,7 @@
-// Copyright 2024 Google LLC
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
-import "./style.css";  // ✅ your custom styles
+import "./style.css";
 
 const ArmList = () => {
   const [arms, setArms] = useState([]);
@@ -23,7 +9,7 @@ const ArmList = () => {
   const { userInfo } = useAuth();
   const navigate = useNavigate();
 
-  // ✅ Function to add a product to the cart
+  // Add product to cart
   const addToCart = async (productId) => {
     if (!userInfo) {
       navigate("/login");
@@ -34,21 +20,25 @@ const ArmList = () => {
       const res = await fetch("http://localhost:8000/api/cart/add", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId: userInfo.id, productId }),
+        body: JSON.stringify({
+          userId: userInfo.id,   // ✅ your userId from localStorage/auth
+          productId,             // ✅ correct MongoDB _id
+          quantity: 1,           // ✅ default quantity
+        }),
       });
 
       const data = await res.json();
-      if (data.success) {
+      if (res.ok && data.success) {
         alert("✅ Added to cart!");
       } else {
-        alert("❌ Failed to add to cart");
+        alert(`❌ Failed: ${data.message || "Unknown error"}`);
       }
     } catch (error) {
       console.error("Error adding to cart:", error);
     }
   };
 
-  // ✅ Fetch products when component loads
+  // Fetch arm products
   useEffect(() => {
     const fetchArms = async () => {
       try {
@@ -79,10 +69,7 @@ const ArmList = () => {
             <p className="arm-details">{product.details}</p>
             <button
               className="arm-btn"
-              onClick={() => {
-                console.log('product:', product);
-                addToCart(product.id);
-              }}  // ✅ connect button
+              onClick={() => addToCart(product._id)} // ✅ use _id
             >
               Add to Cart
             </button>

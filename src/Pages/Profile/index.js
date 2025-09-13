@@ -1,17 +1,3 @@
-// Copyright 2024 Google LLC
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -20,7 +6,7 @@ import './style.css';
 
 const Profile = () => {
   const navigate = useNavigate();
-  const { userInfo, logout, loading: authLoading } = useAuth();
+  const { logout, loading: authLoading } = useAuth();
   const [user, setUser] = useState(null);
   const [error, setError] = useState('');
 
@@ -28,13 +14,13 @@ const Profile = () => {
     const fetchUserProfile = async () => {
       try {
         const { data } = await axios.get('http://localhost:8000/api/user/profile', {
-          headers: {
-            Authorization: `Bearer ${userInfo.accessToken}`,
-          },
+          withCredentials: true, // ✅ send cookies automatically
         });
         setUser(data);
       } catch (err) {
         setError(err.response?.data?.message || 'Failed to fetch profile');
+
+        // If token expired or invalid, logout
         if (err.response?.status === 401) {
           logout();
           navigate('/login');
@@ -42,35 +28,28 @@ const Profile = () => {
       }
     };
 
-    if (!authLoading && userInfo) {
-      fetchUserProfile();
-    }
-  }, [navigate, userInfo, logout, authLoading]);
+    if (!authLoading) fetchUserProfile();
+  }, [authLoading, logout, navigate]);
 
   const handleLogout = async () => {
     try {
-      if (userInfo) {
-        await axios.get('http://localhost:8000/api/user/logout', {
-          headers: {
-            Authorization: `Bearer ${userInfo.accessToken}`,
-          },
-        });
-      }
-    } catch (error) {
-      console.error('Logout failed', error);
+      await axios.get('http://localhost:8000/api/user/logout', {
+        withCredentials: true, // ✅ send cookies
+      });
+    } catch (err) {
+      console.error('Logout failed', err);
     } finally {
       logout();
       navigate('/login');
     }
   };
 
-  if (authLoading) {
-    return <div className="profile-loading">Loading...</div>;
-  }
+  const handleEditProfile = () => {
+    navigate('/profile/edit');
+  };
 
-  if (error) {
-    return <div className="profile-error">{error}</div>;
-  }
+  if (authLoading) return <div className="profile-loading">Loading...</div>;
+  if (error) return <div className="profile-error">{error}</div>;
 
   return (
     <section className="profile-section">
@@ -80,12 +59,14 @@ const Profile = () => {
           <div className="profile-details">
             <p><strong>Name:</strong> {user.name}</p>
             <p><strong>Email:</strong> {user.email}</p>
-            {/* Add more user details as needed */}
+            <p><strong>Mobile:</strong> {user.mobile}</p>
+            <p><strong>Address:</strong> {user.address?.length ? user.address.join(', ') : 'No address'}</p>
           </div>
         )}
-        <button onClick={handleLogout} className="profile-logout-btn">
-          Logout
-        </button>
+        <div className="profile-buttons">
+          <button onClick={handleEditProfile} className="profile-edit-btn">Edit Profile</button>
+          <button onClick={handleLogout} className="profile-logout-btn">Logout</button>
+        </div>
       </div>
     </section>
   );
