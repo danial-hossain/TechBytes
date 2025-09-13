@@ -1,65 +1,65 @@
-// Copyright 2024 Google LLC
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
 import "./style.css";
 
-// Laptop data
-const laptops = [
-  {
-    id: 1,
-    name: "HP Pavilion 15",
-    price: 750,
-    img: require("../../assets/laptops/hp_pavilion.jpg"),
-  },
-  {
-    id: 2,
-    name: "Dell Inspiron 14",
-    price: 680,
-    img: require("../../assets/laptops/dell_inspiron.jpg"),
-  },
-  {
-    id: 3,
-    name: "MacBook Air M2",
-    price: 1200,
-    img: require("../../assets/laptops/macbook_air.jpg"),
-  },
-  {
-    id: 4,
-    name: "Lenovo ThinkPad X1",
-    price: 950,
-    img: require("../../assets/laptops/thinkpad_x1.jpg"),
-  },
-];
-
 const LaptopList = () => {
+  const [laptops, setLaptops] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const { userInfo } = useAuth();
   const navigate = useNavigate();
 
+  const addToCart = async (productId) => {
+    if (!userInfo) {
+      navigate("/login");
+      return;
+    }
+
+    try {
+      const res = await fetch("http://localhost:8000/api/cart/add", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId: userInfo.id, productId }),
+      });
+
+      const data = await res.json();
+      if (data.success) alert("✅ Added to cart!");
+      else alert("❌ Failed to add to cart");
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+    }
+  };
+
+  useEffect(() => {
+    const fetchLaptops = async () => {
+      try {
+        const res = await fetch("http://localhost:8000/api/laptops");
+        const data = await res.json();
+        setLaptops(data);
+      } catch (error) {
+        console.error("Error fetching laptops:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchLaptops();
+  }, []);
+
+  if (loading) return <p className="loading">Loading...</p>;
+
   return (
-    <div className="laptop-list-container">
-      <h2>Our Laptops</h2>
+    <div className="laptop-container">
+      <h2 className="laptop-title">Our Laptops</h2>
       <div className="laptop-grid">
         {laptops.map((laptop) => (
-          <div
-            key={laptop.id}
-            className="laptop-card"
-            onClick={() => navigate(`/laptop/${laptop.id}`)}
-          >
-            <img src={laptop.img} alt={laptop.name} />
-            <h3>{laptop.name}</h3>
-            <p>${laptop.price}</p>
+          <div key={laptop.id} className="laptop-card">
+            <img src={laptop.photo} alt={laptop.name} className="laptop-image" />
+            <h3 className="laptop-name">{laptop.name}</h3>
+            <p className="laptop-price">${laptop.price}</p>
+            <p className="laptop-details">{laptop.details}</p>
+            <button className="laptop-btn" onClick={() => addToCart(laptop.id)}>
+              Add to Cart
+            </button>
           </div>
         ))}
       </div>
