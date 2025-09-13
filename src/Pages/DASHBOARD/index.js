@@ -1,50 +1,290 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
-import "./style.css"; // matches your file
+import "./style.css";
 
 const Dashboard = () => {
   const { userInfo, logout } = useAuth();
   const navigate = useNavigate();
 
-  if (!userInfo || userInfo.role !== "ADMIN") {
-    navigate("/login"); // prevent non-admins
-    return null;
-  }
+  const [stats, setStats] = useState(null);
+  const [users, setUsers] = useState([]);
+  const [products, setProducts] = useState([]);
+  const [reports, setReports] = useState([]);
+  const [helps, setHelps] = useState([]);
+  const [activeTab, setActiveTab] = useState("home");
+  const [message, setMessage] = useState("");
+
+  // Add product states
+  const [categoryName, setCategoryName] = useState("Arm");
+  const [name, setName] = useState("");
+  const [price, setPrice] = useState("");
+  const [photo, setPhoto] = useState("");
+  const [details, setDetails] = useState("");
+
+  useEffect(() => {
+    if (!userInfo || userInfo.role !== "ADMIN") {
+      navigate("/login");
+      return;
+    }
+
+    const fetchStats = async () => {
+      try {
+        const res = await fetch("http://localhost:8000/api/dashboard", {
+          credentials: "include",
+        });
+        const data = await res.json();
+        setStats(data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchStats();
+  }, [userInfo, navigate]);
+
+  const fetchUsers = async () => {
+    try {
+      const res = await fetch("http://localhost:8000/api/dashboard/users", {
+        credentials: "include",
+      });
+      const data = await res.json();
+      setUsers(data.users || []);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const fetchProducts = async () => {
+    try {
+      const res = await fetch("http://localhost:8000/api/dashboard/products", {
+        credentials: "include",
+      });
+      const data = await res.json();
+      setProducts(data.products || []);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const fetchReports = async () => {
+    try {
+      const res = await fetch("http://localhost:8000/api/dashboard/reports", {
+        credentials: "include",
+      });
+      const data = await res.json();
+      setReports(data.reports || []);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const fetchHelps = async () => {
+    try {
+      const res = await fetch("http://localhost:8000/api/dashboard/helps", {
+        credentials: "include",
+      });
+      const data = await res.json();
+      setHelps(data.helps || []);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleTabClick = (tab) => {
+    setActiveTab(tab);
+    if (tab === "users") fetchUsers();
+    if (tab === "products") fetchProducts();
+    if (tab === "reports") fetchReports();
+    if (tab === "helps") fetchHelps();
+  };
+
+  const handleAddProduct = async (e) => {
+    e.preventDefault();
+    setMessage("");
+    try {
+      const res = await fetch("http://localhost:8000/api/dashboard/add-product", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ categoryName, name, price, photo, details }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setMessage("Product added successfully!");
+        setName("");
+        setPrice("");
+        setPhoto("");
+        setDetails("");
+        fetchProducts();
+      } else {
+        setMessage(data.message || "Failed to add product");
+      }
+    } catch (err) {
+      console.error(err);
+      setMessage("Server error");
+    }
+  };
+
+  if (!stats) return <p>Loading dashboard...</p>;
 
   return (
     <div className="dashboard-container">
       <aside className="sidebar">
         <h2 className="sidebar-title">Admin Panel</h2>
         <ul className="sidebar-menu">
-          <li onClick={() => navigate("/dashboard")}>Dashboard</li>
-          <li onClick={() => navigate("/dashboard/users")}>Manage Users</li>
-          <li onClick={() => navigate("/dashboard/products")}>Manage Products</li>
-          <li onClick={() => navigate("/dashboard/orders")}>Orders</li>
+          <li onClick={() => handleTabClick("home")}>Dashboard</li>
+          <li onClick={() => handleTabClick("users")}>Users</li>
+          <li onClick={() => handleTabClick("products")}>Products</li>
+          <li onClick={() => handleTabClick("addProduct")}>Add Product</li>
+          <li onClick={() => handleTabClick("orders")}>Orders</li>
+          <li onClick={() => handleTabClick("reports")}>Reports</li>
+          <li onClick={() => handleTabClick("helps")}>Help</li>
           <li onClick={logout}>Logout</li>
         </ul>
       </aside>
 
       <main className="dashboard-main">
-        <header className="dashboard-header">
-          <h1>Welcome, {userInfo.name}</h1>
-          <p>Role: {userInfo.role}</p>
-        </header>
+        {activeTab === "home" && (
+          <>
+            <h1>Welcome, {userInfo.name}</h1>
+            <section className="dashboard-cards">
+              <div className="card">Users: {stats.userCount}</div>
+              <div className="card">Products: {stats.productCount}</div>
+              <div className="card">Orders: {stats.orderCount}</div>
+              <div className="card">Reports: {stats.reportCount}</div>
+              <div className="card">Help Requests: {stats.helpCount}</div>
+            </section>
+          </>
+        )}
 
-        <section className="dashboard-cards">
-          <div className="card">
-            <h3>Total Users</h3>
-            <p>123</p>
+        {activeTab === "users" && (
+          <div className="table-container">
+            <h2>All Users</h2>
+            <table>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Role</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {users.map((user) => (
+                  <tr key={user._id}>
+                    <td>{user.name}</td>
+                    <td>{user.email}</td>
+                    <td>{user.role}</td>
+                    <td>{user.status}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
-          <div className="card">
-            <h3>Total Products</h3>
-            <p>54</p>
+        )}
+
+        {activeTab === "products" && (
+          <div className="table-container">
+            <h2>All Products</h2>
+            <table>
+              <thead>
+                <tr>
+                  <th>Category</th>
+                  <th>Name</th>
+                  <th>Price</th>
+                  <th>Photo</th>
+                  <th>Details</th>
+                </tr>
+              </thead>
+              <tbody>
+                {products.map((p) => (
+                  <tr key={p.id}>
+                    <td>{p.category}</td>
+                    <td>{p.name}</td>
+                    <td>${p.price}</td>
+                    <td>
+                      <img src={p.photo} alt={p.name} width="80" />
+                    </td>
+                    <td>{p.details}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
-          <div className="card">
-            <h3>Pending Orders</h3>
-            <p>12</p>
+        )}
+
+        {activeTab === "addProduct" && (
+          <div className="add-product-form">
+            <h2>Add Product</h2>
+            <form onSubmit={handleAddProduct}>
+              <label>
+                Category:
+                <select value={categoryName} onChange={(e) => setCategoryName(e.target.value)}>
+                  <option value="Arm">Arm</option>
+                  <option value="Laptop">Laptop</option>
+                  <option value="Desktop">Desktop</option>
+                  <option value="Electronics">Electronics</option>
+                  <option value="Leg">Leg</option>
+                </select>
+              </label>
+              <input type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} required />
+              <input type="number" placeholder="Price" value={price} onChange={(e) => setPrice(e.target.value)} required />
+              <input type="text" placeholder="Photo URL" value={photo} onChange={(e) => setPhoto(e.target.value)} required />
+              <textarea placeholder="Details" value={details} onChange={(e) => setDetails(e.target.value)} required />
+              <button type="submit">Add Product</button>
+            </form>
+            {message && <p>{message}</p>}
           </div>
-        </section>
+        )}
+
+        {activeTab === "reports" && (
+          <div className="table-container">
+            <h2>All Reports</h2>
+            <table>
+              <thead>
+                <tr>
+                  <th>User ID</th>
+                  <th>Opinion</th>
+                  <th>Created At</th>
+                </tr>
+              </thead>
+              <tbody>
+                {reports.map((r) => (
+                  <tr key={r._id}>
+                    <td>{r.userId}</td>
+                    <td>{r.opinion}</td>
+                    <td>{new Date(r.createdAt).toLocaleString()}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+
+        {activeTab === "helps" && (
+          <div className="table-container">
+            <h2>All Help Requests</h2>
+            <table>
+              <thead>
+                <tr>
+                  <th>Email</th>
+                  <th>Message</th>
+                  <th>Created At</th>
+                </tr>
+              </thead>
+              <tbody>
+                {helps.map((h) => (
+                  <tr key={h._id}>
+                    <td>{h.email}</td>
+                    <td>{h.message}</td>
+                    <td>{new Date(h.createdAt).toLocaleString()}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </main>
     </div>
   );
