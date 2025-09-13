@@ -18,20 +18,12 @@ const ElectronicsList = () => {
       const res = await fetch("http://localhost:8000/api/cart/add", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          userId: userInfo.id,
-          productId,   // ✅ MongoDB _id
-          quantity: 1, // ✅ default to 1
-        }),
+        body: JSON.stringify({ userId: userInfo.id, productId }),
       });
       const data = await res.json();
-      if (res.ok && data.success) {
-        alert("✅ Added to cart!");
-      } else {
-        alert(`❌ Failed: ${data.message || "Unknown error"}`);
-      }
+      data.success ? alert("✅ Added to cart!") : alert("❌ Failed to add to cart");
     } catch (err) {
-      console.error("Error adding to cart:", err);
+      console.error(err);
     }
   };
 
@@ -57,18 +49,18 @@ const ElectronicsList = () => {
       <h2 className="electronics-title">Electronics</h2>
       <div className="electronics-grid">
         {products.map((product) => (
-          <div key={product._id} className="electronics-card">
+          <div key={product.id} className="electronics-card">
             <img src={product.photo} alt={product.name} />
             <h3
               className="product-link"
               style={{ cursor: "pointer", color: "#007bff" }}
-              onClick={() => navigate(`/product/${product._id}`)} // ✅ use _id
+              onClick={() => navigate(`/product/${product.id}`)}
             >
               {product.name}
             </h3>
             <p>${product.price}</p>
             <p>{product.details}</p>
-            <button onClick={() => addToCart(product._id)}>Add to Cart</button> {/* ✅ fixed */}
+            <button onClick={() => addToCart(product.id)}>Add to Cart</button>
           </div>
         ))}
       </div>
