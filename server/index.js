@@ -12,7 +12,8 @@ import userRouter from './route/user.route.js';
 import armRouter from './category/arm.js';
 import electronicsRouter from './category/electronics.js';
 import laptopRouter from './category/laptop.js';
-import desktopRouter from './category/desktop.js'; // ✅ Import Desktop router
+import desktopRouter from './category/desktop.js'; // ✅ Desktop router
+import legsRouter from './category/legs.js';       // ✅ Prosthetic Legs router
 import cartRouter from './routes/cart.js';
 import reportRouter from './routes/report.route.js';
 import helpRouter from './routes/help.route.js';
@@ -45,7 +46,8 @@ app.use('/api/user', userRouter);
 app.use('/api/arm', armRouter);
 app.use('/api/electronics', electronicsRouter);
 app.use('/api/laptops', laptopRouter);
-app.use('/api/desktop', desktopRouter); // ✅ Desktop route
+app.use('/api/desktop', desktopRouter);
+app.use('/api/legs', legsRouter);   // ✅ Prosthetic Legs route
 app.use('/api/cart', cartRouter);
 app.use('/api/report', reportRouter);
 app.use('/api/help', helpRouter);
