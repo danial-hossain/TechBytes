@@ -1,12 +1,15 @@
 import { Router } from "express";
 import CartProduct from "../models/cartproduct.model.js";
+//CartProduct → collection of cart items.
 import Category from "../models/category.model.js";
 import User from "../models/user.model.js";
 
 const cartRouter = Router();
+//separate router to handle cart-related endpoints.
 
 // ➕ Add item to cart
 cartRouter.post("/add", async (req, res) => {
+  //POST /add → add a product to a user’s cart.
   try {
     const { userId, productId, quantity } = req.body;
     if (!userId || !productId || !quantity)

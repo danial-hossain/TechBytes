@@ -1,28 +1,21 @@
-// Copyright 2024 Google LLC
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 import mongoose from "mongoose";
+//mongoose: A popular Node.js library to interact with MongoDB in an easier and structured way
 import dotenv from 'dotenv';
+//dotenv: A package to load environment variables from a .env file into process.env.
 dotenv.config();
+//Loads variables from a .env file into process.env
+//process.env.MONGODB_URI -> will have MONGODB_URI=mongodb+srv://username:password@cluster0.mongodb.net/mydb
 
-if (!process.env.MONGODB_URI) {
+
+if (!process.env.MONGODB_URI) {// this line is for checking connection
     throw new Error(
         "Please provide MONGODB_URI in the .env file"
     );
 }
+//This ensures that the MongoDB connection string exists.
+//If not, it throws an error and stops the program.
 
-async function connectDB() {
+async function connectDB() {//Defines an asynchronous function connectDB to connect to MongoDB
     try {
         await mongoose.connect(process.env.MONGODB_URI);
         console.log("Connected to DB");

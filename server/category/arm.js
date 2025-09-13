@@ -13,12 +13,17 @@
 // limitations under the License.
 
 import { Router } from "express";
+//Router → from Express, used to create a modular router.
 import Category from "../models/category.model.js";
+//Category → Mongoose model for your categories and products.,structure ta
 
 const armRouter = Router();
 
 // Replace with the actual ObjectId of the Arm category from MongoDB
 const ARM_CATEGORY_ID = "68bdb82f195b330f4a1187cd";
+//This is the ObjectId of the “Arms” category in your MongoDB.
+//When someone calls GET /arms, this route runs.
+//findById searches for the category using the ARM_CATEGORY_ID.
 
 armRouter.get("/", async (req, res) => {
   try {
@@ -35,3 +40,4 @@ armRouter.get("/", async (req, res) => {
 });
 
 export default armRouter;
+//Lets you import this router in your main server file and attach it to /arms route.

@@ -13,6 +13,9 @@
 // limitations under the License.
 
 import mongoose from "mongoose";
+/* 
+Data base theke je product gulo fetch krteci setar jonno 
+*/
 
 const productSchema = new mongoose.Schema({
   id: { type: String, required: true },   // Product unique id
@@ -31,3 +34,4 @@ const categorySchema = new mongoose.Schema({
 const Category = mongoose.model("Category", categorySchema, "category");
 
 export default Category;
+//Allows you to import Category in other files ,Defines a Category collection.

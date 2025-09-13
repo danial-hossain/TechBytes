@@ -13,11 +13,23 @@
 // limitations under the License.
 
 import {sendEmail} from "./emailService.js";
-
+//Brings in the function that actually sends emails from another file.
+//email service er functionality gulo use krbo
+/*
+to → who you’re sending the email to
+subject → email title
+text → plain text version of the email
+html → HTML version of the email
+*/
 const sendEmailFun = async ({ to, subject, text, html }) => {
     const result = await sendEmail(to, subject, text, html);
-    
+//Calls the sendEmail function to actually send the email.
+//Waits for it to finish and stores the result (success or failure) in result
+
     if (result.success) {
+//Checks if the email was sent successfully:
+//If yes → return true
+//If no → return false
         return true;
     } else {
         return false;

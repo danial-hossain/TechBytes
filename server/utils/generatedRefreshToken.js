@@ -13,13 +13,17 @@
 // limitations under the License.
 
 import UserModel from "../models/user.model.js";
+//Imports the User model to update the user in the database.
 import jwt from 'jsonwebtoken';
+//Imports jsonwebtoken to generate JWT tokens.
 
 const generatedRefreshToken = async (userId) => {
+    //Defines an async function that generates a refresh token for a user.
     const token = await jwt.sign(
         { id: userId },
         process.env.SECRET_KEY_REFRESH_TOKEN,
         { expiresIn: '7d' }
+        //token jate 7 din por expair hoye jay
     );
 
     const updateRefreshTokenUser = await UserModel.updateOne(

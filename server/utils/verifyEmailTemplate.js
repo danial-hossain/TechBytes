@@ -13,6 +13,8 @@
 // limitations under the License.
 
 const VerificationEmail = (username, otp) => {
+  //username → the name of the user
+  //otp → etai user er gmail e jabe
     return `
     <!DOCTYPE html>
     <html>
@@ -82,5 +84,7 @@ const VerificationEmail = (username, otp) => {
     </html>
     `;
   };
+  //ei page e je code pathaile mail jay seta kemon seta nie kaj
+  
   
   export default VerificationEmail;

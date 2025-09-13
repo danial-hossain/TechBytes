@@ -1,40 +1,30 @@
-// Copyright 2024 Google LLC
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 import http from 'http';
 import nodemailer from 'nodemailer';
+//Imports nodemailer, a Node.js package to send emails via SMTP.
 
 // Configure the SMTP transporter
+
 const transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com', // e.g., 'smtp.gmail.com' for Gmail
-    port: 465, // or 465 for secure
-    secure: true, // true for port 465, false for other ports
-    auth: {
-        user: process.env.EMAIL, // your SMTP username
-        pass: process.env.EMAIL_PASS // your SMTP password
+    host: 'smtp.gmail.com', // → Gmail’s email server.
+    port: 465, // → secure connection port.->sometimes spam e pathay mail
+    secure: true, // true for port 465, false for other ports,uses SSL for security.
+    auth: { //your Gmail login
+        user: process.env.EMAIL, // your SMTP username,amr gmail id
+        pass: process.env.EMAIL_PASS // your SMTP password,amr gmail pass
     },
 });
-
+//This creates a mail transporter to send emails from your Gmail account.”
 // Function to send email
+
+
 async function sendEmail(to, subject, text, html) {
     try {
         const info = await transporter.sendMail({
-            from: process.env.EMAIL, // sender address
-            to, // list of receivers
-            subject, // Subject line
-            text, // plain text body
-            html, // html body
+            from: process.env.EMAIL, // sender address,amr id
+            to, // list of receivers,to → recipient email
+            subject, // Subject line,subject → email subject
+            text, // plain text body,text → plain text version of email
+            html, // html body,html → HTML version of email
         });
         return { success: true, messageId: info.messageId };
     } catch (error) {
