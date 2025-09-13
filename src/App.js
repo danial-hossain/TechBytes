@@ -9,8 +9,9 @@ import LaptopDetail from './Pages/LaptopDetail/index.js';
 import Verification from './Pages/verification/index.js';
 import Profile from './Pages/Profile/index.js';
 import ArmList from './Pages/Arm/index.js';
-import ElectronicsList from './Pages/Electronics/index.js'; // ✅ Electronics page
+import ElectronicsList from './Pages/Electronics/index.js';
 import HelpCenter from './Pages/Help/index.js';
+import DesktopList from './Pages/Desktop/index.js'; // ✅ Desktop page
 
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -32,7 +33,8 @@ function App() {
         <Route path="/laptops" element={<LaptopList />} />
         <Route path="/laptop/:id" element={<LaptopDetail />} />
         <Route path="/arms" element={<ArmList />} />
-        <Route path="/electronics" element={<ElectronicsList />} /> {/* ✅ Electronics */}
+        <Route path="/electronics" element={<ElectronicsList />} />
+        <Route path="/desktops" element={<DesktopList />} /> {/* ✅ Desktop route */}
         <Route path="/help-center" element={<HelpCenter />} />
 
         <Route element={<ProtectedRoute />}>
