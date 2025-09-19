@@ -17,7 +17,7 @@ import legsRouter from "./category/legs.js";       // ✅ Prosthetic Legs router
 import cartRouter from "./routes/cart.js";
 import reportRouter from "./routes/report.route.js";
 import helpRouter from "./routes/help.route.js";
-import homeRouter from "./routes/home.routes.js";
+import homeRouter from "./routes/home.route.js";
 import dashboardRouter from "./routes/dashboard.route.js"; // ✅ NEW Dashboard router
 
 dotenv.config();
