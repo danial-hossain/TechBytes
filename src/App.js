@@ -17,7 +17,8 @@ import Profile from "./Pages/Profile";
 import ProfileInformation from "./Pages/Profile/Information";
 import Dashboard from "./Pages/DASHBOARD";
 import HelpCenter from "./Pages/Help";
-import Verification from "./Pages/Verification"; // ✅ Added
+import Verification from './Pages/verification';
+
 
 // Product Pages (category lists)
 import DesktopList from "./Pages/Desktop";
