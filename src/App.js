@@ -23,6 +23,7 @@ import Laptop from "./Pages/LaptopDetail";
 import Arm from "./Pages/Arm";
 import Legs from "./Pages/Leg";
 import Electronics from "./Pages/Electronics";
+import ProductDetail from "./Pages/ProductDetail"; // ✅ Import ProductDetail
 
 const LayoutWithHeaderFooter = ({ children }) => (
   <>
@@ -101,6 +102,16 @@ function App() {
             element={
               <LayoutWithHeaderFooter>
                 <Electronics />
+              </LayoutWithHeaderFooter>
+            }
+          />
+
+          {/* ✅ Product detail route */}
+          <Route
+            path="/product/:id"
+            element={
+              <LayoutWithHeaderFooter>
+                <ProductDetail />
               </LayoutWithHeaderFooter>
             }
           />
