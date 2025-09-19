@@ -3,7 +3,6 @@ import HomeSlider from '../../components/HomeSlider';
 import { LiaShippingFastSolid } from "react-icons/lia";
 import './style.css';
 import AdsBannerSlider from '../../components/AdsBannerSlider';
-import ProductList from '../../components/ProductItem/ProductList'; // grid version
 import Footer from '../../components/Footer';
 
 const Home = () => {
@@ -13,7 +12,7 @@ const Home = () => {
   useEffect(() => {
     const fetchFeatured = async () => {
       try {
-        const res = await fetch("http://localhost:8000/api/home"); // 👈 your backend endpoint
+        const res = await fetch("http://localhost:8000/api/home");
         const data = await res.json();
         setProducts(data);
       } catch (err) {
@@ -44,9 +43,15 @@ const Home = () => {
             </p>
           </div>
 
-          {/* Grid of products */}
           <div className="featured-products-box">
-            <ProductList products={products} />
+            {products.map((p) => (
+              <div key={p._id} className="product-card">
+                <img src={p.photo} alt={p.name} />
+                <h3>{p.name}</h3>
+                <p>${p.price}</p>
+                <p>{p.details}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
