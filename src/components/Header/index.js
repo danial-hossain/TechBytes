@@ -41,7 +41,7 @@ const Header = () => {
           Get up to 50% off new season styles, limited time only
         </p>
         <div className="top-links">
-          <Link to="/help-center">Help Center</Link>
+          <Link to="/help">Help Center</Link>
           <Link to="/order-tracking">Order Tracking</Link>
         </div>
       </div>

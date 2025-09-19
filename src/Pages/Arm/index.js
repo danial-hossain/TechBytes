@@ -12,6 +12,7 @@ const ArmList = () => {
   // Add product to cart
   const addToCart = async (productId) => {
     if (!userInfo) {
+      alert("❌ You must be logged in to add items to cart!");
       navigate("/login");
       return;
     }
@@ -20,8 +21,8 @@ const ArmList = () => {
       const res = await fetch("http://localhost:8000/api/cart/add", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include", // ✅ send JWT cookie
         body: JSON.stringify({
-          userId: userInfo.id,
           productId,
           quantity: 1,
         }),
@@ -35,6 +36,18 @@ const ArmList = () => {
       }
     } catch (error) {
       console.error("Error adding to cart:", error);
+      alert("❌ Error adding to cart. See console.");
+    }
+  };
+
+  // Debug login info
+  const testLoginStatus = () => {
+    if (!userInfo) {
+      alert("User is NOT logged in");
+      console.log("User is NOT logged in");
+    } else {
+      alert(`User is logged in as ${userInfo.name || userInfo.id}`);
+      console.log("User is logged in:", userInfo);
     }
   };
 
@@ -60,29 +73,25 @@ const ArmList = () => {
   return (
     <div className="arm-container">
       <h2 className="arm-title">Arm Prosthetics</h2>
+
+      <button onClick={testLoginStatus}>Test Login Status</button>
+
       <div className="arm-grid">
         {arms.map((product) => (
           <div key={product.id} className="arm-card">
             <img src={product.photo} alt={product.name} className="arm-image" />
 
-            {/* Clickable product name */}
             <h3
               className="arm-name"
               style={{ cursor: "pointer", color: "#007bff" }}
-              onClick={() => {
-                console.log("Frontend: Navigating to product with ID:", product.id);
-                navigate(`/product/arms/${product.id}`);
-              }}
+              onClick={() => navigate(`/product/arms/${product.id}`)}
             >
               {product.name}
             </h3>
 
             <p className="arm-price">${product.price}</p>
             <p className="arm-details">{product.details}</p>
-            <button
-              className="arm-btn"
-              onClick={() => addToCart(product.id)} // ✅ Use product.id
-            >
+            <button className="arm-btn" onClick={() => addToCart(product.id)}>
               Add to Cart
             </button>
           </div>

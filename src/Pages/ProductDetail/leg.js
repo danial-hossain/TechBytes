@@ -32,12 +32,15 @@ const Legs = () => {
 
   const addToCart = async () => {
     if (!userInfo) return navigate("/login");
+
     try {
       const res = await fetch("http://localhost:8000/api/cart/add", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({ userId: userInfo.id, productId: product._id, quantity }),
       });
+
       const data = await res.json();
       if (res.ok && data.success) alert("✅ Added to cart!");
       else alert(`❌ Failed: ${data.message || "Unknown error"}`);
@@ -63,11 +66,18 @@ const Legs = () => {
 
         <div className="quantity-section">
           <button onClick={() => setQuantity(prev => Math.max(1, prev - 1))}>-</button>
-          <input type="number" min="1" value={quantity} onChange={e => setQuantity(Math.max(1, Number(e.target.value)))} />
+          <input
+            type="number"
+            min="1"
+            value={quantity}
+            onChange={e => setQuantity(Math.max(1, Number(e.target.value)))}
+          />
           <button onClick={() => setQuantity(prev => prev + 1)}>+</button>
         </div>
 
-        <button className="add-to-cart-btn" onClick={addToCart}>Add to Cart</button>
+        <button className="add-to-cart-btn" onClick={addToCart}>
+          Add to Cart
+        </button>
       </div>
     </div>
   );

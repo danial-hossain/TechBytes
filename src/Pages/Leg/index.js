@@ -19,14 +19,16 @@ const LegsList = () => {
       const res = await fetch("http://localhost:8000/api/cart/add", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId: userInfo.id, productId }),
+        credentials: "include",
+        body: JSON.stringify({ userId: userInfo.id, productId, quantity: 1 }),
       });
 
       const data = await res.json();
-      if (data.success) alert("✅ Added to cart!");
-      else alert("❌ Failed to add to cart");
-    } catch (error) {
-      console.error("Error adding to cart:", error);
+      if (res.ok && data.success) alert("✅ Added to cart!");
+      else alert(`❌ Failed: ${data.message || "Unknown error"}`);
+    } catch (err) {
+      console.error(err);
+      alert("❌ Something went wrong");
     }
   };
 
@@ -36,8 +38,8 @@ const LegsList = () => {
         const res = await fetch("http://localhost:8000/api/legs");
         const data = await res.json();
         setLegs(data);
-      } catch (error) {
-        console.error("Error fetching prosthetic legs:", error);
+      } catch (err) {
+        console.error("Error fetching prosthetic legs:", err);
       } finally {
         setLoading(false);
       }
@@ -52,25 +54,24 @@ const LegsList = () => {
       <h2 className="legs-title">Prosthetic Legs</h2>
       <div className="legs-grid">
         {legs.map((leg) => (
-          <div key={leg.id} className="legs-card">
-            {/* Navigate to detail page on click */}
+          <div key={leg._id} className="legs-card">
             <img
               src={leg.photo}
               alt={leg.name}
               className="legs-image"
               style={{ cursor: "pointer" }}
-              onClick={() => navigate(`/product/legs/${leg.id}`)}
+              onClick={() => navigate(`/product/legs/${leg._id}`)}
             />
             <h3
               className="legs-name"
               style={{ cursor: "pointer", color: "#007bff" }}
-              onClick={() => navigate(`/product/legs/${leg.id}`)}
+              onClick={() => navigate(`/product/legs/${leg._id}`)}
             >
               {leg.name}
             </h3>
             <p className="legs-price">${leg.price}</p>
             <p className="legs-details">{leg.details}</p>
-            <button className="legs-btn" onClick={() => addToCart(leg.id)}>
+            <button className="legs-btn" onClick={() => addToCart(leg._id)}>
               Add to Cart
             </button>
           </div>

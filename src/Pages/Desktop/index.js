@@ -14,16 +14,24 @@ const DesktopList = () => {
       navigate("/login");
       return;
     }
+
     try {
       const res = await fetch("http://localhost:8000/api/cart/add", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId: userInfo.id, productId }),
+        credentials: "include",
+        body: JSON.stringify({ userId: userInfo.id, productId, quantity: 1 }),
       });
+
       const data = await res.json();
-      data.success ? alert("✅ Added to cart!") : alert("❌ Failed to add to cart");
+      if (res.ok && data.success) {
+        alert("✅ Added to cart!");
+      } else {
+        alert(`❌ Failed: ${data.message || "Unknown error"}`);
+      }
     } catch (err) {
       console.error(err);
+      alert("❌ Something went wrong");
     }
   };
 
@@ -49,18 +57,18 @@ const DesktopList = () => {
       <h2 className="desktop-title">Our Desktops</h2>
       <div className="desktop-grid">
         {desktops.map((desktop) => (
-          <div key={desktop.id} className="desktop-card">
+          <div key={desktop._id} className="desktop-card">
             <img src={desktop.photo} alt={desktop.name} className="desktop-image" />
             <h3
               className="desktop-name"
               style={{ cursor: "pointer", color: "#007bff" }}
-              onClick={() => navigate(`/product/desktops/${desktop.id}`)}
+              onClick={() => navigate(`/product/desktops/${desktop._id}`)}
             >
               {desktop.name}
             </h3>
             <p className="desktop-price">${desktop.price}</p>
             <p className="desktop-details">{desktop.details}</p>
-            <button onClick={() => addToCart(desktop.id)}>Add to Cart</button>
+            <button onClick={() => addToCart(desktop._id)}>Add to Cart</button>
           </div>
         ))}
       </div>

@@ -16,6 +16,8 @@ import SignUp from "./Pages/SignUp";
 import Profile from "./Pages/Profile";
 import ProfileInformation from "./Pages/Profile/Information";
 import Dashboard from "./Pages/DASHBOARD";
+import HelpCenter from "./Pages/Help";
+import Verification from "./Pages/Verification"; // ✅ Added
 
 // Product Pages (category lists)
 import DesktopList from "./Pages/Desktop";
@@ -66,6 +68,14 @@ function App() {
             element={
               <LayoutWithHeaderFooter>
                 <SignUp />
+              </LayoutWithHeaderFooter>
+            }
+          />
+          <Route
+          path="/verify"// ✅ Verification route
+            element={
+              <LayoutWithHeaderFooter>
+                <Verification />
               </LayoutWithHeaderFooter>
             }
           />
@@ -145,11 +155,21 @@ function App() {
               </LayoutWithHeaderFooter>
             }
           />
-             <Route
+          <Route
             path="/product/laptops/:id"
             element={
               <LayoutWithHeaderFooter>
                 <Laptop />
+              </LayoutWithHeaderFooter>
+            }
+          />
+
+          {/* Public Help route */}
+          <Route
+            path="/help"
+            element={
+              <LayoutWithHeaderFooter>
+                <HelpCenter />
               </LayoutWithHeaderFooter>
             }
           />

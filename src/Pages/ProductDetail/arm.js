@@ -4,7 +4,7 @@ import useAuth from "../../hooks/useAuth";
 import "./style.css";
 
 const Arm = () => {
-  const { id } = useParams(); // This is the MongoDB _id from the ArmList
+  const { id } = useParams(); // This is the MongoDB _id
   const [product, setProduct] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [loading, setLoading] = useState(true);
@@ -13,6 +13,7 @@ const Arm = () => {
   const { userInfo } = useAuth();
   const navigate = useNavigate();
 
+  // Fetch product details
   useEffect(() => {
     const fetchProduct = async () => {
       setLoading(true);
@@ -37,6 +38,7 @@ const Arm = () => {
     fetchProduct();
   }, [id]);
 
+  // ✅ Reuse same addToCart logic
   const addToCart = async () => {
     if (!userInfo) return navigate("/login");
 
@@ -44,8 +46,8 @@ const Arm = () => {
       const res = await fetch("http://localhost:8000/api/cart/add", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include", // ✅ send JWT cookie
         body: JSON.stringify({
-          userId: userInfo.id,
           productId: product._id, // ✅ use MongoDB _id
           quantity,
         }),
@@ -78,14 +80,18 @@ const Arm = () => {
         <p className="details">{product.details}</p>
 
         <div className="quantity-section">
-          <button onClick={() => setQuantity(prev => Math.max(1, prev - 1))}>-</button>
+          <button onClick={() => setQuantity((prev) => Math.max(1, prev - 1))}>
+            -
+          </button>
           <input
             type="number"
             min="1"
             value={quantity}
-            onChange={e => setQuantity(Math.max(1, Number(e.target.value)))}
+            onChange={(e) =>
+              setQuantity(Math.max(1, Number(e.target.value)))
+            }
           />
-          <button onClick={() => setQuantity(prev => prev + 1)}>+</button>
+          <button onClick={() => setQuantity((prev) => prev + 1)}>+</button>
         </div>
 
         <button className="add-to-cart-btn" onClick={addToCart}>

@@ -32,15 +32,21 @@ const Desktop = () => {
 
   const addToCart = async () => {
     if (!userInfo) return navigate("/login");
+
     try {
       const res = await fetch("http://localhost:8000/api/cart/add", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId: userInfo.id, productId: product._id, quantity }),
+        credentials: "include", // ✅ include JWT cookie
+        body: JSON.stringify({ productId: product._id, quantity }), // ✅ backend gets userId from JWT
       });
+
       const data = await res.json();
-      if (res.ok && data.success) alert("✅ Added to cart!");
-      else alert(`❌ Failed: ${data.message || "Unknown error"}`);
+      if (res.ok && data.success) {
+        alert("✅ Added to cart!");
+      } else {
+        alert(`❌ Failed: ${data.message || "Unknown error"}`);
+      }
     } catch (err) {
       console.error(err);
       alert("❌ Something went wrong");
@@ -63,7 +69,12 @@ const Desktop = () => {
 
         <div className="quantity-section">
           <button onClick={() => setQuantity(prev => Math.max(1, prev - 1))}>-</button>
-          <input type="number" min="1" value={quantity} onChange={e => setQuantity(Math.max(1, Number(e.target.value)))} />
+          <input
+            type="number"
+            min="1"
+            value={quantity}
+            onChange={e => setQuantity(Math.max(1, Number(e.target.value)))}
+          />
           <button onClick={() => setQuantity(prev => prev + 1)}>+</button>
         </div>
 

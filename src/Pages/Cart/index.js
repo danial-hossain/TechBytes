@@ -1,30 +1,40 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
 import "./style.css";
 
 const Cart = () => {
   const [cart, setCart] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [userId, setUserId] = useState(null);
+
+  const { userInfo } = useAuth(); // useAuth to get logged-in user
   const navigate = useNavigate();
 
-  // Get userId from localStorage
+  // Redirect if not logged in
   useEffect(() => {
-    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-    if (userInfo && userInfo.id) setUserId(userInfo.id);
-    else navigate("/login");
-  }, [navigate]);
+    if (!userInfo) navigate("/login");
+  }, [userInfo, navigate]);
 
   // Fetch cart
   useEffect(() => {
     const fetchCart = async () => {
-      if (!userId) return;
+      if (!userInfo) return;
+
       try {
-        const res = await fetch(`http://localhost:8000/api/cart/${userId}`);
+        const res = await fetch("http://localhost:8000/api/cart", {
+          method: "GET",
+          credentials: "include", // ✅ send JWT cookie
+        });
+
         if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
         const data = await res.json();
-        setCart(Array.isArray(data) ? data.filter(item => item.product) : []);
+
+        if (data.success) {
+          setCart(Array.isArray(data.cart) ? data.cart.filter((item) => item.product) : []);
+        } else {
+          setError(data.message || "Failed to fetch cart");
+        }
       } catch (err) {
         console.error(err);
         setError("Failed to fetch cart");
@@ -32,40 +42,54 @@ const Cart = () => {
         setLoading(false);
       }
     };
+
     fetchCart();
-  }, [userId]);
+  }, [userInfo]);
 
-  // Total Price
-  const totalPrice = cart.reduce((total, item) => total + item.product.price * item.quantity, 0);
+  // Total price
+  const totalPrice = cart.reduce(
+    (total, item) => total + item.product.price * item.quantity,
+    0
+  );
 
-  // Delete Item
+  // Delete item
   const handleDelete = async (itemId) => {
     try {
-      const res = await fetch(`http://localhost:8000/api/cart/delete/${itemId}`, { method: "DELETE" });
-      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-      setCart(cart.filter(item => item._id !== itemId));
+      const res = await fetch(`http://localhost:8000/api/cart/delete/${itemId}`, {
+        method: "DELETE",
+        credentials: "include", // ✅ send JWT cookie
+      });
+
+      const data = await res.json();
+      if (!res.ok || !data.success) throw new Error(data.message || "Delete failed");
+
+      setCart((prev) => prev.filter((item) => item._id !== itemId));
     } catch (err) {
-      console.error(err);
+      console.error("Failed to delete item:", err);
       setError("Failed to delete item");
     }
   };
 
-  // Update Quantity
+  // Update quantity
   const handleUpdateQuantity = async (itemId, newQuantity) => {
     if (newQuantity < 1) return;
+
     try {
       const res = await fetch(`http://localhost:8000/api/cart/update/${itemId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
+        credentials: "include", // ✅ send JWT cookie
         body: JSON.stringify({ quantity: newQuantity }),
       });
-      if (!res.ok) throw new Error("Failed to update quantity");
 
-      setCart(cart.map(item =>
-        item._id === itemId ? { ...item, quantity: newQuantity } : item
-      ));
+      const data = await res.json();
+      if (!res.ok || !data.success) throw new Error(data.message || "Update failed");
+
+      setCart((prev) =>
+        prev.map((item) => (item._id === itemId ? { ...item, quantity: newQuantity } : item))
+      );
     } catch (err) {
-      console.error(err);
+      console.error("Failed to update quantity:", err);
       setError("Failed to update quantity");
     }
   };
@@ -89,8 +113,9 @@ const Cart = () => {
             <span>Subtotal</span>
             <span>Action</span>
           </div>
+
           <div className="cart-items-list">
-            {cart.map(item => (
+            {cart.map((item) => (
               <div key={item._id} className="cart-item">
                 <div className="item-product">
                   <img src={item.product.photo} alt={item.product.name} className="item-image" />
@@ -121,6 +146,7 @@ const Cart = () => {
               </div>
             ))}
           </div>
+
           <div className="cart-summary">
             <strong>Total: ${totalPrice.toFixed(2)}</strong>
             <button className="checkout-btn">Proceed to Checkout</button>
