@@ -1,4 +1,4 @@
-/* Promo strip */
+/* ====================== Promo Strip ====================== */
 .top-strip {
   background-color: #f85606;
   color: #fff;
@@ -19,12 +19,12 @@
   text-decoration: underline;
 }
 
-/* Main header row */
+/* ====================== Main Header Row ====================== */
 .main-header-content {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 0;
+  padding: 12px 20px;
 }
 
 .header-logo {
@@ -43,11 +43,43 @@
   font-weight: bold;
 }
 
+/* ====================== Search Bar ====================== */
 .header-search {
-  flex: 1;
-  margin: 0 20px;
+  flex: 1;               /* grow to fill space */
+  max-width: 500px;      /* optional: max width of search bar */
+  margin: 0 20px;        /* spacing left & right */
 }
 
+.header-search .search-box {
+  display: flex;
+  width: 100%;
+}
+
+.header-search .search-input {
+  flex: 1;
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px 0 0 4px;
+  outline: none;
+  font-size: 14px;
+}
+
+.header-search .search-button {
+  padding: 6px 12px;
+  border: none;
+  background-color: #f85606;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 0 4px 4px 0;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.header-search .search-button:hover {
+  background-color: #d94b00;
+}
+
+/* ====================== Icons + Login ====================== */
 .header-icons {
   display: flex;
   align-items: center;
@@ -79,7 +111,7 @@
   padding: 2px 5px;
 }
 
-/* Sub-header row */
+/* ====================== Sub-header Row ====================== */
 .sub-header {
   background-color: #fff;
   border-top: 1px solid #eee;
@@ -100,7 +132,7 @@
   color: #f85606;
 }
 
-/* Navigation row */
+/* ====================== Navigation Row ====================== */
 .navigation-bar {
   background-color: #fff;
   padding: 8px 20px;
