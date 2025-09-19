@@ -7,6 +7,7 @@ import morgan from "morgan";
 import helmet from "helmet";
 import connectDB from "./config/connectDB.js";
 
+
 // Routers
 import userRouter from "./route/user.route.js";
 import armRouter from "./category/arm.js";
@@ -19,6 +20,7 @@ import reportRouter from "./routes/report.route.js";
 import helpRouter from "./routes/help.route.js";
 import homeRouter from "./routes/home.route.js";
 import dashboardRouter from "./routes/dashboard.route.js";
+import searchRouter from "./routes/search.route.js";
 
 // ✅ Import product routers
 import armProductRouter from "./product/arm.js"; // <- single arm product
@@ -72,6 +74,7 @@ app.use("/api/report", reportRouter);
 app.use("/api/help", helpRouter);
 app.use("/api/home", homeRouter);
 app.use("/api/dashboard", dashboardRouter);
+app.use("/api/search", searchRouter);
 
 // ===== DATABASE + SERVER =====
 connectDB()
