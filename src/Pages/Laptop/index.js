@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import "./style.css";
 
-const ElectronicsList = () => {
-  const [products, setProducts] = useState([]);
+const LaptopList = () => {
+  const [laptops, setLaptops] = useState([]);
   const [loading, setLoading] = useState(true);
   const { userInfo } = useAuth();
   const navigate = useNavigate();
@@ -28,38 +28,43 @@ const ElectronicsList = () => {
   };
 
   useEffect(() => {
-    const fetchProducts = async () => {
+    const fetchLaptops = async () => {
       try {
-        const res = await fetch("http://localhost:8000/api/electronics");
+        const res = await fetch("http://localhost:8000/api/laptops");
         const data = await res.json();
-        setProducts(data);
+        setLaptops(data);
       } catch (err) {
         console.error(err);
       } finally {
         setLoading(false);
       }
     };
-    fetchProducts();
+    fetchLaptops();
   }, []);
 
   if (loading) return <p className="loading">Loading...</p>;
 
   return (
-    <div className="electronics-container">
-      <h2 className="electronics-title">Electronics</h2>
-      <div className="electronics-grid">
-        {products.map((product) => (
-          <div key={product.id} className="electronics-card">
-            <img src={product.photo} alt={product.name} />
+    <div className="laptop-container">
+      <h2 className="laptop-title">Our Laptops</h2>
+      <div className="laptop-grid">
+        {laptops.map((laptop) => (
+          <div key={laptop.id} className="laptop-card">
+            <img
+              src={laptop.photo}
+              alt={laptop.name}
+              style={{ cursor: "pointer" }}
+              onClick={() => navigate(`/product/laptops/${laptop.id}`)}
+            />
             <h3
               style={{ cursor: "pointer", color: "#007bff" }}
-              onClick={() => navigate(`/product/electronics/${product.id}`)}
+              onClick={() => navigate(`/product/laptops/${laptop.id}`)}
             >
-              {product.name}
+              {laptop.name}
             </h3>
-            <p>${product.price}</p>
-            <p>{product.details}</p>
-            <button onClick={() => addToCart(product.id)}>Add to Cart</button>
+            <p>${laptop.price}</p>
+            <p>{laptop.details}</p>
+            <button onClick={() => addToCart(laptop.id)}>Add to Cart</button>
           </div>
         ))}
       </div>
@@ -67,4 +72,4 @@ const ElectronicsList = () => {
   );
 };
 
-export default ElectronicsList;
+export default LaptopList;

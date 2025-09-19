@@ -17,13 +17,19 @@ import Profile from "./Pages/Profile";
 import ProfileInformation from "./Pages/Profile/Information";
 import Dashboard from "./Pages/DASHBOARD";
 
-// Product Pages
-import Desktop from "./Pages/Desktop";
-import Laptop from "./Pages/LaptopDetail";
-import Arm from "./Pages/Arm";
-import Legs from "./Pages/Leg";
-import Electronics from "./Pages/Electronics";
-import ProductDetail from "./Pages/ProductDetail"; // ✅ Import ProductDetail
+// Product Pages (category lists)
+import DesktopList from "./Pages/Desktop";
+import LaptopList from "./Pages/Laptop";
+import ArmList from "./Pages/Arm";
+import LegList from "./Pages/Leg";
+import ElectronicsList from "./Pages/Electronics";
+
+// Product Detail Pages
+import Arm from "./Pages/ProductDetail/arm";
+import Legs from "./Pages/ProductDetail/leg";
+import Electronics from "./Pages/ProductDetail/electronics";
+import Desktop from "./Pages/ProductDetail/desktop";
+import Laptop from "./Pages/ProductDetail/laptop";
 
 const LayoutWithHeaderFooter = ({ children }) => (
   <>
@@ -64,12 +70,12 @@ function App() {
             }
           />
 
-          {/* Product routes (public) */}
+          {/* Product category pages (lists) */}
           <Route
             path="/desktops"
             element={
               <LayoutWithHeaderFooter>
-                <Desktop />
+                <DesktopList />
               </LayoutWithHeaderFooter>
             }
           />
@@ -77,7 +83,7 @@ function App() {
             path="/laptops"
             element={
               <LayoutWithHeaderFooter>
-                <Laptop />
+                <LaptopList />
               </LayoutWithHeaderFooter>
             }
           />
@@ -85,7 +91,7 @@ function App() {
             path="/arms"
             element={
               <LayoutWithHeaderFooter>
-                <Arm />
+                <ArmList />
               </LayoutWithHeaderFooter>
             }
           />
@@ -93,7 +99,7 @@ function App() {
             path="/legs"
             element={
               <LayoutWithHeaderFooter>
-                <Legs />
+                <LegList />
               </LayoutWithHeaderFooter>
             }
           />
@@ -101,17 +107,49 @@ function App() {
             path="/electronics"
             element={
               <LayoutWithHeaderFooter>
-                <Electronics />
+                <ElectronicsList />
               </LayoutWithHeaderFooter>
             }
           />
 
-          {/* ✅ Product detail route */}
+          {/* Product detail routes */}
           <Route
-            path="/product/:id"
+            path="/product/arms/:id"
             element={
               <LayoutWithHeaderFooter>
-                <ProductDetail />
+                <Arm />
+              </LayoutWithHeaderFooter>
+            }
+          />
+          <Route
+            path="/product/legs/:id"
+            element={
+              <LayoutWithHeaderFooter>
+                <Legs />
+              </LayoutWithHeaderFooter>
+            }
+          />
+          <Route
+            path="/product/electronics/:id"
+            element={
+              <LayoutWithHeaderFooter>
+                <Electronics />
+              </LayoutWithHeaderFooter>
+            }
+          />
+          <Route
+            path="/product/desktops/:id"
+            element={
+              <LayoutWithHeaderFooter>
+                <Desktop />
+              </LayoutWithHeaderFooter>
+            }
+          />
+             <Route
+            path="/product/laptops/:id"
+            element={
+              <LayoutWithHeaderFooter>
+                <Laptop />
               </LayoutWithHeaderFooter>
             }
           />
@@ -147,7 +185,6 @@ function App() {
           {/* Admin routes (no header/footer) */}
           <Route element={<ProtectedRoute allowedRoles={["ADMIN"]} />}>
             <Route path="/dashboard" element={<Dashboard />} />
-            {/* You can add more admin routes here */}
           </Route>
         </Routes>
       </BrowserRouter>

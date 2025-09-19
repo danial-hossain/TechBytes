@@ -21,9 +21,9 @@ const ArmList = () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          userId: userInfo.id,   // ✅ your userId from localStorage/auth
-          productId,             // ✅ correct MongoDB _id
-          quantity: 1,           // ✅ default quantity
+          userId: userInfo.id,
+          productId,
+          quantity: 1,
         }),
       });
 
@@ -62,14 +62,26 @@ const ArmList = () => {
       <h2 className="arm-title">Arm Prosthetics</h2>
       <div className="arm-grid">
         {arms.map((product) => (
-          <div key={product._id} className="arm-card">
+          <div key={product.id} className="arm-card">
             <img src={product.photo} alt={product.name} className="arm-image" />
-            <h3 className="arm-name">{product.name}</h3>
+
+            {/* Clickable product name */}
+            <h3
+              className="arm-name"
+              style={{ cursor: "pointer", color: "#007bff" }}
+              onClick={() => {
+                console.log("Frontend: Navigating to product with ID:", product.id);
+                navigate(`/product/arms/${product.id}`);
+              }}
+            >
+              {product.name}
+            </h3>
+
             <p className="arm-price">${product.price}</p>
             <p className="arm-details">{product.details}</p>
             <button
               className="arm-btn"
-              onClick={() => addToCart(product._id)} // ✅ use _id
+              onClick={() => addToCart(product.id)} // ✅ Use product.id
             >
               Add to Cart
             </button>

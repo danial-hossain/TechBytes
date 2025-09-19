@@ -12,17 +12,26 @@ import userRouter from "./route/user.route.js";
 import armRouter from "./category/arm.js";
 import electronicsRouter from "./category/electronics.js";
 import laptopRouter from "./category/laptop.js";
-import desktopRouter from "./category/desktop.js"; // ✅ Desktop router
-import legsRouter from "./category/legs.js";       // ✅ Prosthetic Legs router
+import desktopRouter from "./category/desktop.js";
+import legsRouter from "./category/legs.js";
 import cartRouter from "./routes/cart.js";
 import reportRouter from "./routes/report.route.js";
 import helpRouter from "./routes/help.route.js";
 import homeRouter from "./routes/home.route.js";
-import dashboardRouter from "./routes/dashboard.route.js"; // ✅ NEW Dashboard router
+import dashboardRouter from "./routes/dashboard.route.js";
+
+// ✅ Import product routers
+import armProductRouter from "./product/arm.js"; // <- single arm product
+import electronicsProductRouter from "./product/electronics.js";
+
+import laptopProductRouter from "./product/laptop.js";
+import desktopProductRouter from "./product/desktop.js";
+import legsProductRouter from "./product/legs.js";
+// You can similarly import electronicsProductRouter, etc.
 
 dotenv.config();
 
-const app = express(); // initialize app
+const app = express();
 
 // ===== MIDDLEWARE =====
 app.use(express.json());
@@ -45,16 +54,24 @@ app.get("/", (req, res) => {
 
 // ===== ROUTES =====
 app.use("/api/user", userRouter);
-app.use("/api/arm", armRouter);
+app.use("/api/arm", armRouter);           // All Arm products
+app.use("/api/arm-product", armProductRouter); // Single Arm product by ID
 app.use("/api/electronics", electronicsRouter);
+app.use("/api/electronics-product", electronicsProductRouter);
+
 app.use("/api/laptops", laptopRouter);
+app.use("/api/laptop-product", laptopProductRouter);
+
 app.use("/api/desktop", desktopRouter);
-app.use("/api/legs", legsRouter); // ✅ Prosthetic Legs route
+app.use("/api/desktop-product", desktopProductRouter);
+
+app.use("/api/legs", legsRouter);
+app.use("/api/legs-product", legsProductRouter);
 app.use("/api/cart", cartRouter);
 app.use("/api/report", reportRouter);
 app.use("/api/help", helpRouter);
 app.use("/api/home", homeRouter);
-app.use("/api/dashboard", dashboardRouter); // ✅ Admin Dashboard route
+app.use("/api/dashboard", dashboardRouter);
 
 // ===== DATABASE + SERVER =====
 connectDB()

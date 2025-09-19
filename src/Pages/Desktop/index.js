@@ -1,4 +1,3 @@
-// src/Pages/Desktop/index.js
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
@@ -15,31 +14,27 @@ const DesktopList = () => {
       navigate("/login");
       return;
     }
-
     try {
       const res = await fetch("http://localhost:8000/api/cart/add", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId: userInfo.id, productId }),
       });
-
       const data = await res.json();
-      if (data.success) alert("✅ Added to cart!");
-      else alert("❌ Failed to add to cart");
-    } catch (error) {
-      console.error("Error adding to cart:", error);
+      data.success ? alert("✅ Added to cart!") : alert("❌ Failed to add to cart");
+    } catch (err) {
+      console.error(err);
     }
   };
 
   useEffect(() => {
     const fetchDesktops = async () => {
       try {
-        const res = await fetch("http://localhost:8000/api/desktop"); // ✅ Backend Desktop route
+        const res = await fetch("http://localhost:8000/api/desktop");
         const data = await res.json();
-        console.log("Desktop data:", data); // Debugging
         setDesktops(data);
-      } catch (error) {
-        console.error("Error fetching desktops:", error);
+      } catch (err) {
+        console.error(err);
       } finally {
         setLoading(false);
       }
@@ -56,12 +51,16 @@ const DesktopList = () => {
         {desktops.map((desktop) => (
           <div key={desktop.id} className="desktop-card">
             <img src={desktop.photo} alt={desktop.name} className="desktop-image" />
-            <h3 className="desktop-name">{desktop.name}</h3>
+            <h3
+              className="desktop-name"
+              style={{ cursor: "pointer", color: "#007bff" }}
+              onClick={() => navigate(`/product/desktops/${desktop.id}`)}
+            >
+              {desktop.name}
+            </h3>
             <p className="desktop-price">${desktop.price}</p>
             <p className="desktop-details">{desktop.details}</p>
-            <button className="desktop-btn" onClick={() => addToCart(desktop.id)}>
-              Add to Cart
-            </button>
+            <button onClick={() => addToCart(desktop.id)}>Add to Cart</button>
           </div>
         ))}
       </div>

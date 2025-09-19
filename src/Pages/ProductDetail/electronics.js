@@ -3,52 +3,53 @@ import { useParams, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import "./style.css";
 
-const ProductDetail = () => {
+const Electronics = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [quantity, setQuantity] = useState(1);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const { userInfo } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProduct = async () => {
+      setLoading(true);
+      setError(null);
       try {
-        const res = await fetch(`http://localhost:8000/api/electronics/${id}`);
+        const res = await fetch(`http://localhost:8000/api/electronics-product/${id}`);
         const data = await res.json();
+        if (!res.ok) throw new Error(data.message || "Product not found");
         setProduct(data);
       } catch (err) {
-        console.error(err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
       }
     };
     fetchProduct();
   }, [id]);
 
   const addToCart = async () => {
-    if (!userInfo) {
-      navigate("/login");
-      return;
-    }
+    if (!userInfo) return navigate("/login");
     try {
       const res = await fetch("http://localhost:8000/api/cart/add", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
-          userId: userInfo.id, 
-          productId: product.id, 
-          quantity, // send correct quantity
-        }),
+        body: JSON.stringify({ userId: userInfo.id, productId: product._id, quantity }),
       });
       const data = await res.json();
-      data.success ? alert("✅ Added to cart!") : alert("❌ Failed to add to cart");
+      if (res.ok && data.success) alert("✅ Added to cart!");
+      else alert(`❌ Failed: ${data.message || "Unknown error"}`);
     } catch (err) {
       console.error(err);
+      alert("❌ Something went wrong");
     }
   };
 
-  const increment = () => setQuantity(prev => prev + 1);
-  const decrement = () => setQuantity(prev => (prev > 1 ? prev - 1 : 1));
-
-  if (!product) return <p className="loading">Loading product...</p>;
+  if (loading) return <p className="loading">Loading product...</p>;
+  if (error) return <p className="error">{error}</p>;
+  if (!product) return <p>Product not found!</p>;
 
   return (
     <div className="product-detail-container">
@@ -61,22 +62,15 @@ const ProductDetail = () => {
         <p className="details">{product.details}</p>
 
         <div className="quantity-section">
-          <button onClick={decrement}>-</button>
-          <input 
-            type="number" 
-            min="1" 
-            value={quantity} 
-            onChange={e => setQuantity(Math.max(1, Number(e.target.value)))}
-          />
-          <button onClick={increment}>+</button>
+          <button onClick={() => setQuantity(prev => Math.max(1, prev - 1))}>-</button>
+          <input type="number" min="1" value={quantity} onChange={e => setQuantity(Math.max(1, Number(e.target.value)))} />
+          <button onClick={() => setQuantity(prev => prev + 1)}>+</button>
         </div>
 
-        <button className="add-to-cart-btn" onClick={addToCart}>
-          Add to Cart
-        </button>
+        <button className="add-to-cart-btn" onClick={addToCart}>Add to Cart</button>
       </div>
     </div>
   );
 };
 
-export default ProductDetail;
+export default Electronics;

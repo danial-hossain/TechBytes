@@ -1,12 +1,16 @@
 import mongoose from "mongoose";
 
 // Only define _id, do NOT manually require id
-const productSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  price: { type: Number, required: true },
-  photo: { type: String, required: true },
-  details: { type: String, required: true },
-});
+const productSchema = new mongoose.Schema(
+  {
+    name: { type: String, required: true },
+    price: { type: Number, required: true },
+    photo: { type: String, required: true },
+    details: { type: String, required: true },
+  },
+  // 🔹 Enable virtual 'id' property
+  { toJSON: { virtuals: true }, id: true }
+);
 
 const categorySchema = new mongoose.Schema({
   name: { type: String, required: true },

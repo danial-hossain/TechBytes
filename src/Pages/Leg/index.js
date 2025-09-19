@@ -53,8 +53,21 @@ const LegsList = () => {
       <div className="legs-grid">
         {legs.map((leg) => (
           <div key={leg.id} className="legs-card">
-            <img src={leg.photo} alt={leg.name} className="legs-image" />
-            <h3 className="legs-name">{leg.name}</h3>
+            {/* Navigate to detail page on click */}
+            <img
+              src={leg.photo}
+              alt={leg.name}
+              className="legs-image"
+              style={{ cursor: "pointer" }}
+              onClick={() => navigate(`/product/legs/${leg.id}`)}
+            />
+            <h3
+              className="legs-name"
+              style={{ cursor: "pointer", color: "#007bff" }}
+              onClick={() => navigate(`/product/legs/${leg.id}`)}
+            >
+              {leg.name}
+            </h3>
             <p className="legs-price">${leg.price}</p>
             <p className="legs-details">{leg.details}</p>
             <button className="legs-btn" onClick={() => addToCart(leg.id)}>
