@@ -1,6 +1,5 @@
-// server/routes/search.route.js
 import { Router } from "express";
-import Category from "../models/category.model.js"; // centralized category model
+import Category from "../models/category.model.js";
 
 const router = Router();
 
@@ -21,13 +20,14 @@ router.get("/", async (req, res) => {
       "products.name": { $regex: query, $options: "i" },
     });
 
-    // Extract matching products from each category
+    // Extract **full product objects** from each category
     const results = categories.flatMap(category =>
       category.products.filter(product =>
         product.name.toLowerCase().includes(query.toLowerCase())
       )
     );
 
+    // ✅ Send full product objects
     res.json(results);
   } catch (err) {
     console.error("Search error:", err);

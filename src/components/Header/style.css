@@ -1,4 +1,4 @@
-/* ====================== Promo Strip ====================== */
+/* Promo strip */
 .top-strip {
   background-color: #f85606;
   color: #fff;
@@ -19,12 +19,12 @@
   text-decoration: underline;
 }
 
-/* ====================== Main Header Row ====================== */
+/* Main header row */
 .main-header-content {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 20px;
+  padding: 12px 0;
 }
 
 .header-logo {
@@ -43,43 +43,40 @@
   font-weight: bold;
 }
 
-/* ====================== Search Bar ====================== */
 .header-search {
-  flex: 1;               /* grow to fill space */
-  max-width: 500px;      /* optional: max width of search bar */
-  margin: 0 20px;        /* spacing left & right */
+  flex: 1;
+  margin: 0 20px;
 }
 
-.header-search .search-box {
+/* Search box */
+.search-box {
   display: flex;
+  align-items: center;
   width: 100%;
 }
 
-.header-search .search-input {
+.search-input {
   flex: 1;
-  padding: 6px 10px;
+  padding: 8px 10px;
+  font-size: 14px;
   border: 1px solid #ccc;
   border-radius: 4px 0 0 4px;
-  outline: none;
-  font-size: 14px;
 }
 
-.header-search .search-button {
-  padding: 6px 12px;
-  border: none;
+.search-button {
+  padding: 8px 16px;
   background-color: #f85606;
-  color: #fff;
-  cursor: pointer;
+  color: white;
+  border: none;
   border-radius: 0 4px 4px 0;
-  font-weight: bold;
-  font-size: 14px;
+  cursor: pointer;
 }
 
-.header-search .search-button:hover {
-  background-color: #d94b00;
+.search-button:hover {
+  background-color: #e04d05;
 }
 
-/* ====================== Icons + Login ====================== */
+/* Icons + account */
 .header-icons {
   display: flex;
   align-items: center;
@@ -111,7 +108,7 @@
   padding: 2px 5px;
 }
 
-/* ====================== Sub-header Row ====================== */
+/* Sub-header */
 .sub-header {
   background-color: #fff;
   border-top: 1px solid #eee;
@@ -130,15 +127,4 @@
 .sub-header .nav-link:hover,
 .sub-header .nav-link.active {
   color: #f85606;
-}
-
-/* ====================== Navigation Row ====================== */
-.navigation-bar {
-  background-color: #fff;
-  padding: 8px 20px;
-}
-
-.nav-btn {
-  font-weight: 500;
-  text-transform: none;
 }
