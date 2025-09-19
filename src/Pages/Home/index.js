@@ -1,6 +1,4 @@
-
-
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import HomeSlider from '../../components/HomeSlider';
 import { LiaShippingFastSolid } from "react-icons/lia";
 import './style.css';
@@ -9,6 +7,28 @@ import ProductList from '../../components/ProductItem/ProductList'; // grid vers
 import Footer from '../../components/Footer';
 
 const Home = () => {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchFeatured = async () => {
+      try {
+        const res = await fetch("http://localhost:8000/api/home"); // 👈 your backend endpoint
+        const data = await res.json();
+        setProducts(data);
+      } catch (err) {
+        console.error("Error fetching featured products:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchFeatured();
+  }, []);
+
+  if (loading) {
+    return <p className="loading">Loading...</p>;
+  }
+
   return (
     <div>
       {/* ==== Home Slider ==== */}
@@ -26,7 +46,7 @@ const Home = () => {
 
           {/* Grid of products */}
           <div className="featured-products-box">
-            <ProductList />
+            <ProductList products={products} />
           </div>
         </div>
       </section>
@@ -49,7 +69,7 @@ const Home = () => {
         </div>
       </section>
 
-     
+      <Footer />
     </div>
   );
 };
