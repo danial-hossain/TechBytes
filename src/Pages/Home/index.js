@@ -1,26 +1,33 @@
-// Copyright 2024 Google LLC
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import HomeSlider from '../../components/HomeSlider';
 import { LiaShippingFastSolid } from "react-icons/lia";
 import './style.css';
 import AdsBannerSlider from '../../components/AdsBannerSlider';
-import ProductList from '../../components/ProductItem/ProductList'; // grid version
 import Footer from '../../components/Footer';
 
 const Home = () => {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchFeatured = async () => {
+      try {
+        const res = await fetch("http://localhost:8000/api/home");
+        const data = await res.json();
+        setProducts(data);
+      } catch (err) {
+        console.error("Error fetching featured products:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchFeatured();
+  }, []);
+
+  if (loading) {
+    return <p className="loading">Loading...</p>;
+  }
+
   return (
     <div>
       {/* ==== Home Slider ==== */}
@@ -36,9 +43,15 @@ const Home = () => {
             </p>
           </div>
 
-          {/* Grid of products */}
           <div className="featured-products-box">
-            <ProductList />
+            {products.map((p) => (
+              <div key={p._id} className="product-card">
+                <img src={p.photo} alt={p.name} />
+                <h3>{p.name}</h3>
+                <p>${p.price}</p>
+                <p>{p.details}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -61,7 +74,7 @@ const Home = () => {
         </div>
       </section>
 
-     
+      <Footer />
     </div>
   );
 };

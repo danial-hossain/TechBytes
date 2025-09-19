@@ -17,6 +17,7 @@ import legsRouter from "./category/legs.js";       // ✅ Prosthetic Legs router
 import cartRouter from "./routes/cart.js";
 import reportRouter from "./routes/report.route.js";
 import helpRouter from "./routes/help.route.js";
+import homeRouter from "./routes/home.route.js";
 import dashboardRouter from "./routes/dashboard.route.js"; // ✅ NEW Dashboard router
 
 dotenv.config();
@@ -52,6 +53,7 @@ app.use("/api/legs", legsRouter); // ✅ Prosthetic Legs route
 app.use("/api/cart", cartRouter);
 app.use("/api/report", reportRouter);
 app.use("/api/help", helpRouter);
+app.use("/api/home", homeRouter);
 app.use("/api/dashboard", dashboardRouter); // ✅ Admin Dashboard route
 
 // ===== DATABASE + SERVER =====
