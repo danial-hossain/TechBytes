@@ -32,6 +32,8 @@ import legsProductRouter from "./product/legs.js";
 
 // You can similarly import electronicsProductRouter, etc.
 import productRouter from "./routes/product.route.js";
+import orderRouter from "./routes/order.route.js";   // add this
+
 
 dotenv.config();
 
@@ -79,6 +81,9 @@ app.use("/api/dashboard", dashboardRouter);
 app.use("/api/search", searchRouter);
 
 app.use("/api/product", productRouter);
+
+app.use("/api/orders", orderRouter);   // add this
+
 
 // ===== DATABASE + SERVER =====
 connectDB()

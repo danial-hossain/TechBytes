@@ -31,7 +31,11 @@ const Cart = () => {
         const data = await res.json();
 
         if (data.success) {
-          setCart(Array.isArray(data.cart) ? data.cart.filter((item) => item.product) : []);
+          setCart(
+            Array.isArray(data.cart)
+              ? data.cart.filter((item) => item.product)
+              : []
+          );
         } else {
           setError(data.message || "Failed to fetch cart");
         }
@@ -55,13 +59,17 @@ const Cart = () => {
   // Delete item
   const handleDelete = async (itemId) => {
     try {
-      const res = await fetch(`http://localhost:8000/api/cart/delete/${itemId}`, {
-        method: "DELETE",
-        credentials: "include", // ✅ send JWT cookie
-      });
+      const res = await fetch(
+        `http://localhost:8000/api/cart/delete/${itemId}`,
+        {
+          method: "DELETE",
+          credentials: "include", // ✅ send JWT cookie
+        }
+      );
 
       const data = await res.json();
-      if (!res.ok || !data.success) throw new Error(data.message || "Delete failed");
+      if (!res.ok || !data.success)
+        throw new Error(data.message || "Delete failed");
 
       setCart((prev) => prev.filter((item) => item._id !== itemId));
     } catch (err) {
@@ -75,18 +83,24 @@ const Cart = () => {
     if (newQuantity < 1) return;
 
     try {
-      const res = await fetch(`http://localhost:8000/api/cart/update/${itemId}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include", // ✅ send JWT cookie
-        body: JSON.stringify({ quantity: newQuantity }),
-      });
+      const res = await fetch(
+        `http://localhost:8000/api/cart/update/${itemId}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include", // ✅ send JWT cookie
+          body: JSON.stringify({ quantity: newQuantity }),
+        }
+      );
 
       const data = await res.json();
-      if (!res.ok || !data.success) throw new Error(data.message || "Update failed");
+      if (!res.ok || !data.success)
+        throw new Error(data.message || "Update failed");
 
       setCart((prev) =>
-        prev.map((item) => (item._id === itemId ? { ...item, quantity: newQuantity } : item))
+        prev.map((item) =>
+          item._id === itemId ? { ...item, quantity: newQuantity } : item
+        )
       );
     } catch (err) {
       console.error("Failed to update quantity:", err);
@@ -103,7 +117,9 @@ const Cart = () => {
       {cart.length === 0 ? (
         <div className="empty-cart">
           <p>Your cart is empty.</p>
-          <Link to="/" className="btn-shop">Continue Shopping</Link>
+          <Link to="/" className="btn-shop">
+            Continue Shopping
+          </Link>
         </div>
       ) : (
         <>
@@ -118,22 +134,42 @@ const Cart = () => {
             {cart.map((item) => (
               <div key={item._id} className="cart-item">
                 <div className="item-product">
-                  <img src={item.product.photo} alt={item.product.name} className="item-image" />
+                  <img
+                    src={item.product.photo}
+                    alt={item.product.name}
+                    className="item-image"
+                  />
                   <div>
                     <span className="item-name">{item.product.name}</span>
-                    <span className="item-price">${item.product.price.toFixed(2)}</span>
+                    <span className="item-price">
+                      ${item.product.price.toFixed(2)}
+                    </span>
                   </div>
                 </div>
 
                 <div className="quantity-section">
-                  <button onClick={() => handleUpdateQuantity(item._id, item.quantity - 1)}>-</button>
+                  <button
+                    onClick={() =>
+                      handleUpdateQuantity(item._id, item.quantity - 1)
+                    }
+                  >
+                    -
+                  </button>
                   <input
                     type="number"
                     min="1"
                     value={item.quantity}
-                    onChange={(e) => handleUpdateQuantity(item._id, Number(e.target.value))}
+                    onChange={(e) =>
+                      handleUpdateQuantity(item._id, Number(e.target.value))
+                    }
                   />
-                  <button onClick={() => handleUpdateQuantity(item._id, item.quantity + 1)}>+</button>
+                  <button
+                    onClick={() =>
+                      handleUpdateQuantity(item._id, item.quantity + 1)
+                    }
+                  >
+                    +
+                  </button>
                 </div>
 
                 <div className="item-subtotal">
@@ -141,7 +177,12 @@ const Cart = () => {
                 </div>
 
                 <div>
-                  <button className="delete-btn" onClick={() => handleDelete(item._id)}>Delete</button>
+                  <button
+                    className="delete-btn"
+                    onClick={() => handleDelete(item._id)}
+                  >
+                    Delete
+                  </button>
                 </div>
               </div>
             ))}
@@ -149,7 +190,14 @@ const Cart = () => {
 
           <div className="cart-summary">
             <strong>Total: ${totalPrice.toFixed(2)}</strong>
-            <button className="checkout-btn">Proceed to Checkout</button>
+            <button
+              className="checkout-btn"
+              onClick={() =>
+                navigate("/order", { state: { cart: cart, total: totalPrice } })
+              }
+            >
+              Proceed to Checkout
+            </button>
           </div>
         </>
       )}

@@ -11,6 +11,7 @@ import Footer from "./components/Footer";
 // Pages
 import Home from "./Pages/Home";
 import Cart from "./Pages/Cart";
+import Order from "./Pages/Order"; // ✅ Order page added
 import Login from "./Pages/Login";
 import SignUp from "./Pages/SignUp";
 import Profile from "./Pages/Profile";
@@ -18,7 +19,7 @@ import ProfileInformation from "./Pages/Profile/Information";
 import Dashboard from "./Pages/DASHBOARD";
 import HelpCenter from "./Pages/Help";
 import Verification from './Pages/verification';
-import SearchPage from './Pages/SearchPage'; // ✅ Import SearchPage
+import SearchPage from './Pages/SearchPage'; 
 
 // Product Pages (category lists)
 import DesktopList from "./Pages/Desktop";
@@ -81,7 +82,7 @@ function App() {
             }
           />
 
-          {/* ✅ SearchPage Route */}
+          {/* SearchPage Route */}
           <Route
             path="/search"
             element={
@@ -91,7 +92,7 @@ function App() {
             }
           />
 
-          {/* Product category pages (lists) */}
+          {/* Product category pages */}
           <Route
             path="/desktops"
             element={
@@ -211,9 +212,18 @@ function App() {
                 </LayoutWithHeaderFooter>
               }
             />
+            {/* ✅ Order page route */}
+            <Route
+              path="/order"
+              element={
+                <LayoutWithHeaderFooter>
+                  <Order />
+                </LayoutWithHeaderFooter>
+              }
+            />
           </Route>
 
-          {/* Admin routes (no header/footer) */}
+          {/* Admin routes */}
           <Route element={<ProtectedRoute allowedRoles={["ADMIN"]} />}>
             <Route path="/dashboard" element={<Dashboard />} />
           </Route>

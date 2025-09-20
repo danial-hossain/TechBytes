@@ -1,25 +1,19 @@
 // Footer.jsx
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { LiaShippingFastSolid, LiaGiftSolid } from "react-icons/lia";
 import { PiKeyReturnLight } from "react-icons/pi";
 import { BsWallet2 } from "react-icons/bs";
 import { BiSupport } from "react-icons/bi";
-
 import { Link } from "react-router-dom";
 import Button from "@mui/material/Button";
 import { FaFacebookF, FaPinterestP, FaInstagram } from "react-icons/fa";
 import { AiOutlineYoutube } from "react-icons/ai";
+import useAuth from "../../hooks/useAuth";
 import "./style.css";
 
 const Footer = () => {
+  const { userInfo } = useAuth(); // ✅ get logged-in user
   const [opinion, setOpinion] = useState("");
-  const [token, setToken] = useState(null);
-
-  // Get token from localStorage after login
-  useEffect(() => {
-    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-    if (userInfo && userInfo.accessToken) setToken(userInfo.accessToken);
-  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -29,7 +23,7 @@ const Footer = () => {
       return;
     }
 
-    if (!token) {
+    if (!userInfo) {
       alert("❌ You must be logged in to submit your opinion.");
       return;
     }
@@ -37,12 +31,12 @@ const Footer = () => {
     try {
       const res = await fetch("http://localhost:8000/api/report", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // send token for auth
-        },
-        body: JSON.stringify({ opinion }), // backend gets userId from token
-        credentials: "include", // if backend uses cookies
+        headers: { "Content-Type": "application/json" },
+        credentials: "include", // use cookies if backend requires
+        body: JSON.stringify({
+          opinion,
+          userId: userInfo._id, // send userId to backend
+        }),
       });
 
       const data = await res.json();
@@ -108,14 +102,6 @@ const Footer = () => {
                 techbytes666@gmail.com
               </Link>
               <span className="footer-phone">+8801791416682</span>
-              <div className="footer-chat">
-             
-                <span>
-                  Contact Us
-                  <br />
-                  Get Expert Help
-                </span>
-              </div>
             </div>
 
             {/* Links */}
@@ -168,26 +154,10 @@ const Footer = () => {
       <div className="bottom-strip">
         <div className="container bottom-strip-content">
           <ul className="footer-socials">
-            <li>
-              <Link to="/" target="_blank" className="footer-social-link">
-                <FaFacebookF />
-              </Link>
-            </li>
-            <li>
-              <Link to="/" target="_blank" className="footer-social-link">
-                <AiOutlineYoutube />
-              </Link>
-            </li>
-            <li>
-              <Link to="/" target="_blank" className="footer-social-link">
-                <FaPinterestP />
-              </Link>
-            </li>
-            <li>
-              <Link to="/" target="_blank" className="footer-social-link">
-                <FaInstagram />
-              </Link>
-            </li>
+            <li><Link to="/" target="_blank" className="footer-social-link"><FaFacebookF /></Link></li>
+            <li><Link to="/" target="_blank" className="footer-social-link"><AiOutlineYoutube /></Link></li>
+            <li><Link to="/" target="_blank" className="footer-social-link"><FaPinterestP /></Link></li>
+            <li><Link to="/" target="_blank" className="footer-social-link"><FaInstagram /></Link></li>
           </ul>
           <p className="footer-copy">@ 2025 - TechBytes</p>
         </div>
