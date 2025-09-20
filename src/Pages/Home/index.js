@@ -3,7 +3,6 @@ import HomeSlider from '../../components/HomeSlider';
 import { LiaShippingFastSolid } from "react-icons/lia";
 import './style.css';
 import AdsBannerSlider from '../../components/AdsBannerSlider';
-import Footer from '../../components/Footer';
 
 const Home = () => {
   const [products, setProducts] = useState([]);
@@ -74,7 +73,7 @@ const Home = () => {
         </div>
       </section>
 
-      <Footer />
+    
     </div>
   );
 };

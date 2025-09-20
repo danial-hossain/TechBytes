@@ -7,7 +7,7 @@ const Navigation = () => {
     <nav className="navigation-bar">
       <div className="nav-links">
         <ul>
-          <li><Link to="/">Home</Link></li>
+        
           <li><Link to="/desktops">Desktop</Link></li> {/* Desktop page */}
           <li><Link to="/laptops">Laptop</Link></li>
           <li><Link to="/electronics">Electronics</Link></li>

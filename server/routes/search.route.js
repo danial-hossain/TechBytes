@@ -1,3 +1,4 @@
+// server/routes/search.route.js
 import { Router } from "express";
 import Category from "../models/category.model.js";
 
@@ -15,19 +16,23 @@ router.get("/", async (req, res) => {
   }
 
   try {
-    // Find categories where at least one product matches the search query
+    // Find categories with matching product names
     const categories = await Category.find({
       "products.name": { $regex: query, $options: "i" },
     });
 
-    // Extract **full product objects** from each category
-    const results = categories.flatMap(category =>
-      category.products.filter(product =>
-        product.name.toLowerCase().includes(query.toLowerCase())
-      )
+    // Extract matching products and attach their category slug
+    const results = categories.flatMap((category) =>
+      category.products
+        .filter((product) =>
+          product.name.toLowerCase().includes(query.toLowerCase())
+        )
+        .map((product) => ({
+          ...product.toObject(),
+          categorySlug: category.name.toLowerCase(), // ✅ needed for frontend
+        }))
     );
 
-    // ✅ Send full product objects
     res.json(results);
   } catch (err) {
     console.error("Search error:", err);

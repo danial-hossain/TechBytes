@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "./style.css";
 
 export default function SearchPage() {
   const location = useLocation();
+  const navigate = useNavigate();
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -34,11 +35,19 @@ export default function SearchPage() {
       <h2>Search Results for: "{query}"</h2>
       {loading && <p>Loading...</p>}
       {results.length === 0 && !loading && <p>No results found</p>}
+
       <ul className="search-results-list">
         {results.map((product) => (
-          <li key={product._id} className="search-result-item">
+          <li
+            key={product._id}
+            className="search-result-item"
+            style={{ cursor: "pointer" }}
+            onClick={() =>
+              navigate(`/product/${product.categorySlug}/${product._id}`)
+            }
+          >
             <img
-              src={product.photo}        // backend theke asha image
+              src={product.photo}
               alt={product.name}
               className="search-result-image"
             />

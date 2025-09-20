@@ -29,7 +29,9 @@ import electronicsProductRouter from "./product/electronics.js";
 import laptopProductRouter from "./product/laptop.js";
 import desktopProductRouter from "./product/desktop.js";
 import legsProductRouter from "./product/legs.js";
+
 // You can similarly import electronicsProductRouter, etc.
+import productRouter from "./routes/product.route.js";
 
 dotenv.config();
 
@@ -75,6 +77,8 @@ app.use("/api/help", helpRouter);
 app.use("/api/home", homeRouter);
 app.use("/api/dashboard", dashboardRouter);
 app.use("/api/search", searchRouter);
+
+app.use("/api/product", productRouter);
 
 // ===== DATABASE + SERVER =====
 connectDB()
