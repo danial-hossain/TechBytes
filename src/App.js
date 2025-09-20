@@ -19,7 +19,9 @@ import ProfileInformation from "./Pages/Profile/Information";
 import Dashboard from "./Pages/DASHBOARD";
 import HelpCenter from "./Pages/Help";
 import Verification from './Pages/verification';
-import SearchPage from './Pages/SearchPage'; 
+import SearchPage from './Pages/SearchPage';
+import OrderTracking from "./Pages/OrderTracking"; // make sure the path is correct
+
 
 // Product Pages (category lists)
 import DesktopList from "./Pages/Desktop";
@@ -221,6 +223,16 @@ function App() {
                 </LayoutWithHeaderFooter>
               }
             />
+
+            <Route
+              path="/order-tracking"
+              element={
+                <LayoutWithHeaderFooter>
+                  <OrderTracking />
+                </LayoutWithHeaderFooter>
+              }
+            />
+
           </Route>
 
           {/* Admin routes */}
