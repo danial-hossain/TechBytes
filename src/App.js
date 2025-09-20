@@ -17,7 +17,8 @@ import Profile from "./Pages/Profile";
 import ProfileInformation from "./Pages/Profile/Information";
 import Dashboard from "./Pages/DASHBOARD";
 import HelpCenter from "./Pages/Help";
-import Verification from "./Pages/Verification"; // ✅ Added
+import Verification from './Pages/verification';
+import SearchPage from './Pages/SearchPage'; // ✅ Import SearchPage
 
 // Product Pages (category lists)
 import DesktopList from "./Pages/Desktop";
@@ -72,10 +73,20 @@ function App() {
             }
           />
           <Route
-          path="/verify"// ✅ Verification route
+            path="/verify"
             element={
               <LayoutWithHeaderFooter>
                 <Verification />
+              </LayoutWithHeaderFooter>
+            }
+          />
+
+          {/* ✅ SearchPage Route */}
+          <Route
+            path="/search"
+            element={
+              <LayoutWithHeaderFooter>
+                <SearchPage />
               </LayoutWithHeaderFooter>
             }
           />
