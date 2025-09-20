@@ -22,6 +22,18 @@ export async function registerUserController(req, res) {
       });
     }
 
+
+
+    // ✅ Validate mobile number length
+    if (!/^\d{11}$/.test(mobile)) {
+      return res.status(400).json({
+        message: "Mobile number must be 11 digits",
+        error: true,
+        success: false
+      });
+    }
+
+
     const existingUser = await UserModel.findOne({ email });
     if (existingUser) {
       return res.status(400).json({
@@ -31,6 +43,17 @@ export async function registerUserController(req, res) {
       });
     }
 
+
+
+
+
+
+
+
+
+
+
+
     const salt = await bcryptjs.genSalt(10);
     const hashPassword = await bcryptjs.hash(password, salt);
     const verifyCode = Math.floor(100000 + Math.random() * 900000).toString();
@@ -39,14 +62,13 @@ export async function registerUserController(req, res) {
     const user = new UserModel({
       name,
       email,
-      mobile,
+      mobile: mobile.toString(), // ✅ Ensure mobile is stored as string
       address_details: Array.isArray(address_details) ? address_details : [],
       password: hashPassword,
       otp: verifyCode,
       otpExpires: Date.now() + 600000, // 10 min
-      //otp kotokkon por expire hobe
     });
-    
+
     await user.save();
 
     // send verification email
@@ -81,7 +103,7 @@ export async function registerUserController(req, res) {
     return res
       .status(500)
       .json({ message: error.message, error: true, success: false });
-      //If anything goes wrong, sends a 500 Internal Server Error with the error message.
+    //If anything goes wrong, sends a 500 Internal Server Error with the error message.
   }
 }
 
@@ -95,20 +117,20 @@ export async function verifyEmailController(req, res) {
     const user = await UserModel.findOne({ email });
 
     if (!user)
-    //If no user is found → responds with 400 Bad Request.
+      //If no user is found → responds with 400 Bad Request.
       return res
         .status(400)
         .json({ error: true, success: false, message: "User not found" });
     if (user.otp !== otp)
-    //Checks if the OTP matches the one saved in the database.
-  //If it doesn’t match → responds with Invalid OTP.
+      //Checks if the OTP matches the one saved in the database.
+      //If it doesn’t match → responds with Invalid OTP.
       return res
         .status(400)
         .json({ error: true, success: false, message: "Invalid OTP" });
-        //Checks if the OTP has expired.
-       
+    //Checks if the OTP has expired.
+
     if (user.otpExpires < Date.now())
-     // /If yes → responds with OTP expired.
+      // /If yes → responds with OTP expired.
       return res
         .status(400)
         .json({ error: true, success: false, message: "OTP expired" });
@@ -131,7 +153,7 @@ export async function verifyEmailController(req, res) {
     return res
       .status(500)
       .json({ message: error.message, error: true, success: false });
-      //If any error occurs → responds with 500 Internal Server Error.
+    //If any error occurs → responds with 500 Internal Server Error.
   }
 }
 
@@ -190,7 +212,7 @@ export async function loginUserController(req, res) {
 
 // ===== LOGOUT =====
 export async function logoutController(req, res) {
-  
+
   try {
     const userId = req.userId;
     //Gets the logged-in user’s ID from the request (req.userId).

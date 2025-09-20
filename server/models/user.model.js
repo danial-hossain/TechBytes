@@ -33,8 +33,8 @@ const userSchema = mongoose.Schema({
         default: ""
     },
     mobile: {
-        type: Number,
-        default: null
+        type: String, // ✅ Changed from Number to String
+        required: [true, "Provide mobile number"]
     },
     verify_email: {
         type: Boolean,
@@ -69,7 +69,7 @@ const userSchema = mongoose.Schema({
     ],
     otp: {
         type: String,
-     
+
     },
     otpExpires: {
         type: Date,
