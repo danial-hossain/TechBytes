@@ -18,7 +18,7 @@ import Profile from "./Pages/Profile";
 import ProfileInformation from "./Pages/Profile/Information";
 import Dashboard from "./Pages/DASHBOARD";
 import HelpCenter from "./Pages/Help";
-import Verification from './Pages/verification';
+import Verification from './Pages/Verification';
 import SearchPage from './Pages/SearchPage';
 import OrderTracking from "./Pages/OrderTracking"; // make sure the path is correct
 
