@@ -2,7 +2,7 @@ import { Router } from "express";
 import auth from "../middlewares/auth.js";
 import User from "../models/user.model.js";
 import Category from "../models/category.model.js";
-import CartProduct from "../models/cartproduct.model.js";
+import Order from "../models/order.model.js"; // ✅ replaced CartProduct with Order
 import Report from "../models/report.model.js";
 import Help from "../models/help.model.js";
 
@@ -17,7 +17,7 @@ router.get("/", auth, async (req, res) => {
     }
 
     const userCount = await User.countDocuments();
-    const orderCount = await CartProduct.countDocuments();
+    const orderCount = await Order.countDocuments(); // ✅ changed
     const reportCount = await Report.countDocuments();
     const helpCount = await Help.countDocuments();
 
@@ -62,7 +62,7 @@ router.get("/products", auth, async (req, res) => {
           photo: p.photo,
           details: p.details,
           category: cat.name,
-          _id: p._id, // use Mongoose _id
+          _id: p._id,
         }))
       );
     });
@@ -101,9 +101,10 @@ router.post("/add-product", auth, async (req, res) => {
 router.get("/orders", auth, async (req, res) => {
   try {
     const currentUser = await User.findById(req.userId);
-    if (!currentUser || currentUser.role !== "ADMIN") return res.status(403).json({ message: "Access denied" });
+    if (!currentUser || currentUser.role !== "ADMIN")
+      return res.status(403).json({ message: "Access denied" });
 
-    const orders = await CartProduct.find({});
+    const orders = await Order.find({}); // ✅ fetch all orders
     res.json({ orders });
   } catch (err) {
     console.error("Dashboard orders error:", err);

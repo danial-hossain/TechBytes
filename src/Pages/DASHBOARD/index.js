@@ -12,6 +12,7 @@ const Dashboard = () => {
   const [products, setProducts] = useState([]);
   const [reports, setReports] = useState([]);
   const [helps, setHelps] = useState([]);
+  const [orders, setOrders] = useState([]);
   const [activeTab, setActiveTab] = useState("home");
   const [message, setMessage] = useState("");
 
@@ -67,13 +68,23 @@ const Dashboard = () => {
     }
   };
 
-  const fetchReports = async () => {
+  // ✅ FIXED FUNCTION: fetchReports now maps user info
+  const fetchReports = async () => { // ✅
     try {
       const res = await fetch("http://localhost:8000/api/dashboard/reports", {
         credentials: "include",
       });
       const data = await res.json();
-      setReports(data.reports || []);
+      // ✅ map reports to include user info
+      const mappedReports = (data.reports || []).map(r => ({
+        _id: r._id,
+        opinion: r.opinion,
+        createdAt: r.createdAt,
+        user: r.userId
+          ? { name: r.userId.name, email: r.userId.email }
+          : { name: "Unknown", email: "Unknown" },
+      }));
+      setReports(mappedReports); // ✅
     } catch (err) {
       console.error(err);
     }
@@ -91,12 +102,27 @@ const Dashboard = () => {
     }
   };
 
+  const fetchOrders = async () => {   // ✅ added
+    try {
+      const res = await fetch("http://localhost:8000/api/dashboard/orders", {
+        credentials: "include",
+      });
+      const data = await res.json();
+      setOrders(data.orders || []);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+
+
   const handleTabClick = (tab) => {
     setActiveTab(tab);
     if (tab === "users") fetchUsers();
     if (tab === "products") fetchProducts();
     if (tab === "reports") fetchReports();
     if (tab === "helps") fetchHelps();
+    if (tab === "orders") fetchOrders();
   };
 
   const handleAddProduct = async (e) => {
@@ -238,13 +264,67 @@ const Dashboard = () => {
           </div>
         )}
 
+
+
+
+        {activeTab === "orders" && (
+          <div className="table-container">
+            <h2>All Orders</h2>
+            <table>
+              <thead>
+                <tr>
+                  <th>Order ID</th>
+                  <th>User ID</th>
+                  <th>Products</th>
+                  <th>Subtotal</th>
+                  <th>Total</th>
+                  <th>Payment Status</th>
+                  <th>Created At</th>
+                </tr>
+              </thead>
+              <tbody>
+                {orders.length > 0 ? (
+                  orders.map((order) => (
+                    <tr key={order._id}>
+                      <td>{order.orderId}</td>
+                      <td>{order.userId}</td>
+                      <td>
+                        {order.product_details?.map((p, i) => (
+                          <div key={i}>
+                            {p.name} × {p.quantity}
+                          </div>
+                        ))}
+                      </td>
+                      <td>${order.subTotalAmt}</td>
+                      <td>${order.totalAmt}</td>
+                      <td>{order.payment_status}</td>
+                      <td>{new Date(order.createdAt).toLocaleString()}</td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="7">No orders found.</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        )}
+
+
+
+
+
+
+
         {activeTab === "reports" && (
           <div className="table-container">
             <h2>All Reports</h2>
             <table>
               <thead>
                 <tr>
-                  <th>User ID</th>
+                  <th>User Name</th> {/* ✅ */}
+                  <th>User Email</th> {/* ✅ */}
                   <th>Opinion</th>
                   <th>Created At</th>
                 </tr>
@@ -252,7 +332,8 @@ const Dashboard = () => {
               <tbody>
                 {reports.map((r) => (
                   <tr key={r._id}>
-                    <td>{r.userId}</td>
+                    <td>{r.user.name}</td> {/* ✅ */}
+                    <td>{r.user.email}</td> {/* ✅ */}
                     <td>{r.opinion}</td>
                     <td>{new Date(r.createdAt).toLocaleString()}</td>
                   </tr>
@@ -261,6 +342,9 @@ const Dashboard = () => {
             </table>
           </div>
         )}
+
+
+
 
         {activeTab === "helps" && (
           <div className="table-container">
@@ -285,9 +369,18 @@ const Dashboard = () => {
             </table>
           </div>
         )}
+
+
+
+
+
+
+
+
       </main>
     </div>
   );
 };
+
 
 export default Dashboard;
