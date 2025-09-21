@@ -4,7 +4,7 @@ import useAuth from "../../hooks/useAuth";
 import "./style.css";
 
 const Dashboard = () => {
-  const { userInfo, logout } = useAuth();
+  const { userInfo } = useAuth();
   const navigate = useNavigate();
 
   const [stats, setStats] = useState(null);
@@ -114,6 +114,8 @@ const Dashboard = () => {
     }
   };
 
+  
+
 
 
   const handleTabClick = (tab) => {
@@ -152,6 +154,38 @@ const Dashboard = () => {
     }
   };
 
+
+
+
+    // ✅ Logout function with green tick
+    const handleLogout = async () => {
+      try {
+        const res = await fetch("http://localhost:8000/api/dashboard/logout", {
+          method: "POST",
+          credentials: "include",
+        });
+  
+        if (res.ok) {
+          setMessage({ text: "Logged out successfully ✅", type: "success" });
+          navigate("/login");
+        } else {
+          const data = await res.json();
+          setMessage({ text: data.message || "Logout failed ❌", type: "error" });
+        }
+      } catch (err) {
+        console.error(err);
+        setMessage({ text: "Logout failed ❌", type: "error" });
+      }
+    };
+
+
+
+
+
+
+
+
+
   if (!stats) return <p>Loading dashboard...</p>;
 
   return (
@@ -166,11 +200,25 @@ const Dashboard = () => {
           <li onClick={() => handleTabClick("orders")}>Orders</li>
           <li onClick={() => handleTabClick("reports")}>Reports</li>
           <li onClick={() => handleTabClick("helps")}>Help</li>
-          <li onClick={logout}>Logout</li>
+          <li onClick={handleLogout}>Logout</li>
+
         </ul>
       </aside>
 
       <main className="dashboard-main">
+
+
+          {/* ✅ Display message */}
+          {message.text && (
+          <p style={{ color: message.type === "success" ? "green" : "red", fontWeight: "bold" }}>
+            {message.text}
+          </p>
+        )}
+
+
+
+
+
         {activeTab === "home" && (
           <>
             <h1>Welcome, {userInfo.name}</h1>

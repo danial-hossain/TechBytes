@@ -55,18 +55,19 @@
   margin-bottom: 15px;
 }
 
+/* ✅ Updated Add to Cart button style to match Arm/Laptop */
 .desktop-btn {
-  background: #007bff;
+  background: #007bff;  /* Blue color */
   color: white;
   border: none;
   padding: 10px 16px;
-  border-radius: 8px;
+  border-radius: 8px;   /* Rounded corners */
   cursor: pointer;
   transition: background 0.2s ease;
 }
 
 .desktop-btn:hover {
-  background: #0056b3;
+  background: #0056b3;  /* Darker blue on hover */
 }
 
 .loading {

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import logo from "../../assets/logo.jpg";
 import Search from "../Search";
-import { IoHeartOutline, IoCartOutline, IoReturnUpBackSharp } from "react-icons/io5";
+import {  IoCartOutline } from "react-icons/io5";
 import Navigation from "./Navigation";
 import "./style.css";
 
@@ -44,16 +44,12 @@ const Header = () => {
             <Link to="/login" className="signin-text">Account</Link>
           )}
 
-          <Link to="/returns">
-            <IconWithBadge icon={<IoReturnUpBackSharp size={20} />} count={0} />
-          </Link>
+         
 
-          <Link to="/wishlist">
-            <IconWithBadge icon={<IoHeartOutline size={20} />} count={0} />
-          </Link>
+        
 
           <Link to="/cart">
-            <IconWithBadge icon={<IoCartOutline size={20} />} count={1} />
+            <IconWithBadge icon={<IoCartOutline size={20} />} count={0} />
           </Link>
         </div>
       </div>

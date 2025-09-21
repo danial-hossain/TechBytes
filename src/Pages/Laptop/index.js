@@ -58,18 +58,25 @@ const LaptopList = () => {
             <img
               src={laptop.photo}
               alt={laptop.name}
+              className="laptop-image"
               style={{ cursor: "pointer" }}
               onClick={() => navigate(`/product/laptops/${laptop._id}`)}
             />
             <h3
+              className="laptop-name"
               style={{ cursor: "pointer", color: "#007bff" }}
               onClick={() => navigate(`/product/laptops/${laptop._id}`)}
             >
               {laptop.name}
             </h3>
-            <p>${laptop.price}</p>
-            <p>{laptop.details}</p>
-            <button onClick={() => addToCart(laptop._id)}>Add to Cart</button>
+            <p className="laptop-price">${laptop.price}</p>
+            <p className="laptop-details">{laptop.details}</p>
+            <button
+              className="laptop-btn"
+              onClick={() => addToCart(laptop._id)}
+            >
+              Add to Cart
+            </button>
           </div>
         ))}
       </div>

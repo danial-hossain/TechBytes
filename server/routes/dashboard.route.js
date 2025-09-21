@@ -140,4 +140,26 @@ router.get("/helps", auth, async (req, res) => {
   }
 });
 
+
+
+// ===== LOGOUT =====
+router.post("/logout", auth, async (req, res) => {
+  try {
+    const user = await User.findById(req.userId);
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    // ✅ Mark user inactive
+    user.status = "Inactive";
+    await user.save();
+
+    // ✅ Clear cookie if using cookie auth
+    res.clearCookie("token"); 
+
+    res.json({ message: "Logged out successfully ✅" });
+  } catch (err) {
+    console.error("Logout error:", err);
+    res.status(500).json({ message: "Server error", error: err.message });
+  }
+});
+
 export default router;

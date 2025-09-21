@@ -68,7 +68,7 @@ const DesktopList = () => {
             </h3>
             <p className="desktop-price">${desktop.price}</p>
             <p className="desktop-details">{desktop.details}</p>
-            <button onClick={() => addToCart(desktop._id)}>Add to Cart</button>
+            <button   className="desktop-btn"  onClick={() => addToCart(desktop._id)}>Add to Cart</button>
           </div>
         ))}
       </div>
