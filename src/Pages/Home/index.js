@@ -47,7 +47,7 @@ const Home = () => {
               <div key={p._id} className="product-card">
                 <img src={p.photo} alt={p.name} />
                 <h3>{p.name}</h3>
-                <p>${p.price}</p>
+             
                 <p>{p.details}</p>
               </div>
             ))}
