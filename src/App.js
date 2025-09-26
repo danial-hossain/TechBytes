@@ -7,6 +7,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import CarbonFootprintDisplay from "./components/CarbonFootprintDisplay";
 
 // Pages
 import Home from "./Pages/Home";
@@ -240,6 +241,8 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
           </Route>
         </Routes>
+        {/* ✅ Carbon footprint widget - added globally */}
+        <CarbonFootprintDisplay />
       </BrowserRouter>
     </AuthProvider>
   );

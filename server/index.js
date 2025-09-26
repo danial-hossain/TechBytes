@@ -33,6 +33,9 @@ import legsProductRouter from "./product/legs.js";
 // You can similarly import electronicsProductRouter, etc.
 import productRouter from "./routes/product.route.js";
 import orderRouter from "./routes/order.route.js";   // add this
+// ✅ Import middleware
+import carbonEmissionMiddleware, { getCarbonTotals } from "./middlewares/carbonEmission.js";
+
 
 
 dotenv.config();
@@ -44,6 +47,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(morgan("dev"));
 app.use(helmet({ crossOriginResourcePolicy: false }));
+app.use(carbonEmissionMiddleware);
 
 // CORS
 app.use(
@@ -55,9 +59,17 @@ app.use(
 
 // ===== TEST ROUTE =====
 app.get("/", (req, res) => {
-  res.json({ message: "Server is running" });
+  res.json({ message: "Server is running with carbon tracking ✅" }); // ✅ updated
 });
 
+// ===== Carbon stats endpoint =====
+app.get("/api/carbon-stats", (req, res) => {
+  const totals = getCarbonTotals();
+  res.json({
+    bytes: totals.totalBytesEver,
+    emissions: totals.totalEmissionsEver,
+  });
+});
 // ===== ROUTES =====
 app.use("/api/user", userRouter);
 app.use("/api/arm", armRouter);           // All Arm products
